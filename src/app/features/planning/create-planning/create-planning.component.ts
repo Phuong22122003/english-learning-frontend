@@ -41,7 +41,6 @@ export class CreatePlanningComponent implements OnInit {
         this.planService.planGenerateResponse$.subscribe((response) => {
           if (response) {
             this.planToEdit = response;
-            console.log('Plan generated:', this.planToEdit);
           }
         });
       }
@@ -58,13 +57,10 @@ export class CreatePlanningComponent implements OnInit {
       next: (plan) => {
         this.planToEdit = plan;
         this.isLoading = false;
-        console.log('Plan loaded for edit:', plan);
       },
       error: (error) => {
         this.error = 'Không thể tải kế hoạch để chỉnh sửa. Vui lòng thử lại.';
-        this.isLoading = false;
-        console.error('Error loading plan for edit:', error);
-      },
+        this.isLoading = false;},
     });
   }
 

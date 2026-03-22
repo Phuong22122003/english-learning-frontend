@@ -361,9 +361,7 @@ export class FullTestAddComponent implements OnInit {
           },
           error: (error) => {
             this.isSubmitting = false;
-            this.error = 'Không thể cập nhật bài test. Vui lòng thử lại.';
-            console.error('Error updating test:', error);
-          },
+            this.error = 'Không thể cập nhật bài test. Vui lòng thử lại.';},
         });
     } else {
       this.toeicTestService
@@ -375,9 +373,7 @@ export class FullTestAddComponent implements OnInit {
           },
           error: (error) => {
             this.isSubmitting = false;
-            this.error = 'Không thể tạo bài test. Vui lòng thử lại.';
-            console.error('Error creating test:', error);
-          },
+            this.error = 'Không thể tạo bài test. Vui lòng thử lại.';},
         });
     }
   }

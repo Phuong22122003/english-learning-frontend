@@ -92,7 +92,7 @@ export class FavoriteComponent implements OnInit {
       },
       error: (error) => {
         this.error =
-          'Lỗi tải danh sách yêu thích: ' + (error.message || 'Không xác định');
+          'Lỗi tải danh sách yêu thích: Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
         this.isLoading = false;
       },
     });
@@ -243,24 +243,15 @@ export class FavoriteComponent implements OnInit {
   learnItem(favorite: FavoriteResponse): void {
     switch (favorite.itemType) {
       case ItemTypeEnum.GRAMMAR:
-        console.log('Navigate to grammar learning:', favorite.grammarTopic?.id);
         this.router.navigate(['/grammar/topics', favorite.grammarTopic?.id]);
         break;
       case ItemTypeEnum.LISTENING:
-        console.log(
-          'Navigate to listening practice:',
-          favorite.listeningTopic?.id
-        );
         this.router.navigate([
           '/listening/practice',
           favorite.listeningTopic?.id,
         ]);
         break;
       case ItemTypeEnum.VOCABULARY:
-        console.log(
-          'Navigate to vocabulary learning:',
-          favorite.vocabTopic?.id
-        );
         this.router.navigate(['/vocabulary/learn', favorite.vocabTopic?.id]);
         break;
     }
@@ -269,21 +260,18 @@ export class FavoriteComponent implements OnInit {
   takeTest(favorite: FavoriteResponse): void {
     switch (favorite.itemType) {
       case ItemTypeEnum.GRAMMAR:
-        console.log('Navigate to grammar test:', favorite.grammarTopic?.id);
         this.router.navigate([
           '/grammar/topics/tests',
           favorite.grammarTopic?.id,
         ]);
         break;
       case ItemTypeEnum.LISTENING:
-        console.log('Navigate to listening test:', favorite.listeningTopic?.id);
         this.router.navigate([
           '/listening/topics/tests',
           favorite.listeningTopic?.id,
         ]);
         break;
       case ItemTypeEnum.VOCABULARY:
-        console.log('Navigate to vocabulary test:', favorite.vocabTopic?.id);
         this.router.navigate([
           '/vocabulary/topics/tests',
           favorite.vocabTopic?.id,

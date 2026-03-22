@@ -185,7 +185,6 @@ export class ListeningExerciseFormComponent implements OnInit, OnDestroy {
   onSubmit(event?: Event) {
     // Prevent double submit
     if (this.isSubmitting) {
-      console.log('Already submitting, ignoring duplicate submit');
       return;
     }
 
@@ -225,11 +224,6 @@ export class ListeningExerciseFormComponent implements OnInit, OnDestroy {
         }
       });
 
-      console.log('Emitting submit event with:', {
-        exercises: validExercises,
-        imageFiles: imageFiles,
-        audioFiles: audioFiles,
-      });
 
       this.submit.emit({
         exercises: validExercises,

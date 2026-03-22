@@ -186,9 +186,7 @@ export class StatisticComponent implements OnInit {
         this.totalViews = response.totalCount;
         this.updateTimeSeriesChart(response.newElementsByPeriod);
       },
-      error: (error) => {
-        console.error('Error loading time series data:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -197,9 +195,7 @@ export class StatisticComponent implements OnInit {
       next: (response: TopicViewSummaryResponse[]) => {
         this.updateTopTopicsChart(response);
       },
-      error: (error) => {
-        console.error('Error loading top topics data:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -370,13 +366,10 @@ export class StatisticComponent implements OnInit {
       .getUserStatisticsSummary(this.selectedTimeRangeTotalUser)
       .subscribe({
         next: (response: StatisticResponse) => {
-          console.log(response);
           this.userStatistics = response;
           this.updateCharts(response);
         },
-        error: (error) => {
-          console.error('Error loading statistics:', error);
-        },
+        error: (error) => {},
       });
   }
 
@@ -458,9 +451,7 @@ export class StatisticComponent implements OnInit {
         next: (res) => {
           this.updateAvgScoreChart(res.scores);
         },
-        error: (err) => {
-          console.error('Load user scores error:', err);
-        },
+        error: (err) => {},
       });
   }
 
@@ -486,9 +477,7 @@ export class StatisticComponent implements OnInit {
         this.testTakenTotal = res.totalCount;
         this.updateTestTakenChart(res.newElementsByPeriod);
       },
-      error: (err) => {
-        console.error('Error loading test taken:', err);
-      },
+      error: (err) => {},
     });
   }
 

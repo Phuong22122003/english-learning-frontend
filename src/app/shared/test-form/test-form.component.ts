@@ -83,8 +83,6 @@ export class TestFormComponent implements OnInit {
   selectedAudios: File[] = [];
 
   ngOnInit() {
-    console.log(this.config);
-    console.log('Test to edit:', this.testToEdit);
     // Initialize based on config
     if (this.config) {
       this.newQuestion.correctAnswer = 'a'; // Default to option A
@@ -96,7 +94,6 @@ export class TestFormComponent implements OnInit {
     // Load edit data if in edit mode
     if (this.isEditMode && this.editData) {
       this.testData = { ...this.editData };
-      console.log('Loaded edit data:', this.testData);
     }
 
     // Load test data for editing
@@ -129,7 +126,6 @@ export class TestFormComponent implements OnInit {
         images: [],
         audios: [],
       };
-      console.log('Loaded test data for editing:', this.testData);
     }
   }
 
@@ -148,8 +144,6 @@ export class TestFormComponent implements OnInit {
   }
 
   addQuestion() {
-    console.log('Adding question:', this.newQuestion);
-    console.log('Config:', this.config);
 
     // Validate question text
     if (!this.newQuestion.question.trim()) {
@@ -192,8 +186,6 @@ export class TestFormComponent implements OnInit {
     };
 
     this.testData.questions.push(questionToAdd);
-    console.log('Question added:', questionToAdd);
-    console.log('Total questions:', this.testData.questions.length);
 
     // Reset form
     this.newQuestion = {
@@ -224,7 +216,6 @@ export class TestFormComponent implements OnInit {
 
       if (currentVisible === visibleIndex) {
         q.requestType = RequestType.DELETE;
-        console.log('Question marked for deletion:', q);
         return;
       }
     }
@@ -257,7 +248,6 @@ export class TestFormComponent implements OnInit {
           requestType: question.id ? RequestType.UPDATE : RequestType.ADD, // Set based on whether question has ID
           isNewAdd: question.id ? false : true,
         };
-        console.log(this.newQuestion);
         // Remove the question from the list temporarily
         this.testData.questions.splice(realIndex, 1);
         this.isEditQuestion = true;
@@ -291,7 +281,6 @@ export class TestFormComponent implements OnInit {
       alert('Vui lòng chọn đáp án đúng (A, B, C, hoặc D)');
       return;
     }
-    console.log('before UPDATE: ', this.editingQuestion);
     this.newQuestion.audioUrl = this.editingQuestion.audioUrl;
     this.newQuestion.imageUrl = this.editingQuestion.imageUrl;
     // if (this.newQuestion.isNewAdd) {
@@ -299,7 +288,6 @@ export class TestFormComponent implements OnInit {
     //   this.newQuestion.audio = this.editingQuestion.audio;
     //   this.newQuestion.imageName = this.editingQuestion.imageName;
     //   this.newQuestion.image = this.editingQuestion.image;
-    //   console.log('isnewadd', console.log(this.newQuestion));
     // }
 
     // Store the question with letter-based correct answer
@@ -309,10 +297,8 @@ export class TestFormComponent implements OnInit {
       requestType: this.newQuestion.requestType || RequestType.UPDATE, // Preserve request type
     };
 
-    console.log('UPDATE: index', this.editingIndexQuestion);
 
     this.testData.questions.splice(this.editingIndexQuestion, 0, questionToAdd);
-    console.log('Question updated:', questionToAdd);
 
     // Reset form
     this.newQuestion = {
@@ -352,7 +338,6 @@ export class TestFormComponent implements OnInit {
   }
 
   onSave() {
-    console.log('Test data to save:', this.testData);
     if (this.testData.name.trim() && this.testData.questions.length > 0) {
       this.save.emit(this.testData);
     }

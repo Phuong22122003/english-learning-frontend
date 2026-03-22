@@ -86,9 +86,7 @@ export class ListeningPracticeComponent implements OnInit, OnDestroy {
           this.topicTitle = res.name;
           this.isLoading = false;
         },
-        error: (error) => {
-          console.error('Error loading listenings:', error);
-          this.error = 'Không thể tải danh sách bài luyện nghe';
+        error: (error) => {this.error = 'Không thể tải danh sách bài luyện nghe';
           this.isLoading = false;
         },
       });
@@ -103,7 +101,6 @@ export class ListeningPracticeComponent implements OnInit, OnDestroy {
   }
 
   handleAnswerSelect(optionIndex: number) {
-    console.log(optionIndex);
     if (this.showAnswers) return;
     // Chỉ cho phép chọn 1 đáp án
     this.gridQuestion[this.currentIndex] = this.indexToLetter(optionIndex);
@@ -134,7 +131,6 @@ export class ListeningPracticeComponent implements OnInit, OnDestroy {
   }
 
   handleNextExercise() {
-    console.log(this.currentIndex);
     if (this.currentIndex < this.exercises.length - 1) {
       this.completedExercises.add(parseInt(this.currentExercise!.id));
       this.currentIndex++;

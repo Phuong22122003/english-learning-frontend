@@ -61,13 +61,10 @@ export class ViewMyPlanningComponent implements OnInit {
         this.plans = data.content || [];
         this.totalPages = data.totalPages || 1;
         this.isLoading = false;
-        console.log('Plans loaded:', data);
       },
       error: (error) => {
         this.error = 'Không thể tải danh sách kế hoạch. Vui lòng thử lại.';
-        this.isLoading = false;
-        console.error('Error loading plans:', error);
-      },
+        this.isLoading = false;},
     });
   }
 
@@ -104,13 +101,11 @@ export class ViewMyPlanningComponent implements OnInit {
 
   onViewPlan(plan: PlanResponse) {
     // Navigate to plan detail
-    console.log('View plan:', plan);
     this.router.navigate(['/planning/detail', plan.id]);
   }
 
   onEditPlan(plan: PlanResponse) {
     // Navigate to edit plan
-    console.log('Edit plan:', plan);
     this.router.navigate(['/planning/create', plan.id], {
       queryParams: { isEdit: 'true' },
     });
@@ -119,21 +114,17 @@ export class ViewMyPlanningComponent implements OnInit {
   onDeletePlan(plan: PlanResponse) {
     // Show confirmation dialog and delete
     if (confirm(`Bạn có chắc chắn muốn xóa kế hoạch "${plan.title}"?`)) {
-      console.log('Delete plan:', plan);
       this.planService.deletePlan(plan.id).subscribe({
         next: () => {
           this.loadPlans(this.currentPage - 1);
           this.router.navigate(['/planning']);
         },
-        error: (error) => {
-          console.error('Error deleting plan:', error);
-        },
+        error: (error) => {},
       });
     }
   }
 
   handleGenerate(generateData: GenerateData) {
-    console.log('Handle Generate:', generateData);
     if (generateData.useAccountInfo) {
       this.userService.user$.subscribe((user) => {
         if (user) {
@@ -149,7 +140,6 @@ export class ViewMyPlanningComponent implements OnInit {
             .subscribe((data) => {
               this.isLoading = false;
               const planResponse = JSON.parse(data) as PlanResponse;
-              console.log('AI Generate:', planResponse);
               planResponse.target = generateData.target;
               this.planService.setPlanGenerateResponse(planResponse);
               this.router.navigate(['/planning/create'], {
@@ -160,13 +150,6 @@ export class ViewMyPlanningComponent implements OnInit {
       });
     } else {
       this.isLoading = true;
-      console.log('Generate Data:', {
-        jwt: this.userService.getJwt() || '',
-        target: generateData.target,
-        description: generateData.description,
-        level: generateData.level,
-        studyTime: generateData.studyTime,
-      });
       this.planService
         .generatePlan({
           jwt: this.userService.getJwt() || '',
@@ -179,7 +162,6 @@ export class ViewMyPlanningComponent implements OnInit {
           next: (data) => {
             this.isLoading = false;
             const planResponse = JSON.parse(data) as PlanResponse;
-            console.log('AI Generate:', planResponse);
             planResponse.target = generateData.target;
             this.planService.setPlanGenerateResponse(planResponse);
             this.router.navigate(['/planning/create'], {
@@ -187,9 +169,7 @@ export class ViewMyPlanningComponent implements OnInit {
             });
           },
           error: (error) => {
-            this.isLoading = false;
-            console.error('Error generating plan:', error);
-          },
+            this.isLoading = false;},
         });
     }
   }

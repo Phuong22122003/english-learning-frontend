@@ -98,7 +98,6 @@ export class ListeningTestComponent {
     this.isLoading = true;
     this.listeningService.getTestDetail(this.testId).subscribe({
       next: (testData) => {
-        console.log('Test data loaded:', testData);
         this.questions = testData.questions;
         this.resetTest();
         this.duration = testData.duration;
@@ -106,9 +105,7 @@ export class ListeningTestComponent {
         this.topicName = testData.name;
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Error loading test data:', err);
-        this.isLoading = false;
+      error: (err) => {this.isLoading = false;
       },
     });
   }
@@ -195,11 +192,8 @@ export class ListeningTestComponent {
       })
       .subscribe({
         next: (data: ExamHistoryResponse) => {
-          console.log('History added:', data);
         },
-        error: (err: any) => {
-          console.error('Failed to add history', err);
-        },
+        error: (err: any) => {},
       });
     this.isTestCompleted = true;
   }

@@ -64,9 +64,7 @@ export class FullTestDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.error = 'Không thể tải chi tiết bài test. Vui lòng thử lại.';
-        console.error('Error loading test:', error);
-      },
+        this.error = 'Không thể tải chi tiết bài test. Vui lòng thử lại.';},
     });
   }
 

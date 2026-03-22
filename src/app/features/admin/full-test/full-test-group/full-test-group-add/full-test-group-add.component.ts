@@ -114,9 +114,7 @@ export class FullTestGroupAddComponent implements OnInit {
           error: (error) => {
             this.isSubmitting = false;
             this.error =
-              'Không thể cập nhật nhóm TOEIC test. Vui lòng thử lại.';
-            console.error('Error updating TOEIC test group:', error);
-          },
+              'Không thể cập nhật nhóm TOEIC test. Vui lòng thử lại.';},
         });
     } else {
       this.toeicTestService.addGroup(request).subscribe({
@@ -126,9 +124,7 @@ export class FullTestGroupAddComponent implements OnInit {
         },
         error: (error) => {
           this.isSubmitting = false;
-          this.error = 'Không thể tạo nhóm TOEIC test. Vui lòng thử lại.';
-          console.error('Error creating TOEIC test group:', error);
-        },
+          this.error = 'Không thể tạo nhóm TOEIC test. Vui lòng thử lại.';},
       });
     }
   }

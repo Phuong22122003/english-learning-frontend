@@ -9,7 +9,7 @@ import { ItemTypeEnum } from '../models/item-type-enum';
   providedIn: 'root',
 })
 export class FavoriteService {
-  private apiUrl = `${environment.apiLearningServiceUrl}/favorite`;
+  private apiUrl = `${environment.apiLearningServiceUrl}/favorites`;
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,10 @@ export class FavoriteService {
     }
     return this.http.get<FavoriteResponse[]>(`${this.apiUrl}`, { params });
   }
-
+  getFavoriteIdsByType(itemType: ItemTypeEnum): Observable<FavoriteResponse[]> {
+    const params = new HttpParams().set('filterType', itemType);
+    return this.http.get<FavoriteResponse[]>(`${this.apiUrl}/ids`, { params });
+  }
   deleteFavorite(favoriteId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${favoriteId}`);
   }

@@ -97,7 +97,6 @@ export class GrammarTestsManageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('GrammarTestsManageComponent ngOnInit');
     this.loadTopics();
   }
 
@@ -106,7 +105,6 @@ export class GrammarTestsManageComponent implements OnInit {
       .getAllTopics(this.currentPage - 1, this.PAGE_SIZE) // Load all topics for selection
       .subscribe({
         next: (data) => {
-          console.log('Loaded grammar topics:', data);
           this.topics = data.content;
           this.topicsBase = data.content.map((topic) => ({
             id: topic.id,
@@ -115,9 +113,7 @@ export class GrammarTestsManageComponent implements OnInit {
             imageUrl: topic.imageUrl,
           }));
         },
-        error: (error) => {
-          console.error('Error loading topics:', error);
-        },
+        error: (error) => {},
       });
   }
 
@@ -135,12 +131,9 @@ export class GrammarTestsManageComponent implements OnInit {
   loadGrammarsForTopic(topicId: string) {
     this.grammarService.getGrammarsByTopicId(topicId).subscribe({
       next: (data) => {
-        console.log('Loaded grammars for topic:', data);
         this.grammars = data.grammars;
       },
-      error: (error) => {
-        console.error('Error loading grammars:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -156,7 +149,6 @@ export class GrammarTestsManageComponent implements OnInit {
   loadTestsForGrammar(grammarId: string) {
     this.grammarService.getTestsByGrammarId(grammarId).subscribe({
       next: (data) => {
-        console.log('Loaded grammar tests:', data);
         this.grammarTests = data.grammarTests.content;
         this.testsBase = data.grammarTests.content.map((test) => ({
           id: test.id,
@@ -168,9 +160,7 @@ export class GrammarTestsManageComponent implements OnInit {
         this.currentPage = 1;
         this.totalPages = 1;
       },
-      error: (error) => {
-        console.error('Error loading tests:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -186,10 +176,7 @@ export class GrammarTestsManageComponent implements OnInit {
   }
 
   onSaveTest(testData: TestFormData) {
-    console.log('Save test11:', testData);
-    if (!this.selectedGrammar) {
-      console.error('No grammar selected');
-      return;
+    if (!this.selectedGrammar) {return;
     }
 
     // Convert TestFormData to API format for grammar test
@@ -215,34 +202,28 @@ export class GrammarTestsManageComponent implements OnInit {
             (question.id ? RequestType.UPDATE : RequestType.ADD),
         })),
     };
-    console.log('Request:', request);
     // Check if editing or creating
     if (this.currentState === State.Edit && this.testToEdit) {
       // Edit existing test
       this.grammarService.updateTest(request, this.testToEdit.id).subscribe({
         next: (response: any) => {
-          console.log('Grammar test updated successfully:', response);
           this.currentState = State.View;
           this.testToEdit = null;
           // Reload tests for the current grammar
           this.loadTestsForGrammar(this.selectedGrammar!.id);
         },
-        error: (error: any) => {
-          console.error('Error updating grammar test:', error);
-          alert('Không thể cập nhật bài test');
+        error: (error: any) => {alert('Không thể cập nhật bài test');
         },
       });
     } else {
       // Create new test
       this.grammarService.addTest(this.selectedGrammar.id, request).subscribe({
         next: (response: any) => {
-          console.log('Grammar test created successfully:', response);
           this.currentState = State.View;
           // Reload tests for the current grammar
           this.loadTestsForGrammar(this.selectedGrammar!.id);
         },
         error: (error: any) => {
-          console.error('Error creating grammar test:', error);
           alert('Không thể tạo bài test');
         },
       });
@@ -275,7 +256,6 @@ export class GrammarTestsManageComponent implements OnInit {
   loadTestForEdit(testId: string) {
     this.grammarService.getTestQuestionsByTestId(testId).subscribe({
       next: (testData) => {
-        console.log('Test for edit:', testData);
         // Convert the response to GrammarTest format
         const grammarTest: GrammarTest = {
           id: testData.testId,
@@ -303,9 +283,7 @@ export class GrammarTestsManageComponent implements OnInit {
         this.currentState = State.Edit;
         this.grammarTestConfig.topicName = this.selectedGrammar?.title || '';
       },
-      error: (error) => {
-        console.error('Error loading test for edit:', error);
-        alert('Không thể tải thông tin bài test');
+      error: (error) => {alert('Không thể tải thông tin bài test');
       },
     });
   }
@@ -318,7 +296,6 @@ export class GrammarTestsManageComponent implements OnInit {
   onConfirmDelete() {
     this.grammarService.deleteTest(this.testToDelete?.id || '').subscribe({
       next: (res) => {
-        console.log('Test deleted successfully:', res);
         if (this.selectedGrammar) {
           this.loadTestsForGrammar(this.selectedGrammar.id);
         }
@@ -358,7 +335,6 @@ export class GrammarTestsManageComponent implements OnInit {
     imageFiles: File[];
     audioFiles: File[];
   }) {
-    console.log(files);
     this.grammarService
       .uploadTestsByFile(
         this.selectedGrammar!.id,
@@ -368,12 +344,10 @@ export class GrammarTestsManageComponent implements OnInit {
       )
       .subscribe({
         next: (response: GrammarTest[]) => {
-          console.log('Listening tests uploaded successfully:', response);
           this.currentState = State.View;
           this.loadTestsForGrammar(this.selectedGrammar!.id);
         },
         error: (error) => {
-          console.error('Error uploading test:', error);
           alert('Không thể tải lên bài test');
         },
       });

@@ -148,8 +148,6 @@ export class UserService {
 
   hasScope(requiredScope: string): boolean {
     const scope = this.getScope();
-    console.log(scope);
-    console.log(requiredScope);
     return scope.includes(requiredScope);
   }
 }

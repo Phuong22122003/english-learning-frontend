@@ -52,7 +52,5 @@ export class ListeningExerciseListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('ListeningExerciseListComponent ngOnInit');
-    console.log(this.listenings);
   }
 }

@@ -65,7 +65,6 @@ export class LoginComponent {
   }
 
   handleSubmit(form: any) {
-    console.log(this.username, this.password);
     if (form.valid) {
       this.userService
         .login({ username: this.username, password: this.password })
@@ -76,9 +75,7 @@ export class LoginComponent {
             this.router.navigate(['/']);
             this.isLoading = false;
           },
-          error: (err) => {
-            console.error(err);
-            alert('Đăng nhập không thành công, vui lòng thử lại!');
+          error: (err) => {alert('Đăng nhập không thành công, vui lòng thử lại!');
             this.isLoading = false;
           },
           complete: () => {
@@ -105,9 +102,7 @@ export class LoginComponent {
   sendOtp() {
     this.userService.sendOtp(this.forgotEmail).subscribe({
       next: (response) => {
-        console.log(response);
         this.isLoading = false;
-        console.log('vao day');
         this.successMessage =
           'Mã OTP đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư.';
         this.startResendTimer();
@@ -228,7 +223,6 @@ export class LoginComponent {
 
     this.userService.verifyOtp(this.forgotEmail, otp).subscribe({
       next: (response) => {
-        console.log(response);
         this.isLoading = false;
         this.resetToken = response.resetToken;
         this.authState = 'PASSWORD';
@@ -261,7 +255,6 @@ export class LoginComponent {
       next: (response) => {
         this.isLoading = false;
         this.successMessage = 'Đổi mật khẩu thành công!';
-        console.log('response', response);
         // Reset form
         setTimeout(() => {
           this.authState = 'LOGIN';

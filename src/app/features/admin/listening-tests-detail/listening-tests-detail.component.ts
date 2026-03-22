@@ -42,7 +42,6 @@ export class ListeningTestsDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('ListeningTestsDetailComponent ngOnInit');
     this.route.paramMap.subscribe((params) => {
       this.testId = params.get('testId') || '';
       this.loadListenings();
@@ -64,7 +63,6 @@ export class ListeningTestsDetailComponent implements OnInit {
         createdAt: question.createdAt,
         explaination: question.explaination,
       }));
-      console.log('Listening exercises:', this.listenings);
     });
   }
   goBackToTopics() {

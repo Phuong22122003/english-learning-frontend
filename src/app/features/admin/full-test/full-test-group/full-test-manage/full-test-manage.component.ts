@@ -79,14 +79,11 @@ export class FullTestManageComponent implements OnInit {
 
     this.toeicTestService.getGroupById(this.groupId).subscribe({
       next: (group) => {
-        console.log('Group:', group);
         this.group = group;
         this.tests = group.tests;
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error loading group:', error);
-        this.isLoading = false;
+      error: (error) => {this.isLoading = false;
         this.error = 'Không thể tải danh sách bài test. Vui lòng thử lại.';
       },
     });
@@ -119,9 +116,7 @@ export class FullTestManageComponent implements OnInit {
         this.currentStatus = Status.EDIT;
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error loading test:', error);
-        this.error = 'Không thể tải thông tin bài test. Vui lòng thử lại.';
+      error: (error) => {this.error = 'Không thể tải thông tin bài test. Vui lòng thử lại.';
         this.isLoading = false;
       },
     });
@@ -153,9 +148,7 @@ export class FullTestManageComponent implements OnInit {
           // Reload tests after deletion
           this.loadTests();
         },
-        error: (error) => {
-          console.error('Error deleting test:', error);
-          this.error = 'Không thể xóa bài test. Vui lòng thử lại.';
+        error: (error) => {this.error = 'Không thể xóa bài test. Vui lòng thử lại.';
           this.isLoading = false;
         },
       });
@@ -183,15 +176,12 @@ export class FullTestManageComponent implements OnInit {
       )
       .subscribe({
         next: (test) => {
-          console.log('Test uploaded successfully:', test);
           this.loadTests();
           this.isLoading = false;
           this.currentStatus = Status.VIEW;
           this.editingTest = null;
         },
-        error: (error) => {
-          console.error('Error uploading test:', error);
-          this.error = 'Không thể tải lên bài test. Vui lòng thử lại.';
+        error: (error) => {this.error = 'Không thể tải lên bài test. Vui lòng thử lại.';
           this.isLoading = false;
           this.currentStatus = Status.VIEW;
           this.editingTest = null;

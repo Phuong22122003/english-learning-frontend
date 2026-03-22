@@ -45,7 +45,6 @@ export class GrammarTopicDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('GrammarTopicDetailComponent initialized');
     this.topicId = this.route.snapshot.paramMap.get('topicId');
     if (this.topicId) {
       this.loadGrammars(this.topicId);
@@ -55,13 +54,10 @@ export class GrammarTopicDetailComponent implements OnInit {
   loadGrammars(topicId: string) {
     this.grammarService.getGrammarsByTopicId(topicId).subscribe({
       next: (data) => {
-        console.log('Loaded grammars for topic:', data);
         this.grammarList = data.grammars;
         this.name = data.name;
       },
-      error: (err) => {
-        console.error('Error loading grammars:', err);
-      },
+      error: (err) => {},
     });
   }
 
@@ -71,12 +67,10 @@ export class GrammarTopicDetailComponent implements OnInit {
   }
 
   handleEdit(grammar: Grammar) {
-    console.log('Edit grammar:', grammar);
     this.changeToEdit(grammar);
   }
 
   handleDelete(grammar: Grammar) {
-    console.log('Delete grammar:', grammar);
     this.grammarToDelete = grammar;
     this.showDeleteConfirm = true;
   }
@@ -104,15 +98,12 @@ export class GrammarTopicDetailComponent implements OnInit {
 
   handleCreate(grammarToCreate: Grammar) {
     if (this.topicId) {
-      console.log(grammarToCreate);
       this.grammarService.addGrammar(grammarToCreate, this.topicId).subscribe({
         next: (res) => {
-          console.log(res);
           this.grammarList = this.grammarList.concat(res);
           this.backToView();
         },
         error: (err) => {
-          console.log(err);
         },
       });
     }
@@ -120,12 +111,10 @@ export class GrammarTopicDetailComponent implements OnInit {
 
   handleSaveEdit() {
     if (this.grammarToEdit && this.grammarToEdit.id) {
-      console.log('Saving edited grammar:', this.grammarToEdit);
       this.grammarService
         .updateGrammar(this.grammarToEdit, this.grammarToEdit.id)
         .subscribe({
           next: (res) => {
-            console.log('Grammar updated successfully:', res);
             // Update the grammar in the list
             const index = this.grammarList.findIndex(
               (g) => g.id === this.grammarToEdit.id
@@ -135,9 +124,7 @@ export class GrammarTopicDetailComponent implements OnInit {
             }
             this.backToView();
           },
-          error: (err) => {
-            console.error('Error updating grammar:', err);
-            alert('Không thể cập nhật ngữ pháp');
+          error: (err) => {alert('Không thể cập nhật ngữ pháp');
           },
         });
     }
@@ -145,12 +132,11 @@ export class GrammarTopicDetailComponent implements OnInit {
 
   onContentChange(content: string): void {
     this.grammarToEdit.content = content;
-    console.log('Content changed:', content);
   }
 
   onImageUpload(file: File): void {
     // Handle image upload for grammar content
-    console.log('Image upload for grammar:', file);
+
     // You can implement your image upload logic here
     // For now, we'll just log the file
   }
@@ -163,7 +149,6 @@ export class GrammarTopicDetailComponent implements OnInit {
     if (this.grammarToDelete) {
       this.grammarService.deleteGrammar(this.grammarToDelete.id).subscribe({
         next: (res) => {
-          console.log('Grammar deleted successfully:', res);
           // Remove the grammar from the list
           this.grammarList = this.grammarList.filter(
             (g) => g.id !== this.grammarToDelete!.id
@@ -171,9 +156,7 @@ export class GrammarTopicDetailComponent implements OnInit {
           this.showDeleteConfirm = false;
           this.grammarToDelete = null;
         },
-        error: (err) => {
-          console.error('Error deleting grammar:', err);
-          alert('Không thể xóa ngữ pháp');
+        error: (err) => {alert('Không thể xóa ngữ pháp');
           this.showDeleteConfirm = false;
           this.grammarToDelete = null;
         },

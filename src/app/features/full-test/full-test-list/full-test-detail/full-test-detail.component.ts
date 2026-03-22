@@ -273,7 +273,6 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
   startTest(): void {
     this.isTestStarted = true;
     this.startDate = CommonUtils.getNow();
-    console.log('Start date:', this.startDate);
     this.startTimer();
   }
 
@@ -392,7 +391,6 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
       if (this.timerInterval) {
         clearInterval(this.timerInterval);
       }
-      console.log(this.selectedAnswers);
       const results = this.questions.map((q) => {
         const selectedAnswer = this.selectedAnswers[q.id] ?? '';
 
@@ -418,11 +416,8 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
         })
         .subscribe({
           next: (data: ExamHistoryResponse) => {
-            console.log('History added:', data);
           },
-          error: (error) => {
-            console.error('Error adding history:', error);
-          },
+          error: (error) => {},
         });
     }
   }

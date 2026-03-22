@@ -22,13 +22,9 @@ export class TestListComponent implements OnInit {
   @Output() pageChange = new EventEmitter<number>();
 
   constructor() {
-    console.log('TestListComponent constructor');
-    console.log(this.tests);
   }
 
   ngOnInit(): void {
-    console.log('TestListComponent ngOnInit');
-    console.log(this.tests);
   }
 
   onViewTest(test: TestBase) {

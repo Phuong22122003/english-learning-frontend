@@ -85,7 +85,6 @@ export class FormPlanningComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('FormPlanningComponent ngOnInit', this.planToEdit);
 
     if (
       (this.isEditMode && this.planToEdit) ||
@@ -306,9 +305,7 @@ export class FormPlanningComponent implements OnInit {
           error: (error) => {
             this.topicsError =
               'Không thể tải danh sách từ vựng. Vui lòng thử lại.';
-            this.isLoadingTopics = false;
-            console.error('Error loading vocabulary topics:', error);
-          },
+            this.isLoadingTopics = false;},
         });
         break;
 
@@ -321,9 +318,7 @@ export class FormPlanningComponent implements OnInit {
           error: (error) => {
             this.topicsError =
               'Không thể tải danh sách ngữ pháp. Vui lòng thử lại.';
-            this.isLoadingTopics = false;
-            console.error('Error loading grammar topics:', error);
-          },
+            this.isLoadingTopics = false;},
         });
         break;
 
@@ -336,9 +331,7 @@ export class FormPlanningComponent implements OnInit {
           error: (error) => {
             this.topicsError =
               'Không thể tải danh sách nghe hiểu. Vui lòng thử lại.';
-            this.isLoadingTopics = false;
-            console.error('Error loading listening topics:', error);
-          },
+            this.isLoadingTopics = false;},
         });
         break;
 
@@ -430,7 +423,6 @@ export class FormPlanningComponent implements OnInit {
         })),
       })),
     };
-    console.log(planRequestForAPI);
     // Use appropriate API based on mode
     let apiCall: Observable<PlanResponse>;
     if (this.isEditMode && this.planToEdit) {
@@ -446,18 +438,12 @@ export class FormPlanningComponent implements OnInit {
       next: (response) => {
         this.isSubmitting = false;
         this.planSaved.emit(response);
-        console.log(
-          this.isEditMode ? 'Plan updated:' : 'Plan created:',
-          response
-        );
       },
       error: (error) => {
         this.isSubmitting = false;
         this.error = this.isEditMode
           ? 'Không thể cập nhật kế hoạch. Vui lòng thử lại.'
-          : 'Không thể tạo kế hoạch. Vui lòng thử lại.';
-        console.error('Error saving plan:', error);
-      },
+          : 'Không thể tạo kế hoạch. Vui lòng thử lại.';},
     });
   }
 

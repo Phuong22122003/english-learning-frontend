@@ -73,7 +73,6 @@ export class HeaderComponent implements OnInit {
     this.userService.user$.subscribe((user) => {
       if (user) {
         this.avatarUrl = user.avartarUrl || '';
-        console.log('Header avatarUrl:', this.avatarUrl);
       }
     });
   }

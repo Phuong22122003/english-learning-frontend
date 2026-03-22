@@ -32,6 +32,7 @@
       <div *ngIf="authState === 'LOGIN'" class="space-y-1 text-center p-6">
         <h2 class="text-2xl font-semibold text-white">Đăng nhập</h2>
         <p class="text-slate-300">Nhập thông tin tài khoản của bạn</p>
+        <p class="text-slate-300">Demo: admin:admin123</p>
       </div>
 
       <div *ngIf="authState === 'LOGIN'" class="">
@@ -50,6 +51,7 @@
               name="username"
               type="text"
               [(ngModel)]="username"
+              value="admin"
               required
               minlength="4"
               #usernameCtrl="ngModel"
@@ -77,6 +79,7 @@
             >
             <div class="relative">
               <input
+                value="admin123"
                 id="password"
                 name="password"
                 [type]="showPassword ? 'text' : 'password'"

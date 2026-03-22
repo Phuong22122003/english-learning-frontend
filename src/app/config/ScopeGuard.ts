@@ -9,8 +9,6 @@ export class ScopeGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const requiredScope = route.data['scope'] as string;
 
-    console.log(requiredScope);
-    console.log(this.userService.hasScope(requiredScope));
     if (!this.userService.getJwt()) {
       this.router.navigate(['/login']);
       return false;

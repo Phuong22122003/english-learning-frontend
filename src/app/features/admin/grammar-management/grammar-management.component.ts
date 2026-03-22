@@ -74,11 +74,9 @@ export class GrammarManagementComponent implements OnInit {
     this.loadData();
   }
   onCreateTopic(topic: GrammarTopic) {
-    console.log(topic);
     this.grammarService
       .createTopic(topic, topic.imageUrl as any)
       .subscribe((res) => {
-        console.log(res);
         const newTopic: TopicBase = {
           id: res.id,
           name: res.name,
@@ -98,7 +96,6 @@ export class GrammarManagementComponent implements OnInit {
   }
 
   onDelete(topic: TopicBase) {
-    console.log('emit on delete');
     this.topicToDelete = topic;
     this.isShowConfirmDialog = true;
   }
@@ -111,7 +108,6 @@ export class GrammarManagementComponent implements OnInit {
     if (this.topicToDelete) {
       this.grammarService.deleteTopic(this.topicToDelete.id).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.topics = this.topics.filter(
             (t) => t.id !== this.topicToDelete!.id
           );

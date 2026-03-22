@@ -75,7 +75,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.user$.subscribe((user) => {
-      console.log('Profile user:', user);
       this.profile = user || undefined;
       if (this.profile) {
         this.initForm();
@@ -134,8 +133,7 @@ export class ProfileComponent implements OnInit {
           setTimeout(() => (this.success = null), 3000);
         },
         error: (err) => {
-          console.error(err);
-          this.isLoading = false;
+this.isLoading = false;
           this.error = 'Không thể tải avatar. Vui lòng thử lại.';
           setTimeout(() => (this.error = null), 3000);
         },
@@ -211,7 +209,6 @@ export class ProfileComponent implements OnInit {
         setTimeout(() => (this.success = null), 3000);
       },
       error: (err) => {
-        console.error('Error updating profile:', err);
         this.isLoading = false;
         this.error =
           err.error?.message || 'Không thể cập nhật hồ sơ. Vui lòng thử lại.';

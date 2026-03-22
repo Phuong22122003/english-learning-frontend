@@ -104,9 +104,7 @@ export class ChangePasswordComponent
 
     this.userService.sendOtp(this.email).subscribe({
       next: (response) => {
-        console.log(response);
         this.isLoading = false;
-        console.log('vao day');
         this.successMessage =
           'Mã OTP đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư.';
         this.startResendTimer();
@@ -186,7 +184,6 @@ export class ChangePasswordComponent
 
     this.userService.verifyOtp(this.email, otp).subscribe({
       next: (response) => {
-        console.log(response);
         this.isLoading = false;
         this.resetToken = response.resetToken;
         this.currentStep = 'password';
@@ -228,7 +225,6 @@ export class ChangePasswordComponent
       next: (response) => {
         this.isLoading = false;
         this.successMessage = 'Đổi mật khẩu thành công!';
-        console.log('response', response);
         // Reset form
         setTimeout(() => {
           this.userService.logout();

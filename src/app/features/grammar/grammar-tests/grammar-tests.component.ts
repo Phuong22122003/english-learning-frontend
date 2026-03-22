@@ -57,7 +57,6 @@ export class GrammarTestsComponent implements OnInit {
         this.GRAMMAR_TESTS_PER_PAGE
       )
       .subscribe((data) => {
-        console.log('Loaded grammar tests:', data);
         this.tests = data.grammarTests.content;
         this.totalPages = data.grammarTests.totalPages;
         this.grammarName = data.grammarName;

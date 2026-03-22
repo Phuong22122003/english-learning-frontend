@@ -91,7 +91,6 @@ export class ListeningTestsManageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('ListeningTestsManageComponent ngOnInit');
     this.loadTopics();
   }
 
@@ -100,7 +99,6 @@ export class ListeningTestsManageComponent implements OnInit {
       .getTopics(this.currentPage - 1, this.PAGE_SIZE) // Load all topics for selection
       .subscribe({
         next: (data) => {
-          console.log('Loaded listening topics:', data);
           this.topics = data.content;
           this.topicsBase = data.content.map((topic) => ({
             id: topic.id,
@@ -109,9 +107,7 @@ export class ListeningTestsManageComponent implements OnInit {
             imageUrl: topic.imageUrl,
           }));
         },
-        error: (error) => {
-          console.error('Error loading topics:', error);
-        },
+        error: (error) => {},
       });
   }
 
@@ -127,7 +123,6 @@ export class ListeningTestsManageComponent implements OnInit {
   loadTestsForTopic(topicId: string) {
     this.listeningService.getTestsByTopicId(topicId).subscribe({
       next: (data) => {
-        console.log('Loaded listening tests:', data);
         this.listeningTests = data.tests.content;
         this.testsBase = data.tests.content.map((test) => ({
           id: test.id,
@@ -139,9 +134,7 @@ export class ListeningTestsManageComponent implements OnInit {
         this.currentPage = 1;
         this.totalPages = 1;
       },
-      error: (error) => {
-        console.error('Error loading tests:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -157,10 +150,7 @@ export class ListeningTestsManageComponent implements OnInit {
   }
 
   onSaveTest(testData: TestFormData) {
-    console.log('onSaveTest', testData);
-    if (!this.selectedTopic) {
-      console.error('No topic selected');
-      return;
+    if (!this.selectedTopic) {return;
     }
 
     // Convert TestFormData to API format for listening test
@@ -187,16 +177,6 @@ export class ListeningTestsManageComponent implements OnInit {
       })),
     };
 
-    console.log('testDataForAPI', testDataForAPI);
-    console.log(
-      'Questions with correct answers:',
-      testDataForAPI.questions.map((q) => ({
-        question: q.question,
-        correctAnswer: q.correctAnswer,
-        options: q.options,
-      }))
-    );
-
     // Collect question images and audios
     const questionImages: File[] = [];
     const questionAudios: File[] = [];
@@ -210,9 +190,6 @@ export class ListeningTestsManageComponent implements OnInit {
       }
     });
 
-    console.log('Question images:', questionImages.length);
-    console.log('Question audios:', questionAudios.length);
-
     // Use the new addTest API
     this.listeningService
       .addTest(
@@ -223,14 +200,11 @@ export class ListeningTestsManageComponent implements OnInit {
       )
       .subscribe({
         next: (response: any) => {
-          console.log('Listening test created successfully:', response);
           this.currentState = State.View;
           // Reload tests for the current topic
           this.loadTestsForTopic(this.selectedTopic!.id);
         },
-        error: (error: any) => {
-          console.error('Error creating listening test:', error);
-        },
+        error: (error: any) => {},
       });
   }
 
@@ -239,10 +213,7 @@ export class ListeningTestsManageComponent implements OnInit {
   }
 
   onUpdateTest(testData: TestFormData) {
-    console.log('onUpdateTest', testData);
-    if (!this.selectedTopic || !this.testToEdit) {
-      console.error('No topic or test selected for editing');
-      return;
+    if (!this.selectedTopic || !this.testToEdit) {return;
     }
 
     // Convert TestFormData to API format for listening test
@@ -271,7 +242,6 @@ export class ListeningTestsManageComponent implements OnInit {
         })),
     };
 
-    console.log('Updating listening test:', testDataForAPI);
 
     // Collect question images and audios
     const questionImages: File[] = [];
@@ -286,8 +256,6 @@ export class ListeningTestsManageComponent implements OnInit {
       }
     });
 
-    console.log('Question images:', questionImages.length);
-    console.log('Question audios:', questionAudios.length);
 
     // Use the updateTest API
     this.listeningService
@@ -299,16 +267,13 @@ export class ListeningTestsManageComponent implements OnInit {
       )
       .subscribe({
         next: (response: any) => {
-          console.log('Listening test updated successfully:', response);
           this.currentState = State.View;
           this.testToEdit = null;
           this.editTestData = null;
           // Reload tests for the current topic
           this.loadTestsForTopic(this.selectedTopic!.id);
         },
-        error: (error: any) => {
-          console.error('Error updating listening test:', error);
-        },
+        error: (error: any) => {},
       });
   }
 
@@ -333,13 +298,10 @@ export class ListeningTestsManageComponent implements OnInit {
       this.listeningService.deleteTest(this.idToDelete).subscribe({
         next: (response: any) => {
           this.loadTestsForTopic(this.selectedTopic!.id);
-          console.log('Listening test deleted successfully:', response);
           this.showDeleteConfirm = false;
           this.idToDelete = null;
         },
-        error: (error: any) => {
-          console.error('Error deleting listening test:', error);
-          this.showDeleteConfirm = false;
+        error: (error: any) => {this.showDeleteConfirm = false;
           this.idToDelete = null;
         },
       });
@@ -382,9 +344,7 @@ export class ListeningTestsManageComponent implements OnInit {
           this.currentState = State.Edit;
         }
       },
-      error: (error) => {
-        console.error('Error getting test:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -408,7 +368,6 @@ export class ListeningTestsManageComponent implements OnInit {
     imageFiles: File[];
     audioFiles: File[];
   }) {
-    console.log(files);
     this.listeningService
       .uploadTestsByFile(
         this.selectedTopic!.id,
@@ -418,12 +377,10 @@ export class ListeningTestsManageComponent implements OnInit {
       )
       .subscribe({
         next: (response: ListeningTest[]) => {
-          console.log('Listening tests uploaded successfully:', response);
           this.currentState = State.View;
           this.loadTestsForTopic(this.selectedTopic!.id);
         },
         error: (error) => {
-          console.error('Error uploading test:', error);
           alert('Không thể tải lên bài test');
         },
       });

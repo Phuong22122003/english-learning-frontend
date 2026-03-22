@@ -150,9 +150,7 @@ export class RichTextEditorComponent
           this.selectedImageIndex = null;
         }
       });
-    } catch (error) {
-      console.error('Error initializing Quill editor:', error);
-      this.error = 'Không thể khởi tạo trình soạn thảo';
+    } catch (error) {this.error = 'Không thể khởi tạo trình soạn thảo';
     }
   }
 
@@ -261,9 +259,7 @@ export class RichTextEditorComponent
           .then((imageUrl) => {
             this.insertImage(imageUrl);
           })
-          .catch((error) => {
-            console.error('Upload error:', error);
-          });
+          .catch((error) => {});
       }
     };
   }
@@ -276,9 +272,7 @@ export class RichTextEditorComponent
         .then((imageUrl) => {
           this.insertImage(imageUrl);
         })
-        .catch((error) => {
-          console.error('Upload error:', error);
-        });
+        .catch((error) => {});
     }
   }
 
@@ -354,12 +348,9 @@ export class RichTextEditorComponent
       if (url === imageUrl) {
         this.fileService.deleteImage(publicId).subscribe({
           next: () => {
-            console.log('Image deleted successfully:', publicId);
             this.uploadedImages.delete(publicId);
           },
-          error: (error) => {
-            console.error('Error deleting image:', error);
-            this.error = 'Lỗi xóa ảnh: ' + (error.message || 'Không xác định');
+          error: (error) => {this.error = 'Lỗi xóa ảnh: ' + (error.message || 'Không xác định');
           },
         });
         return;
@@ -390,7 +381,6 @@ export class RichTextEditorComponent
     const deletedImages = oldImages.filter((img) => !newImages.includes(img));
 
     deletedImages.forEach((imgUrl) => {
-      console.log('Ảnh bị xóa:', imgUrl);
       this.deleteImageFromServer(imgUrl);
     });
   }

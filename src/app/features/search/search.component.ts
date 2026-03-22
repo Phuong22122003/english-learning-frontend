@@ -96,7 +96,6 @@ export class SearchComponent implements OnInit {
       .searchVocabularies(this.searchQuery, this.currentPage, this.pageSize)
       .pipe(
         map((page: Page<any>) => {
-          console.log(page);
           const topics = this.mapToTopicBase(page.content, 'VOCABULARY');
           return {
             topics: topics,
@@ -104,9 +103,7 @@ export class SearchComponent implements OnInit {
             totalElements: page.totalElements,
           };
         }),
-        catchError((error) => {
-          console.error('Vocabulary search error:', error);
-          this.error = 'Không thể tìm kiếm từ vựng. Vui lòng thử lại.';
+        catchError((error) => {this.error = 'Không thể tìm kiếm từ vựng. Vui lòng thử lại.';
           return of({ topics: [], totalPages: 0, totalElements: 0 });
         })
       )
@@ -117,9 +114,7 @@ export class SearchComponent implements OnInit {
           this.totalResults = result.totalElements;
           this.isLoading = false;
         },
-        error: (error) => {
-          console.error('Error:', error);
-          this.isLoading = false;
+        error: (error) => {this.isLoading = false;
           this.error = 'Đã xảy ra lỗi. Vui lòng thử lại.';
         },
       });
@@ -137,9 +132,7 @@ export class SearchComponent implements OnInit {
             totalElements: page.totalElements,
           };
         }),
-        catchError((error) => {
-          console.error('Grammar search error:', error);
-          this.error = 'Không thể tìm kiếm ngữ pháp. Vui lòng thử lại.';
+        catchError((error) => {this.error = 'Không thể tìm kiếm ngữ pháp. Vui lòng thử lại.';
           return of({ topics: [], totalPages: 0, totalElements: 0 });
         })
       )
@@ -150,9 +143,7 @@ export class SearchComponent implements OnInit {
           this.totalResults = result.totalElements;
           this.isLoading = false;
         },
-        error: (error) => {
-          console.error('Error:', error);
-          this.isLoading = false;
+        error: (error) => {this.isLoading = false;
           this.error = 'Đã xảy ra lỗi. Vui lòng thử lại.';
         },
       });
@@ -163,7 +154,6 @@ export class SearchComponent implements OnInit {
       .searchListenings(this.searchQuery, this.currentPage, this.pageSize)
       .pipe(
         map((page: Page<any>) => {
-          console.log(page);
           const topics = this.mapToTopicBase(page.content, 'LISTENING');
           return {
             topics: topics,
@@ -171,9 +161,7 @@ export class SearchComponent implements OnInit {
             totalElements: page.totalElements,
           };
         }),
-        catchError((error) => {
-          console.error('Listening search error:', error);
-          this.error = 'Không thể tìm kiếm nghe. Vui lòng thử lại.';
+        catchError((error) => {this.error = 'Không thể tìm kiếm nghe. Vui lòng thử lại.';
           return of({ topics: [], totalPages: 0, totalElements: 0 });
         })
       )
@@ -184,9 +172,7 @@ export class SearchComponent implements OnInit {
           this.totalResults = result.totalElements;
           this.isLoading = false;
         },
-        error: (error) => {
-          console.error('Error:', error);
-          this.isLoading = false;
+        error: (error) => {this.isLoading = false;
           this.error = 'Đã xảy ra lỗi. Vui lòng thử lại.';
         },
       });
@@ -234,9 +220,7 @@ export class SearchComponent implements OnInit {
         this.totalPages = Math.ceil(this.totalResults / this.pageSize);
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error:', error);
-        this.isLoading = false;
+      error: (error) => {this.isLoading = false;
         this.error = 'Đã xảy ra lỗi. Vui lòng thử lại.';
       },
     });

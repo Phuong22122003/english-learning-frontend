@@ -52,23 +52,17 @@ export class ListeningTopicTestsComponent implements OnInit {
   }
 
   loadTests(page: number) {
-    console.log('Loading tests for topicId:', this.topicId, 'page:', page);
 
     this.listeningService
       .getTestsByTopicId(this.topicId, page, this.TESTS_PER_PAGE)
       .subscribe({
         next: (res) => {
-          console.log('API Response:', res);
           this.topicTitle = res.topicName;
           this.tests = res.tests.content;
           this.totalPages = res.tests.totalPages;
           this.currentPage = res.tests.number + 1;
         },
-        error: (err) => {
-          console.error('Error loading tests:', err);
-          console.error('Error details:', err.error);
-          console.error('Error status:', err.status);
-          console.error('Error message:', err.message);
+        error: (err) => {
         },
       });
   }

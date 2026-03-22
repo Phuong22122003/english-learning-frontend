@@ -58,7 +58,7 @@ export class LearnNewWordComponent implements OnInit {
             this.completedWords.add(this.currentWord!.id);
           }
         },
-        error: (err) => console.error('Lỗi load vocabulary:', err),
+        error: (err) => {},
       });
     });
   }

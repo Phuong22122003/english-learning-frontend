@@ -53,7 +53,6 @@ export class GrammarTopicComponent implements OnInit {
   }
 
   onLearn(topic: TopicBase) {
-    console.log(`Learning grammar: ${topic.name}`);
     this.router.navigate(['/grammar/topics', topic.id.toString()]);
   }
 
@@ -88,7 +87,7 @@ export class GrammarTopicComponent implements OnInit {
         },
         error: (error) => {
           this.error =
-            'Lỗi tải danh sách chủ đề: ' + (error.message || 'Không xác định');
+            'Lỗi tải danh sách chủ đề: Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
           this.isLoading = false;
         },
       });
@@ -97,15 +96,11 @@ export class GrammarTopicComponent implements OnInit {
   loadFavorites() {
     this.favoriteService.getFavoritesByType(ItemTypeEnum.GRAMMAR).subscribe({
       next: (favorites) => {
-        console.log('Grammar Favorites:', favorites);
         this.favoriteTopicIds = new Map(
           favorites.map((f) => [f.grammarTopic?.id, f.id])
         );
-        console.log('Grammar FavoriteTopicIds:', this.favoriteTopicIds);
       },
-      error: (error) => {
-        console.error('Error loading grammar favorites:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -121,31 +116,24 @@ export class GrammarTopicComponent implements OnInit {
 
   // Handle favorite toggle
   onFavorite(topic: TopicBase) {
-    console.log('Adding grammar to favorites:', topic.name);
     this.favoriteService.addFavorite(topic.id, ItemTypeEnum.GRAMMAR).subscribe({
       next: (response) => {
         this.favoriteTopicIds.set(topic.id, response.id);
         topic.favoriteId = response.id;
       },
-      error: (error) => {
-        console.error('Error adding grammar to favorites:', error);
-      },
+      error: (error) => {},
     });
   }
 
   onUnfavorite(topic: TopicBase) {
-    console.log('Removing grammar from favorites:', topic.name);
     const favoriteId = this.favoriteTopicIds.get(topic.id);
     if (favoriteId) {
       this.favoriteService.deleteFavorite(favoriteId).subscribe({
         next: () => {
-          console.log('Removed grammar from favorites:', topic.name);
           this.favoriteTopicIds.delete(topic.id);
           topic.favoriteId = undefined;
         },
-        error: (error) => {
-          console.error('Error removing grammar from favorites:', error);
-        },
+        error: (error) => {},
       });
     }
   }

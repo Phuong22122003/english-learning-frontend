@@ -62,7 +62,6 @@ export class ListeningManagementComponent implements OnInit {
     this.listeningService
       .getTopics(this.currentPage - 1, this.PAGE_SIZE)
       .subscribe((data) => {
-        console.log(data);
         const result = data.content;
         result.forEach((item) => {
           const listeningTopic: TopicBase = {
@@ -102,7 +101,6 @@ export class ListeningManagementComponent implements OnInit {
   }
 
   onCreateTopic(topic: ListeningTopic) {
-    console.log(topic);
     this.listeningService
       .addTopic(topic, topic.imageUrl as any)
       .subscribe((res) => {
@@ -152,16 +150,13 @@ export class ListeningManagementComponent implements OnInit {
     if (this.topicToDelete) {
       this.listeningService.deleteTopic(this.topicToDelete.id).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.topics = this.topics.filter(
             (t) => t.id !== this.topicToDelete!.id
           );
           this.isShowConfirmDialog = false;
           this.changeToView();
         },
-        error: (err: any) => {
-          console.error(err);
-          alert('Không thể xóa topic');
+        error: (err: any) => {alert('Không thể xóa topic');
         },
       });
     }
@@ -172,7 +167,6 @@ export class ListeningManagementComponent implements OnInit {
     this.agentService
       .generateTopic(data.topicType, data.description)
       .subscribe((res) => {
-        console.log(res);
         this.loadData();
       });
   }

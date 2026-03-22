@@ -31,8 +31,6 @@ export class HistoryDetailComponent implements OnInit {
   loadHistoryDetail() {
     this.historyService.getHistoryById(this.examHistoryId).subscribe((res) => {
       this.historyDetail = res;
-      console.log(this.historyDetail.testType === ItemTypeEnum.FULL_TEST);
-      console.log(res);
     });
   }
 

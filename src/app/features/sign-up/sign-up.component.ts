@@ -72,7 +72,6 @@ export class SignUpComponent {
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.log(err);
         this.errorMessage = JSON.parse(err.error)['message'];
         this.isLoading = false;
       },

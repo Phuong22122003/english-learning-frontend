@@ -72,7 +72,6 @@ export class FullTestGroupComponent implements OnInit {
       .getGroup(this.currentPage - 1, this.GROUPS_PER_PAGE)
       .subscribe({
         next: (groups) => {
-          console.log(groups);
           this.toeicGroups = groups.content;
           this.totalPages = groups.totalPages;
           this.totalElements = groups.totalElements;
@@ -82,7 +81,6 @@ export class FullTestGroupComponent implements OnInit {
         error: (error) => {
           this.error = 'Không thể tải danh sách nhóm TOEIC. Vui lòng thử lại.';
           this.isLoading = false;
-          console.error('Error loading TOEIC groups:', error);
         },
       });
   }
@@ -138,9 +136,7 @@ export class FullTestGroupComponent implements OnInit {
         error: (error) => {
           this.error = 'Không thể xóa nhóm TOEIC. Vui lòng thử lại.';
           this.isShowDeleteConfirmation = false;
-          this.selectedGroupToDelete = null;
-          console.error('Error deleting TOEIC group:', error);
-        },
+          this.selectedGroupToDelete = null;},
       });
   }
 }

@@ -73,11 +73,9 @@ export class ListeningTopicDetailComponent implements OnInit {
           correctAnswer: listening.correctAnswer,
           createdAt: listening.createdAt,
         }));
-        console.log('Listening exercises:', this.listeningExercises);
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error loading listenings:', err);
         this.isLoading = false;
       },
     });
@@ -89,7 +87,6 @@ export class ListeningTopicDetailComponent implements OnInit {
 
   onViewListening(listening: ListeningExercise) {
     // Navigate to listening detail or open in modal
-    console.log('View listening:', listening);
   }
 
   onEditListening(listening: ListeningExercise) {
@@ -100,7 +97,6 @@ export class ListeningTopicDetailComponent implements OnInit {
   onDeleteListening(listening: ListeningExercise) {
     // Show confirmation dialog and delete
     if (confirm('Are you sure you want to delete this listening exercise?')) {
-      console.log('Delete listening:', listening);
       this.listeningService.deleteListening(listening.id).subscribe({
         next: () => {
           this.loadListenings();
@@ -124,7 +120,6 @@ export class ListeningTopicDetailComponent implements OnInit {
   }) {
     // Prevent double call
     if (this.isAddingExercise) {
-      console.log('Already adding exercises, ignoring duplicate call');
       return;
     }
 
@@ -157,15 +152,12 @@ export class ListeningTopicDetailComponent implements OnInit {
       )
       .subscribe({
         next: (response: Listening[]) => {
-          console.log('Exercises added successfully:', response);
           // Reload the listenings list
           this.loadListenings();
           this.changeToView();
           this.isAddingExercise = false;
         },
-        error: (err) => {
-          console.error('Error adding exercises:', err);
-          this.isAddingExercise = false;
+        error: (err) => {this.isAddingExercise = false;
           // Show error message to user
           alert('Error adding exercises. Please try again.');
         },
@@ -187,14 +179,12 @@ export class ListeningTopicDetailComponent implements OnInit {
   }) {
     // Prevent double call
     if (this.isEditingExercise) {
-      console.log('Already editing exercise, ignoring duplicate call');
       return;
     }
 
     this.isEditingExercise = true;
 
     if (!this.selectedListeningForEdit) {
-      console.error('No listening selected for edit');
       this.isEditingExercise = false;
       return;
     }
@@ -249,7 +239,6 @@ export class ListeningTopicDetailComponent implements OnInit {
       .updateListening([listeningRequest], data.imageFiles, data.audioFiles)
       .subscribe({
         next: (response: Listening) => {
-          console.log('Exercise updated successfully:', response);
           // Reload the listenings list
           this.loadListenings();
           this.changeToView();
@@ -257,7 +246,6 @@ export class ListeningTopicDetailComponent implements OnInit {
           this.isEditingExercise = false;
         },
         error: (err) => {
-          console.error('Error updating exercise:', err);
           this.isEditingExercise = false;
           // Show error message to user
           alert('Error updating exercise. Please try again.');
@@ -279,7 +267,6 @@ export class ListeningTopicDetailComponent implements OnInit {
     imageFiles: File[];
     audioFiles: File[];
   }) {
-    console.log(files);
     if (this.topicId) {
       this.listeningService
         .uploadListeningsByFile(
@@ -290,13 +277,10 @@ export class ListeningTopicDetailComponent implements OnInit {
         )
         .subscribe({
           next: (response: Listening[]) => {
-            console.log(response);
             this.loadListenings();
             this.changeToView();
           },
-          error: (err) => {
-            console.error('Error uploading exercises:', err);
-            this.changeToView();
+          error: (err) => {this.changeToView();
           },
         });
     }

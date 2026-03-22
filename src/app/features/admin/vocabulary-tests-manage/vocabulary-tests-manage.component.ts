@@ -88,7 +88,6 @@ export class VocabularyTestsManageComponent implements OnInit {
     private agentService: AgentService
   ) {}
   ngOnInit(): void {
-    console.log('VocabularyTestsManageComponent ngOnInit');
     this.loadTopics();
   }
   loadTopics() {
@@ -96,7 +95,6 @@ export class VocabularyTestsManageComponent implements OnInit {
       .getTopics(this.currentPage - 1, this.PAGE_SIZE) // Load all topics for selection
       .subscribe({
         next: (data) => {
-          console.log('Topics loaded:', data);
           this.topics = data.content;
           this.topicsBase = data.content.map((topic) => ({
             id: topic.id,
@@ -106,12 +104,8 @@ export class VocabularyTestsManageComponent implements OnInit {
           }));
           this.currentPage = data.pageable.pageNumber + 1;
           this.totalPages = data.totalPages;
-          console.log('Current page:', this.currentPage);
-          console.log('Total pages:', this.totalPages);
         },
-        error: (error) => {
-          console.error('Error loading topics:', error);
-        },
+        error: (error) => {},
       });
   }
   onTopicSelect(topic: TopicBase) {
@@ -127,7 +121,6 @@ export class VocabularyTestsManageComponent implements OnInit {
       .getTestsByTopicId(topicId, this.currentPage - 1, this.PAGE_SIZE)
       .subscribe({
         next: (data) => {
-          console.log('Tests loaded:', data);
           this.tests = data.vocabularyTests.content;
           this.currentPage = data.vocabularyTests.pageable.pageNumber + 1;
           this.totalPages = data.vocabularyTests.totalPages;
@@ -138,9 +131,7 @@ export class VocabularyTestsManageComponent implements OnInit {
             createdAt: test.createdAt,
           }));
         },
-        error: (error) => {
-          console.error('Error loading tests:', error);
-        },
+        error: (error) => {},
       });
   }
   onPageChange(page: number) {
@@ -158,12 +149,8 @@ export class VocabularyTestsManageComponent implements OnInit {
   }
 
   onSaveTest(testData: TestFormData) {
-    console.log('Test data to save:', this.testToEdit);
-    if (!this.selectedTopic) {
-      console.error('No topic selected');
-      return;
+    if (!this.selectedTopic) {return;
     }
-    console.log('Test data to save:', testData);
     const formData = new FormData();
 
     const testDataForAPI = {
@@ -235,15 +222,12 @@ export class VocabularyTestsManageComponent implements OnInit {
         )
         .subscribe({
           next: (response) => {
-            console.log('Test updated successfully:', response);
             this.currentState = State.View;
             this.testToEdit = null;
             // Reload tests for the current topic
             this.loadTestsForTopic(this.selectedTopic!.id);
           },
-          error: (error) => {
-            console.error('Error updating test:', error);
-            alert('Không thể cập nhật bài test');
+          error: (error) => {alert('Không thể cập nhật bài test');
           },
         });
     } else {
@@ -252,14 +236,11 @@ export class VocabularyTestsManageComponent implements OnInit {
         .createTest(this.selectedTopic.id, testDataForAPI, questionImages)
         .subscribe({
           next: (response) => {
-            console.log('Test created successfully:', response);
             this.currentState = State.View;
             // Reload tests for the current topic
             this.loadTestsForTopic(this.selectedTopic!.id);
           },
-          error: (error) => {
-            console.error('Error creating test:', error);
-            alert('Không thể tạo bài test');
+          error: (error) => {alert('Không thể tạo bài test');
           },
         });
     }
@@ -292,9 +273,7 @@ export class VocabularyTestsManageComponent implements OnInit {
             this.showDeleteConfirm = false;
             this.testToDelete = null;
           },
-          error: (error) => {
-            console.error('Error deleting test:', error);
-            alert('Không thể xóa bài test');
+          error: (error) => {alert('Không thể xóa bài test');
             this.showDeleteConfirm = false;
             this.testToDelete = null;
           },
@@ -313,14 +292,11 @@ export class VocabularyTestsManageComponent implements OnInit {
   loadTestForEdit(testId: string) {
     this.vocabService.getTestById(testId).subscribe({
       next: (test) => {
-        console.log('Test for edit:', test);
         this.testToEdit = test;
         this.currentState = State.Edit;
         this.vocabularyTestConfig.topicName = this.selectedTopic?.name || '';
       },
-      error: (error) => {
-        console.error('Error loading test for edit:', error);
-        alert('Không thể tải thông tin bài test');
+      error: (error) => {alert('Không thể tải thông tin bài test');
       },
     });
   }
@@ -343,7 +319,6 @@ export class VocabularyTestsManageComponent implements OnInit {
   }
 
   onUploadTest(files: { excelFile: File; imageFiles: File[] }) {
-    console.log(files);
     this.vocabService
       .uploadTestsByFile(
         this.selectedTopic!.id,
@@ -352,13 +327,10 @@ export class VocabularyTestsManageComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log('Tests uploaded successfully:', response);
           this.currentState = State.View;
           this.loadTestsForTopic(this.selectedTopic!.id);
         },
-        error: (error) => {
-          console.error('Error uploading test:', error);
-          alert('Không thể tải lên bài test');
+        error: (error) => {alert('Không thể tải lên bài test');
         },
       });
   }

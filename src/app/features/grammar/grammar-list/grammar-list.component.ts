@@ -32,7 +32,6 @@ export class GrammarListComponent implements OnInit {
       next: (data) => {
         this.grammars = data.grammars;
         this.title = data.name;
-        console.log('Grammars:', this.grammars);
       },
     });
   }

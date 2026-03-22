@@ -43,7 +43,6 @@ export class ListeningTopicsComponent implements OnInit {
 
     this.listeningService.getTopics().subscribe({
       next: (res) => {
-        console.log(res);
         res.content.forEach((topic) => {
           this.topics.push({
             description: topic.description,
@@ -60,7 +59,7 @@ export class ListeningTopicsComponent implements OnInit {
       },
       error: (error) => {
         this.error =
-          'Lỗi tải danh sách chủ đề: ' + (error.message || 'Không xác định');
+          'Lỗi tải danh sách chủ đề: Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
         this.isLoading = false;
       },
     });
@@ -69,15 +68,11 @@ export class ListeningTopicsComponent implements OnInit {
   loadFavorites() {
     this.favoriteService.getFavoritesByType(ItemTypeEnum.LISTENING).subscribe({
       next: (favorites) => {
-        console.log('Listening Favorites:', favorites);
         this.favoriteTopicIds = new Map(
           favorites.map((f) => [f.listeningTopic?.id, f.id])
         );
-        console.log('Listening FavoriteTopicIds:', this.favoriteTopicIds);
       },
-      error: (error) => {
-        console.error('Error loading listening favorites:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -96,34 +91,26 @@ export class ListeningTopicsComponent implements OnInit {
 
   // Handle favorite toggle
   onFavorite(topic: TopicBase) {
-    console.log('Adding listening to favorites:', topic.name);
     this.favoriteService
       .addFavorite(topic.id, ItemTypeEnum.LISTENING)
       .subscribe({
         next: (response) => {
-          console.log('Added listening to favorites:', topic.name, response);
           this.favoriteTopicIds.set(topic.id, response.id);
           topic.favoriteId = response.id;
         },
-        error: (error) => {
-          console.error('Error adding listening to favorites:', error);
-        },
+        error: (error) => {},
       });
   }
 
   onUnfavorite(topic: TopicBase) {
-    console.log('Removing listening from favorites:', topic.name);
     const favoriteId = this.favoriteTopicIds.get(topic.id);
     if (favoriteId) {
       this.favoriteService.deleteFavorite(favoriteId).subscribe({
         next: () => {
-          console.log('Removed listening from favorites:', topic.name);
           this.favoriteTopicIds.delete(topic.id);
           topic.favoriteId = undefined;
         },
-        error: (error) => {
-          console.error('Error removing listening from favorites:', error);
-        },
+        error: (error) => {},
       });
     }
   }

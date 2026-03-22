@@ -32,12 +32,10 @@ export class GrammarTestsDetailComponent implements OnInit {
     private router: Router
   ) {}
   ngOnInit(): void {
-    console.log('GrammarTestsDetailComponent initialized');
     this.testId = this.route.snapshot.paramMap.get('testId')!;
     this.grammarService
       .getTestQuestionsByTestId(this.testId)
       .subscribe((data) => {
-        console.log('Loaded grammar tests:', data);
         this.tests = data.grammarTestQuestions;
         this.exercises = data.grammarTestQuestions.map((question) => ({
           id: question.id,
@@ -52,7 +50,6 @@ export class GrammarTestsDetailComponent implements OnInit {
           explaination: question.explaination || '',
         }));
         this.testName = data.testName;
-        console.log('Grammar exercises:', this.exercises);
       });
   }
 

@@ -58,13 +58,10 @@ export class HistoryComponent implements OnInit {
       .getHistory(page, this.PAGE_SIZE, this.selectedFilter)
       .subscribe({
         next: (data) => {
-          console.log(data);
           this.history = data.content;
           this.totalPages = data.totalPages;
         },
-        error: (error) => {
-          console.error('Error loading history:', error);
-        },
+        error: (error) => {},
       });
   }
 

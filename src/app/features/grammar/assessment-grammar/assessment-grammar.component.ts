@@ -72,7 +72,6 @@ export class AssessmentGrammarComponent implements OnDestroy {
   loadQuestions(testId: string) {
     this.grammarService.getTestQuestionsByTestId(testId).subscribe({
       next: (data) => {
-        console.log('Loaded grammar questions:', data);
         this.questions = data.grammarTestQuestions;
         this.grammarName = data.grammarName;
         this.timeRemaining = data.duration * 60;
@@ -83,9 +82,7 @@ export class AssessmentGrammarComponent implements OnDestroy {
         this.startTimer();
         this.startDate = CommonUtils.getNow();
       },
-      error: (err) => {
-        console.error('Failed to load grammar questions', err);
-      },
+      error: (err) => {},
     });
   }
 
@@ -139,11 +136,8 @@ export class AssessmentGrammarComponent implements OnDestroy {
       })
       .subscribe({
         next: (data: ExamHistoryResponse) => {
-          console.log('History added:', data);
         },
-        error: (err: any) => {
-          console.error('Failed to add history', err);
-        },
+        error: (err: any) => {},
       });
   }
 

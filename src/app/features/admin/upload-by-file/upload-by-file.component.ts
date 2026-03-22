@@ -88,9 +88,7 @@ export class UploadByFileComponent {
   }
 
   onUploadFile(): void {
-    if (!this.excelFile) {
-      console.error('Vui lòng chọn file Excel');
-      return;
+    if (!this.excelFile) {return;
     }
 
     this.uploadFile.emit({

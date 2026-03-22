@@ -16,7 +16,6 @@ export class SearchCardComponent {
 
   getTopicRoute(): string[] {
     if (!this.topicType || !this.topic?.id) return ['/'];
-    console.log(this.topicType, this.topic?.id);
     const typeLower = this.topicType.toLowerCase();
     return [`/topic-detail/${typeLower}/${this.topic?.id || ''}`];
   }

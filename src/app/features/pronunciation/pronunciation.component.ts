@@ -58,9 +58,7 @@ export class PronunciationComponent implements OnInit {
         this.createReferenceAudioFromBase64(response.audio_base64);
         this.isGettingPronunciation = false;
       },
-      error: (error) => {
-        console.error('Error getting reference pronunciation:', error);
-        this.isGettingPronunciation = false;
+      error: (error) => {this.isGettingPronunciation = false;
         alert('Lỗi khi lấy phát âm chuẩn. Vui lòng thử lại.');
       },
     });
@@ -88,34 +86,24 @@ export class PronunciationComponent implements OnInit {
       // Create audio element
       this.referenceAudioElement = new Audio(this.referenceAudioUrl);
       this.referenceAudioElement.onloadedmetadata = () => {
-        console.log(
-          'Reference audio duration:',
-          this.referenceAudioElement?.duration
-        );
+
         this.maxDurationAudio =
           (this.referenceAudioElement?.duration || 0) +
           environment.PADDING_MAX_TIME;
-        console.log('Audio duration:', this.maxDurationAudio);
       };
       this.referenceAudioElement.onended = () => {
         this.isPlayingReference = false;
       };
       this.referenceAudioElement.onerror = () => {
-        this.isPlayingReference = false;
-        console.error('Error playing reference audio');
-      };
-    } catch (error) {
-      console.error('Error creating reference audio:', error);
-      this.isGettingPronunciation = false;
+        this.isPlayingReference = false;};
+    } catch (error) {this.isGettingPronunciation = false;
     }
   }
 
   playReferenceAudio() {
     if (this.referenceAudioElement && !this.isPlayingReference) {
       this.isPlayingReference = true;
-      this.referenceAudioElement.play().catch((error) => {
-        console.error('Error playing audio:', error);
-        this.isPlayingReference = false;
+      this.referenceAudioElement.play().catch((error) => {this.isPlayingReference = false;
       });
     }
   }
@@ -153,7 +141,6 @@ export class PronunciationComponent implements OnInit {
         const audio = new Audio(this.audioUrl);
         audio.onloadedmetadata = () => {
           const recordedDuration = audio.duration;
-          console.log('Recorded duration:', recordedDuration);
 
           if (recordedDuration < this.minDurationAudio) {
             // Xoá data
@@ -191,7 +178,6 @@ export class PronunciationComponent implements OnInit {
             return;
           }
           this.isValidAudio = true;
-          console.log('Audio hợp lệ, tiếp tục xử lý...');
         };
 
         // Dừng stream
@@ -207,10 +193,7 @@ export class PronunciationComponent implements OnInit {
         this.audioUrl = null;
       }
 
-      console.log('Recording started...');
-    } catch (error) {
-      console.error('Error accessing microphone:', error);
-      alert('Error accessing microphone. Please check your permissions.');
+    } catch (error) {alert('Error accessing microphone. Please check your permissions.');
     }
   }
 
@@ -241,7 +224,6 @@ export class PronunciationComponent implements OnInit {
     const audioFile = new File([this.audioBlob!], 'recording.wav', {
       type: 'audio/wav',
     });
-    console.log(audioFile);
     const request: PronunciationRequest = {
       text: this.textToPronounce,
       file: audioFile,
@@ -251,11 +233,8 @@ export class PronunciationComponent implements OnInit {
       next: (response: PronunciationResponse) => {
         this.pronunciationResult = response;
         this.isProcessing = false;
-        console.log(response);
       },
-      error: (error) => {
-        console.error('Error evaluating pronunciation:', error);
-        this.isProcessing = false;
+      error: (error) => {this.isProcessing = false;
         alert('Error evaluating pronunciation. Please try again.');
       },
     });
@@ -378,7 +357,6 @@ export class PronunciationComponent implements OnInit {
         text: this.getWordAccuracyText(Object.values(key)[0]),
       });
     });
-    console.log(result);
     return result;
   }
 

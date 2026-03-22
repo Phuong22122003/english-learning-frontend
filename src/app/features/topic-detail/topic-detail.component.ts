@@ -99,9 +99,7 @@ export class TopicDetailComponent implements OnInit {
         }
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Error loading vocabulary topic:', err);
-        this.error = 'Failed to load topic';
+      error: (err) => {this.error = 'Failed to load topic';
         this.isLoading = false;
       },
     });
@@ -124,9 +122,7 @@ export class TopicDetailComponent implements OnInit {
           this.totalTests = response.vocabularyTests?.totalElements || 0;
           this.isLoadingTests = false;
         },
-        error: (err) => {
-          console.error('Error loading vocabulary tests:', err);
-          this.isLoadingTests = false;
+        error: (err) => {this.isLoadingTests = false;
           // Don't set error, just log it
         },
       });
@@ -145,9 +141,7 @@ export class TopicDetailComponent implements OnInit {
         }
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Error loading grammar topic:', err);
-        this.error = 'Failed to load topic';
+      error: (err) => {this.error = 'Failed to load topic';
         this.isLoading = false;
       },
     });
@@ -166,9 +160,7 @@ export class TopicDetailComponent implements OnInit {
         this.totalTests = response.tests?.totalElements || 0;
         this.isLoadingTests = false;
       },
-      error: (err) => {
-        console.error('Error loading grammar tests:', err);
-        this.isLoadingTests = false;
+      error: (err) => {this.isLoadingTests = false;
       },
     });
   }
@@ -186,9 +178,7 @@ export class TopicDetailComponent implements OnInit {
         }
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Error loading listening topic:', err);
-        this.error = 'Failed to load topic';
+      error: (err) => {this.error = 'Failed to load topic';
         this.isLoading = false;
       },
     });
@@ -209,9 +199,7 @@ export class TopicDetailComponent implements OnInit {
           this.totalTests = response.tests?.totalElements || 0;
           this.isLoadingTests = false;
         },
-        error: (err) => {
-          console.error('Error loading listening tests:', err);
-          this.isLoadingTests = false;
+        error: (err) => {this.isLoadingTests = false;
         },
       });
   }
@@ -242,11 +230,9 @@ export class TopicDetailComponent implements OnInit {
   }
 
   onLearn(): void {
-    console.log('onLearn', this.topic, this.topicType);
     if (!this.topic) return;
 
     const type = this.getTopicTypeRoute();
-    console.log(`/${type}/learn/${this.topic.id}`);
     switch (type) {
       case 'vocabulary':
         this.router.navigate(['/vocabulary/learn', this.topic.id]);
@@ -261,7 +247,6 @@ export class TopicDetailComponent implements OnInit {
   }
 
   onTest(): void {
-    console.log('onTest', this.topic, this.topicType);
     if (!this.topic) return;
 
     const type = this.getTopicTypeRoute();
@@ -274,7 +259,6 @@ export class TopicDetailComponent implements OnInit {
   }
 
   onTestClick(testId: string): void {
-    console.log('onTestClick', this.topic, this.topicType, testId);
     if (!this.topic) return;
 
     switch (this.topicType) {

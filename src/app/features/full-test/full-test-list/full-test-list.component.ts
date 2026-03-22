@@ -100,7 +100,6 @@ export class FullTestListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('Group ID:', this.groupId);
     this.route.params.subscribe((params) => {
       this.groupId = params['groupId'];
       if (this.groupId) {
@@ -127,7 +126,6 @@ export class FullTestListComponent implements OnInit {
 
     this.toeicTestService.getGroupById(this.groupId).subscribe({
       next: (group) => {
-        console.log('Group:', group);
         this.group = group;
         this.tests = group.tests;
         this.isLoading = false;

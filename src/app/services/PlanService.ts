@@ -71,9 +71,7 @@ export class PlanService {
       });
 
       eventSource.onerror = (error) => {
-        this.zone.run(() => {
-          console.error('SSE error:', error);
-          eventSource.close();
+        this.zone.run(() => {eventSource.close();
           observer.error(error);
         });
       };

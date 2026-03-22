@@ -70,7 +70,6 @@ export class AssessmentTestComponent implements OnDestroy {
   loadQuestions(testId: string) {
     this.vocabService.getTestQuestionsByTestId(testId).subscribe({
       next: (data) => {
-        console.log('Loaded questions:', data);
         this.questions = data.questions;
         this.topicName = data.topicName;
         this.timeRemaining = data.duration * 60;
@@ -80,9 +79,7 @@ export class AssessmentTestComponent implements OnDestroy {
         this.showResults = false;
         this.startTimer();
       },
-      error: (err) => {
-        console.error('Failed to load questions', err);
-      },
+      error: (err) => {},
     });
     // this.questions = this.sampleQuestions;
     // this.topicName = 'Sample Topic';
@@ -108,7 +105,6 @@ export class AssessmentTestComponent implements OnDestroy {
   handleAnswerSelect(key: string) {
     this.selectedAnswers[this.currentQuestion] = key;
 
-    console.log(this.questions[this.currentQuestion].options[key]);
   }
 
   handleNext() {
@@ -146,11 +142,8 @@ export class AssessmentTestComponent implements OnDestroy {
       })
       .subscribe({
         next: (data: ExamHistoryResponse) => {
-          console.log('History added:', data);
         },
-        error: (err: any) => {
-          console.error('Failed to add history', err);
-        },
+        error: (err: any) => {},
       });
   }
 

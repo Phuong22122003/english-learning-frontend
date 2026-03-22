@@ -54,13 +54,10 @@ export class ViewMyPlanningDetailComponent implements OnInit {
       next: (plan) => {
         this.plan = plan;
         this.isLoading = false;
-        console.log('Plan detail loaded:', plan);
       },
       error: (error) => {
         this.error = 'Không thể tải chi tiết kế hoạch. Vui lòng thử lại.';
-        this.isLoading = false;
-        console.error('Error loading plan detail:', error);
-      },
+        this.isLoading = false;},
     });
   }
 
@@ -117,14 +114,11 @@ export class ViewMyPlanningDetailComponent implements OnInit {
   onDeletePlan() {
     // Show confirmation dialog and delete
     if (confirm(`Bạn có chắc chắn muốn xóa kế hoạch "${this.plan.title}"?`)) {
-      console.log('Delete plan:', this.plan);
       this.planService.deletePlan(this.planId).subscribe({
         next: () => {
           this.router.navigate(['/planning']);
         },
-        error: (error) => {
-          console.error('Error deleting plan:', error);
-        },
+        error: (error) => {},
       });
     }
   }

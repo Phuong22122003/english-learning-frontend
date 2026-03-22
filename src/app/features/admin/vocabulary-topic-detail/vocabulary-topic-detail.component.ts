@@ -51,7 +51,6 @@ export class VocabularyTopicDetailComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
-    console.log('VocabularyTopicDetailComponent initialized');
     this.topicId = this.route.snapshot.paramMap.get('topicId');
 
     if (this.topicId) {
@@ -61,14 +60,11 @@ export class VocabularyTopicDetailComponent implements OnInit {
   loadVocabularies(topicId: string) {
     this.vocabService.getVocabulariesByTopicId(topicId).subscribe({
       next: (data) => {
-        console.log('Loaded vocabularies for topic:', data);
         this.vocabList = data.vocabularies;
-        console.log(this.vocabList);
         this.name = data.name;
       },
       error: (err) => {
-        console.error('Error loading vocabularies:', err);
-      },
+},
     });
   }
 
@@ -89,14 +85,12 @@ export class VocabularyTopicDetailComponent implements OnInit {
       .updateVocabulary(vocab.id, request, vocab.imageFile, vocab.audioFile)
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.vocabList = this.vocabList.map((v) =>
             v.id === vocab.id ? res : v
           );
           this.backToView();
         },
         error: (err) => {
-          console.log(err);
         },
       });
   }
@@ -104,7 +98,6 @@ export class VocabularyTopicDetailComponent implements OnInit {
   handleDelete(vocabId: string) {
     this.isShowConfirmDialog = true;
     this.vocabId = vocabId;
-    console.log('Show confirm dialog for vocabulary ID:', vocabId);
   }
 
   changeToEdit(vocab: Vocabulary) {
@@ -129,7 +122,6 @@ export class VocabularyTopicDetailComponent implements OnInit {
 
   handleCreate(vocabToCreate: Vocabulary) {
     if (this.topicId) {
-      console.log(vocabToCreate);
       const audios: File[] = [];
       const images: File[] = [];
       const vocabs: Vocabulary[] = [];
@@ -144,30 +136,24 @@ export class VocabularyTopicDetailComponent implements OnInit {
         .addVocabularies(this.topicId, vocabs, images, audios)
         .subscribe({
           next: (res) => {
-            console.log(res);
             this.vocabList = this.vocabList.concat(res);
             this.backToView();
           },
           error: (err) => {
-            console.log(err);
           },
         });
-      console.log(vocabToCreate);
     }
   }
 
   handleConfirmDelete() {
     if (this.vocabId) {
-      console.log('Confirm delete vocabulary with ID:', this.vocabId);
       this.vocabService.deleteVocabulary(this.vocabId).subscribe({
         next: (res) => {
-          console.log('Vocabulary deleted successfully:', res);
           this.vocabList = this.vocabList.filter((v) => v.id !== this.vocabId);
           this.isShowConfirmDialog = false;
           this.vocabId = null;
         },
         error: (err) => {
-          console.error('Error deleting vocabulary:', err);
           this.isShowConfirmDialog = false;
           this.vocabId = null;
         },
@@ -189,7 +175,6 @@ export class VocabularyTopicDetailComponent implements OnInit {
     imageFiles: File[];
     audioFiles: File[];
   }) {
-    console.log(files);
     if (this.topicId) {
       const request: AddVocabulariesByFileRequest = {
         excelFile: files.excelFile,
@@ -200,12 +185,10 @@ export class VocabularyTopicDetailComponent implements OnInit {
         .uploadVocabulariesByFile(this.topicId, request)
         .subscribe({
           next: (res) => {
-            console.log(res);
             this.vocabList = this.vocabList.concat(res);
             this.currentState = State.View;
           },
           error: (err) => {
-            console.log(err);
           },
         });
     }

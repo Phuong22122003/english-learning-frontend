@@ -92,9 +92,7 @@ export class StatisticComponent implements OnInit {
         next: (res) => {
           this.updateAvgScoreChart(res.scores);
         },
-        error: (err) => {
-          console.error('Load user scores error:', err);
-        },
+        error: (err) => {},
       });
   }
 

@@ -68,7 +68,6 @@ export class VocabularyManagementComponent implements OnInit {
       .getTopics(this.currentPage - 1, this.PAGE_SIZE)
       .subscribe((data) => {
         this.topics = [];
-        console.log(data);
         const result = data.content;
         result.forEach((item) => {
           const vocabTopic: TopicBase = {
@@ -103,7 +102,6 @@ export class VocabularyManagementComponent implements OnInit {
   }
 
   onCreateTopic(topic: VocabTopic) {
-    console.log(topic);
     this.vocabService
       .createTopic(topic, topic.imageUrl as any)
       .subscribe((res) => {
@@ -122,7 +120,6 @@ export class VocabularyManagementComponent implements OnInit {
   }
 
   onEdit(topic: VocabTopic) {
-    console.log(topic);
     this.vocabService
       .editTopic(
         this.currentTopic.id,
@@ -152,7 +149,6 @@ export class VocabularyManagementComponent implements OnInit {
     if (this.topicToDelete) {
       this.vocabService.deleteTopic(this.topicToDelete.id).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.topics = this.topics.filter(
             (t) => t.id !== this.topicToDelete!.id
           );
@@ -163,11 +159,9 @@ export class VocabularyManagementComponent implements OnInit {
     }
   }
   onCloseTopicGenerate() {
-    console.log('hehe');
     this.isShowTopicGenerate = false;
   }
   onOpenTopicGenerate() {
-    console.log('hihi');
     this.isShowTopicGenerate = true;
   }
   onSubmitTopicGenerate(data: { topicType: string; description: string }) {
@@ -176,7 +170,6 @@ export class VocabularyManagementComponent implements OnInit {
     this.agentService
       .generateTopic(data.topicType, data.description)
       .subscribe((res) => {
-        console.log(res);
         this.isLoading = false;
         this.loadData();
       });

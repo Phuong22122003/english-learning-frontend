@@ -93,7 +93,6 @@ export class ListeningService {
     audioFiles: File[]
   ): Observable<Listening[]> {
     const formData = new FormData();
-    console.log('Adding listening list:', JSON.stringify(requests));
 
     formData.append(
       'requests',
@@ -120,7 +119,6 @@ export class ListeningService {
     audioFiles: File[]
   ): Observable<any> {
     const formData = new FormData();
-    console.log('Adding listening test:', JSON.stringify(request));
 
     formData.append(
       'request',
@@ -191,7 +189,6 @@ export class ListeningService {
     imageFiles: File[],
     audioFiles: File[]
   ): Observable<any> {
-    console.log('Updating listening test:', request);
     const formData = new FormData();
     formData.append(
       'request',
@@ -207,7 +204,6 @@ export class ListeningService {
     imageFiles: File[],
     audioFiles: File[]
   ): Observable<Listening> {
-    console.log('Updating listening:', request);
     const formData = new FormData();
     formData.append(
       'requests',

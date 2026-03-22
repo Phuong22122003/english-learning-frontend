@@ -126,9 +126,6 @@ export class VocabularyService {
     audioFiles: File[]
   ): Observable<Vocabulary[]> {
     const formData = new FormData();
-    console.log(vocabularies);
-    console.log('imageFiles', imageFiles);
-    console.log('audioFiles', audioFiles);
     // append list object dưới dạng JSON
     formData.append(
       'vocabularies',
@@ -182,7 +179,6 @@ export class VocabularyService {
     image: any,
     audio: any
   ): Observable<Vocabulary> {
-    console.log(vocabulary);
     const formData = new FormData();
     formData.append(
       'request',

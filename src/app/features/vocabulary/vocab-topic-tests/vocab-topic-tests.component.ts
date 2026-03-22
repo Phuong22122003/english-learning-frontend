@@ -65,7 +65,7 @@ export class VocabTopicTestsComponent implements OnInit {
           this.totalPages = res.vocabularyTests.totalPages;
           this.currentPage = res.vocabularyTests.number + 1;
         },
-        error: (err) => console.error('Error loading tests:', err),
+        error: (err) => {},
       });
   }
 

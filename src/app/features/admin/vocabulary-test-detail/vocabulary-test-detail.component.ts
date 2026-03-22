@@ -80,9 +80,7 @@ export class VocabularyTestDetailComponent implements OnInit, OnDestroy {
 
           this.isLoading = false;
         },
-        error: (error) => {
-          console.error('Error loading test detail:', error);
-          this.error = 'Không thể tải chi tiết bài test';
+        error: (error) => {this.error = 'Không thể tải chi tiết bài test';
           this.isLoading = false;
         },
       });
@@ -111,9 +109,7 @@ export class VocabularyTestDetailComponent implements OnInit, OnDestroy {
           next: () => {
             this.goBack();
           },
-          error: (error) => {
-            console.error('Error deleting test:', error);
-            alert('Không thể xóa bài test');
+          error: (error) => {alert('Không thể xóa bài test');
           },
         });
     }
