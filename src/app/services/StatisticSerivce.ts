@@ -25,12 +25,12 @@ export class StatisticService {
   constructor(private http: HttpClient) {}
   getTopicViews(timeRange: TimeRange): Observable<StatisticResponse> {
     return this.http.get<StatisticResponse>(
-      `${this.apiAdminUrl}/topic-view?time_range=${timeRange}`
+      `${this.apiAdminUrl}/topics/views/time-series?time_range=${timeRange}`
     );
   }
   getTopicViewsSummary(top: number): Observable<TopicViewSummaryResponse[]> {
     return this.http.get<TopicViewSummaryResponse[]>(
-      `${this.apiAdminUrl}/top-topic-view?top=${top}`
+      `${this.apiAdminUrl}/topics/views/ranking?top=${top}`
     );
   }
   getUserStatistics(): Observable<StatisticResponse> {

@@ -186,7 +186,8 @@ export class StatisticComponent implements OnInit {
         this.totalViews = response.totalCount;
         this.updateTimeSeriesChart(response.newElementsByPeriod);
       },
-      error: (error) => {},
+      error: (error) => {
+},
     });
   }
 
@@ -195,7 +196,8 @@ export class StatisticComponent implements OnInit {
       next: (response: TopicViewSummaryResponse[]) => {
         this.updateTopTopicsChart(response);
       },
-      error: (error) => {},
+      error: (error) => {
+},
     });
   }
 
@@ -369,7 +371,8 @@ export class StatisticComponent implements OnInit {
           this.userStatistics = response;
           this.updateCharts(response);
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
   }
 
@@ -451,7 +454,8 @@ export class StatisticComponent implements OnInit {
         next: (res) => {
           this.updateAvgScoreChart(res.scores);
         },
-        error: (err) => {},
+        error: (err) => {
+},
       });
   }
 
@@ -477,7 +481,8 @@ export class StatisticComponent implements OnInit {
         this.testTakenTotal = res.totalCount;
         this.updateTestTakenChart(res.newElementsByPeriod);
       },
-      error: (err) => {},
+      error: (err) => {
+},
     });
   }
 

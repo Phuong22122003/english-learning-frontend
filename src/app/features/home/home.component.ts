@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
       hoverColor: 'hover:bg-purple-600',
     },
     {
-      label: 'Full Test',
+      label: 'TOEIC Test',
       icon: faListCheck,
       route: '/full-test/groups',
       color: 'bg-orange-500',

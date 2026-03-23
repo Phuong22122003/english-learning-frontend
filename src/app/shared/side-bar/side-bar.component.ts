@@ -70,7 +70,7 @@ export class SideBarComponent {
           href: '/pronunciation',
         },
         {
-          label: 'Full Test',
+          label: 'TOEIC Test',
           icon: faListCheck,
           href: '/full-test/groups',
         },

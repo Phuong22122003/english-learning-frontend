@@ -33,7 +33,7 @@ export class HistoryComponent implements OnInit {
     { value: FilterType.GRAMMAR, label: 'Ngữ pháp' },
     { value: FilterType.LISTENING, label: 'Nghe' },
     { value: FilterType.VOCABULARY, label: 'Từ vựng' },
-    { value: FilterType.FULL_TEST, label: 'Full Test' },
+    { value: FilterType.FULL_TEST, label: 'TOEIC Test' },
   ];
 
   ngOnInit(): void {
@@ -61,7 +61,8 @@ export class HistoryComponent implements OnInit {
           this.history = data.content;
           this.totalPages = data.totalPages;
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
   }
 

@@ -92,7 +92,7 @@ export class AdminSideBarComponent implements OnInit {
       ],
     },
     {
-      label: 'Full Test',
+      label: 'TOEIC Test',
       icon: faListCheck,
       href: '/admin/full-test/groups',
     },
