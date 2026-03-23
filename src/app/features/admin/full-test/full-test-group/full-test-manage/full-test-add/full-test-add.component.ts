@@ -62,6 +62,7 @@ export class FullTestAddComponent implements OnInit {
     { value: ToeicPart.PART_4, label: 'Part 4' },
     { value: ToeicPart.PART_5, label: 'Part 5' },
     { value: ToeicPart.PART_6, label: 'Part 6' },
+    { value: ToeicPart.PART_7, label: 'Part 7' },
   ];
 
   // Options keys
@@ -361,7 +362,8 @@ export class FullTestAddComponent implements OnInit {
           },
           error: (error) => {
             this.isSubmitting = false;
-            this.error = 'Không thể cập nhật bài test. Vui lòng thử lại.';},
+            this.error = 'Không thể cập nhật bài test. Vui lòng thử lại.';
+},
         });
     } else {
       this.toeicTestService
@@ -373,7 +375,8 @@ export class FullTestAddComponent implements OnInit {
           },
           error: (error) => {
             this.isSubmitting = false;
-            this.error = 'Không thể tạo bài test. Vui lòng thử lại.';},
+            this.error = 'Không thể tạo bài test. Vui lòng thử lại.';
+},
         });
     }
   }

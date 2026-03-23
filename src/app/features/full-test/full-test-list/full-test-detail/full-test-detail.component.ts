@@ -67,12 +67,13 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
   // Constants
   readonly TOTAL_QUESTIONS = 200;
   readonly PARTS = [
-    { part: ToeicPart.PART_1, start: 1, end: 6, name: 'Part 1' },
-    { part: ToeicPart.PART_2, start: 7, end: 31, name: 'Part 2' },
-    { part: ToeicPart.PART_3, start: 32, end: 70, name: 'Part 3' },
-    { part: ToeicPart.PART_4, start: 71, end: 100, name: 'Part 4' },
-    { part: ToeicPart.PART_5, start: 101, end: 130, name: 'Part 5' },
-    { part: ToeicPart.PART_6, start: 131, end: 200, name: 'Part 6' },
+    { part: ToeicPart.PART_1, start: 1,   end: 6,   name: 'Part 1: Photographs' },
+    { part: ToeicPart.PART_2, start: 7,   end: 31,  name: 'Part 2: Question-Response' },
+    { part: ToeicPart.PART_3, start: 32,  end: 70,  name: 'Part 3: Conversations' },
+    { part: ToeicPart.PART_4, start: 71,  end: 100, name: 'Part 4: Talks' },
+    { part: ToeicPart.PART_5, start: 101, end: 130, name: 'Part 5: Incomplete Sentences' },
+    { part: ToeicPart.PART_6, start: 131, end: 146, name: 'Part 6: Text Completion' },
+    { part: ToeicPart.PART_7, start: 147, end: 200, name: 'Part 7: Reading Comprehension' }
   ];
 
   // TOEIC Score Conversion Table (0-100 correct answers to 5-495 score)
@@ -417,7 +418,8 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (data: ExamHistoryResponse) => {
           },
-          error: (error) => {},
+          error: (error) => {
+},
         });
     }
   }
