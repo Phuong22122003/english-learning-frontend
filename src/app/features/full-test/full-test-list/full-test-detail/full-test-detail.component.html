@@ -1,1 +1,159 @@
-<p></p>
+<div class="min-h-screen bg-slate-50 flex flex-col h-screen overflow-hidden font-sans">
+  
+  <header class="bg-blue-900 text-white px-6 py-4 flex items-center justify-between shadow-xl z-50 shrink-0">
+    <div class="flex items-center gap-4">
+      <button (click)="goBack()" class="p-2 hover:bg-blue-800 rounded-full transition-colors text-white">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+      </button>
+      <h1 class="text-lg font-bold tracking-tight uppercase hidden md:block">TOEIC ONLINE EXAM</h1>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <div class="bg-blue-800/50 px-5 py-2 rounded-2xl border border-blue-700 font-mono text-xl flex items-center gap-3 shadow-inner">
+        <fa-icon [icon]="faClock" class="text-orange-400"></fa-icon>
+        <span class="font-bold">{{ getFormattedTime() }}</span>
+      </div>
+      
+      <button (click)="submitTest()" 
+              class="bg-orange-500 hover:bg-orange-600 px-8 py-2.5 rounded-xl font-black transition-all shadow-lg active:scale-95 text-sm uppercase tracking-wider text-white">
+        Nộp bài
+      </button>
+    </div>
+  </header>
+
+  <div *ngIf="isLoading" class="flex-1 flex flex-col justify-center items-center">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
+    <p class="text-slate-500 font-medium">Đang tải dữ liệu bài thi...</p>
+  </div>
+
+  <div *ngIf="!isTestStarted && !isTestCompleted && !isLoading" class="flex-1 overflow-y-auto p-6 flex items-center justify-center">
+    <div class="max-w-3xl w-full bg-white rounded-[2.5rem] shadow-2xl p-10 border border-slate-100 text-center space-y-8 animate-fade-in">
+      <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto text-3xl">
+        <fa-icon [icon]="faFileAlt"></fa-icon>
+      </div>
+      <div>
+        <h2 class="text-4xl font-black text-slate-800 mb-3">{{ test?.name }}</h2>
+        <div class="flex justify-center gap-4 text-slate-500 font-bold">
+          <span class="bg-slate-100 px-4 py-1 rounded-full">200 Câu hỏi</span>
+          <span class="bg-slate-100 px-4 py-1 rounded-full">120 Phút</span>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+          <h4 class="font-bold text-emerald-800 mb-1">Listening Section</h4>
+          <p class="text-sm text-emerald-700/80">Part 1 - Part 4: Cần tai nghe ổn định.</p>
+        </div>
+        <div class="p-4 bg-blue-50 rounded-2xl border border-blue-100">
+          <h4 class="font-bold text-blue-800 mb-1">Reading Section</h4>
+          <p class="text-sm text-blue-700/80">Part 5 - Part 7: Quản lý thời gian tốt.</p>
+        </div>
+      </div>
+
+      <button (click)="startTest()" 
+              class="w-full bg-blue-900 text-white py-5 rounded-2xl font-black text-xl hover:bg-blue-800 transition-all shadow-xl shadow-blue-200 uppercase tracking-widest">
+        Bắt đầu làm bài
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isTestStarted && !isTestCompleted" class="flex-1 flex overflow-hidden">
+    
+    <aside class="w-72 bg-white border-r border-slate-200 flex flex-col shrink-0 shadow-sm hidden lg:flex">
+      <div class="p-5 border-b border-slate-100 flex justify-between items-center">
+        <span class="font-black text-slate-800 uppercase text-sm">Nhóm câu hỏi</span>
+        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-lg text-xs font-bold">{{ getAnsweredCount() }}/{{ getTotalQuestions() }}</span>
+      </div>
+      
+      <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+         <div class="grid grid-cols-4 gap-2">
+            <button *ngFor="let g of test?.questionGroups; let gIdx = index"
+                    (click)="currentGroupIndex = gIdx"
+                    [ngClass]="{
+                      'bg-blue-600 text-white shadow-blue-200 border-blue-600': currentGroupIndex === gIdx,
+                      'bg-emerald-100 text-emerald-700 border-emerald-200': isGroupCompleted(gIdx) && currentGroupIndex !== gIdx,
+                      'bg-white text-slate-500 border-slate-200 hover:border-blue-400': !isGroupCompleted(gIdx) && currentGroupIndex !== gIdx
+                    }"
+                    class="h-10 w-10 rounded-xl border font-bold text-xs flex items-center justify-center transition-all shadow-sm">
+              {{ gIdx + 1 }}
+            </button>
+         </div>
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-hidden" *ngIf="getCurrentGroup() as group">
+      
+      <div class="w-full bg-slate-200 h-1 shrink-0">
+        <div class="bg-emerald-500 h-full transition-all duration-700" 
+             [style.width.%]="(currentGroupIndex + 1) / (test?.questionGroups?.length || 1) * 100"></div>
+      </div>
+
+      <div class="flex-1 flex flex-col md:flex-row overflow-hidden bg-slate-50">
+        <div class="w-full md:w-1/2 flex flex-col overflow-y-auto p-6 border-r border-slate-200 custom-scrollbar">
+          <div class="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-200 min-h-full space-y-6">
+            <div *ngIf="group.audioUrl" class="sticky top-0 z-10 bg-white/90 backdrop-blur pb-4">
+              <app-audio-player [src]="group.audioUrl"></app-audio-player>
+            </div>
+            <div *ngIf="group.imageUrl" class="flex justify-center py-4">
+              <img [src]="group.imageUrl" class="rounded-2xl shadow-lg max-w-full border-4 border-white h-auto object-contain">
+            </div>
+            <div *ngIf="group.passageText" class="p-6 bg-slate-50 rounded-2xl border border-slate-100 text-slate-700 leading-relaxed text-lg italic whitespace-pre-line">
+              {{ group.passageText }}
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full md:w-1/2 flex flex-col overflow-hidden p-6">
+          <div class="flex-1 overflow-y-auto space-y-6 pr-2 custom-scrollbar">
+            <div *ngFor="let q of group.questions; let i = index" class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200 animate-fade-in">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex gap-4">
+                  <span class="bg-blue-900 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black shrink-0 shadow-lg">Q</span>
+                  <h3 class="text-xl font-bold text-slate-800 pt-1 leading-tight">{{ q.question || 'Chọn đáp án đúng' }}</h3>
+                </div>
+                <button (click)="toggleMark(q.id)" 
+                        [ngClass]="markedQuestions.has(q.id) ? 'text-amber-500 bg-amber-50 border-amber-200' : 'text-slate-300 border-slate-100'"
+                        class="p-3 border-2 rounded-2xl hover:scale-105 transition-all">
+                  <fa-icon [icon]="faFlag"></fa-icon>
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 gap-3">
+                <button *ngFor="let opt of ['A', 'B', 'C', 'D']"
+                        (click)="selectAnswer(q.id, opt)"
+                        [ngClass]="selectedAnswers[q.id] === opt ? 'bg-blue-50 border-blue-600 ring-4 ring-blue-100 shadow-sm' : 'bg-white border-slate-100 hover:border-slate-300'"
+                        class="flex items-center gap-5 p-5 rounded-2xl border-2 text-left transition-all group">
+                  <span class="w-10 h-10 rounded-xl flex items-center justify-center font-black transition-colors"
+                        [ngClass]="selectedAnswers[q.id] === opt ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'">{{ opt }}</span>
+                  <span class="text-slate-700 font-bold group-hover:text-slate-900">{{ q.options[opt] }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <footer class="pt-6 flex justify-between items-center gap-4 bg-slate-50 shrink-0">
+            <button (click)="prevGroup()" [disabled]="currentGroupIndex === 0"
+                    class="flex-1 py-4 bg-white border-2 border-slate-200 rounded-2xl font-black text-slate-600 disabled:opacity-30">
+              <fa-icon [icon]="faChevronLeft"></fa-icon> PREV
+            </button>
+            <div class="px-6 py-2 bg-blue-100 rounded-full text-blue-800 font-black text-xs uppercase">
+              Group {{ currentGroupIndex + 1 }}
+            </div>
+            <button (click)="nextGroup()" [disabled]="currentGroupIndex === (test?.questionGroups?.length || 0) - 1"
+                    class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-black hover:bg-black disabled:opacity-30 shadow-xl shadow-blue-200">
+              NEXT <fa-icon [icon]="faChevronRight"></fa-icon>
+            </button>
+          </footer>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div *ngIf="isTestCompleted" class="flex-1 overflow-y-auto p-12 flex items-center justify-center bg-white">
+    <div class="text-center space-y-4">
+      <fa-icon [icon]="faCheckCircle" class="text-emerald-500 text-7xl"></fa-icon>
+      <h2 class="text-3xl font-black">Nộp bài thành công!</h2>
+      <button (click)="goBack()" class="bg-blue-900 text-white px-8 py-3 rounded-xl font-bold uppercase">Quay lại danh sách</button>
+    </div>
+  </div>
+</div>

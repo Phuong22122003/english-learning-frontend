@@ -40,17 +40,6 @@
 
   <main class="max-w-5xl mx-auto p-8">
     <form [formGroup]="form" class="space-y-10">
-      <div class="bg-red-100 p-4 mb-4 rounded-xl text-xs shadow-inner">
-        <p class="font-bold text-red-600">Trạng thái Form: {{ form.status }}</p>
-        <p>Lỗi cụ thể:</p>
-        <ul>
-          <li *ngIf="form.get('name')?.invalid">- Thiếu tên bài thi</li>
-          <li *ngIf="questionGroups.invalid">
-            - Một trong các Nhóm câu hỏi chưa hợp lệ (Kiểm tra từng câu hỏi con,
-            đáp án đúng đã chọn chưa?)
-          </li>
-        </ul>
-      </div>
       <section class="relative">
         <label
           class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 block"
@@ -72,7 +61,7 @@
           <span class="text-xs font-bold text-slate-500 px-3">Đang chọn:</span>
           <select
             [value]="currentPart"
-            (change)="onPartChange($any($event.target).value)"
+            (change)="onPartChange($event)"
             class="bg-slate-50 border-none rounded-lg px-4 py-2 text-sm font-bold text-slate-700 focus:ring-2 focus:ring-sky-500/20"
           >
             <option *ngFor="let p of toeicParts" [value]="p.value">
@@ -96,6 +85,7 @@
           *ngFor="let group of questionGroups.controls; let i = index"
           [formGroupName]="i"
           class="relative group animate-fadeIn"
+          [hidden]="group.get('part')?.value !== currentPart"
         >
           <div
             class="absolute -left-4 top-0 bottom-0 w-1 bg-slate-200 group-hover:bg-sky-400 rounded-full transition-colors"

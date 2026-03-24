@@ -22,9 +22,6 @@ import { ToeicTestResponse } from '../../../../../../models/response/toeict-test
 import { ToeicPart } from '../../../../../../models/toeic-part.enum';
 import { ToeicTestService } from '../../../../../../services/ToeicTestService';
 import { RequestType } from '../../../../../../models/request-type.model';
-import { AudioPlayerComponent } from '../../../../../../shared/audio-player/audio-player.component';
-import { ToeicTestQuestionGroupRequest } from '../../../../../../models/request/toeic-test-question-group-request.model';
-import { ToeicTestQuestionRequest } from '../../../../../../models/request/toeic-test-question-request.model';
 
 @Component({
   selector: 'app-full-test-add',
@@ -32,8 +29,7 @@ import { ToeicTestQuestionRequest } from '../../../../../../models/request/toeic
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
-    AudioPlayerComponent,
+    FontAwesomeModule
   ],
   templateUrl: './full-test-add.component.html',
   styleUrl: './full-test-add.component.scss',
@@ -82,7 +78,7 @@ export class FullTestAddComponent implements OnInit {
     this.form = this.fb.group({
       name: ['', Validators.required],
       description: [''],
-      questionGroups: this.fb.array([]) // Danh sách các nhóm câu hỏi
+      questionGroups: this.fb.array([])
     });
   }
 
@@ -110,7 +106,7 @@ export class FullTestAddComponent implements OnInit {
       optionA: ['', Validators.required],
       optionB: ['', Validators.required],
       optionC: ['', Validators.required],
-      optionD: ['', Validators.required],
+      optionD: [''],
       correctAnswer: ['', Validators.required],
       explanation: [''],
       action: [RequestType.ADD]
@@ -198,8 +194,9 @@ export class FullTestAddComponent implements OnInit {
     this.cancel.emit();
   }
 
-  onPartChange(part: ToeicPart) {
-    this.currentPart = part;
+  onPartChange(event: any) {
+    const valueFromHtml = event.target.value;
+    this.currentPart = +valueFromHtml as ToeicPart; 
   }
 
   getQuestionsArray(groupIndex: number): FormArray {

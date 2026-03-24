@@ -8,4 +8,5 @@ export interface ToeicTestQuestionGroupResponse {
   imageUrl?: string;
   createdAt: string;
   questions: ToeicTestQuestionResponse[];
+  passageText?: string;
 }
