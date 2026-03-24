@@ -64,7 +64,8 @@ export class FullTestDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.error = 'Không thể tải chi tiết bài test. Vui lòng thử lại.';},
+        this.error = 'Không thể tải chi tiết bài test. Vui lòng thử lại.';
+},
     });
   }
 
@@ -102,18 +103,18 @@ export class FullTestDetailComponent implements OnInit {
     questions: ToeicTestQuestionResponse[];
     startIndex: number;
   }[] {
-    if (!this.test?.questions) return [];
+    // if (!this.test?.questions) return [];
 
     const partMap = new Map<ToeicPart, ToeicTestQuestionResponse[]>();
 
     // Group questions by part
-    this.test.questions.forEach((question) => {
-      const part = question.part;
-      if (!partMap.has(part)) {
-        partMap.set(part, []);
-      }
-      partMap.get(part)!.push(question);
-    });
+    // this.test.questions.forEach((question) => {
+    //   const part = question.part;
+    //   if (!partMap.has(part)) {
+    //     partMap.set(part, []);
+    //   }
+    //   partMap.get(part)!.push(question);
+    // });
 
     // Convert to array and sort by part number
     const result: {

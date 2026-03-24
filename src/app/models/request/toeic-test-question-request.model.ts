@@ -7,8 +7,5 @@ export interface ToeicTestQuestionRequest {
   options: { [key: string]: string };
   correctAnswer: string;
   explanation?: string;
-  part: ToeicPart;
   action?: RequestType;
-  imageName?: string;
-  audioName?: string;
 }

@@ -5,9 +5,6 @@ export interface ToeicTestQuestionResponse {
   question: string;
   options: { [key: string]: string };
   correctAnswer: string;
-  part: ToeicPart;
-  audioUrl?: string;
-  imageUrl?: string;
   explanation?: string;
   createdAt: string;
 }

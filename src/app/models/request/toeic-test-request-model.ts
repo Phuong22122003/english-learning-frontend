@@ -1,7 +1,6 @@
-import { ToeicTestQuestionRequest } from './toeic-test-question-request.model';
+import { ToeicTestQuestionGroupRequest } from './toeic-test-question-group-request.model';
 
 export interface ToeicTestRequest {
   name: string;
-  questions: ToeicTestQuestionRequest[];
-  
+  questionGroups: ToeicTestQuestionGroupRequest[];
 }

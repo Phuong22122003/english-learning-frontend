@@ -222,53 +222,54 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
     this.toeicTestService.getTestById(this.testId).subscribe({
       next: (test) => {
         this.test = test;
-        this.questions = test.questions || [];
+        // this.questions = test.questions || [];
         this.isLoading = false;
       },
     });
   }
 
   generateMockQuestions(): ToeicTestQuestionResponse[] {
-    const questions: ToeicTestQuestionResponse[] = [];
+    // const questions: ToeicTestQuestionResponse[] = [];
 
-    this.PARTS.forEach((partInfo) => {
-      for (let i = partInfo.start; i <= partInfo.end; i++) {
-        const question: ToeicTestQuestionResponse = {
-          id: `q${i}`,
-          question: `Question ${i}`,
-          options: {
-            A: `Option A for question ${i}`,
-            B: `Option B for question ${i}`,
-            C: `Option C for question ${i}`,
-            D: `Option D for question ${i}`,
-          },
-          correctAnswer: ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)],
-          part: partInfo.part,
-          createdAt: CommonUtils.getNow(),
-        };
+    // this.PARTS.forEach((partInfo) => {
+    //   for (let i = partInfo.start; i <= partInfo.end; i++) {
+    //     const question: ToeicTestQuestionResponse = {
+    //       id: `q${i}`,
+    //       question: `Question ${i}`,
+    //       options: {
+    //         A: `Option A for question ${i}`,
+    //         B: `Option B for question ${i}`,
+    //         C: `Option C for question ${i}`,
+    //         D: `Option D for question ${i}`,
+    //       },
+    //       correctAnswer: ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)],
+    //       part: partInfo.part,
+    //       createdAt: CommonUtils.getNow(),
+    //     };
 
-        // Add image for Part 1
-        if (partInfo.part === ToeicPart.PART_1) {
-          question.imageUrl = `https://picsum.photos/400/300?random=${i}`;
-        }
+    //     // Add image for Part 1
+    //     if (partInfo.part === ToeicPart.PART_1) {
+    //       question.imageUrl = `https://picsum.photos/400/300?random=${i}`;
+    //     }
 
-        // Add audio for Part 1, 2, 3, 4
-        if (
-          partInfo.part === ToeicPart.PART_1 ||
-          partInfo.part === ToeicPart.PART_2 ||
-          partInfo.part === ToeicPart.PART_3 ||
-          partInfo.part === ToeicPart.PART_4
-        ) {
-          question.audioUrl = `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${
-            (i % 3) + 1
-          }.mp3`;
-        }
+    //     // Add audio for Part 1, 2, 3, 4
+    //     if (
+    //       partInfo.part === ToeicPart.PART_1 ||
+    //       partInfo.part === ToeicPart.PART_2 ||
+    //       partInfo.part === ToeicPart.PART_3 ||
+    //       partInfo.part === ToeicPart.PART_4
+    //     ) {
+    //       question.audioUrl = `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${
+    //         (i % 3) + 1
+    //       }.mp3`;
+    //     }
 
-        questions.push(question);
-      }
-    });
+    //     questions.push(question);
+    //   }
+    // });
 
-    return questions;
+    // return questions;
+    return [];
   }
 
   startTest(): void {
@@ -365,7 +366,8 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
   }
 
   getQuestionsByPart(part: ToeicPart): ToeicTestQuestionResponse[] {
-    return this.questions.filter((q) => q.part === part);
+    // return this.questions.filter((q) => q.part === part);
+    return null as any;
   }
 
   // For QuestionGridComponent
@@ -432,23 +434,23 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
     this.readingTotal = 0;
 
     this.questions.forEach((question) => {
-      const isListening =
-        question.part === ToeicPart.PART_1 ||
-        question.part === ToeicPart.PART_2 ||
-        question.part === ToeicPart.PART_3 ||
-        question.part === ToeicPart.PART_4;
+      // const isListening =
+        // question.part === ToeicPart.PART_1 ||
+        // question.part === ToeicPart.PART_2 ||
+        // question.part === ToeicPart.PART_3 ||
+        // question.part === ToeicPart.PART_4;
 
-      if (isListening) {
-        this.listeningTotal++;
-        if (this.selectedAnswers[question.id] === question.correctAnswer) {
-          this.listeningCorrect++;
-        }
-      } else {
-        this.readingTotal++;
-        if (this.selectedAnswers[question.id] === question.correctAnswer) {
-          this.readingCorrect++;
-        }
-      }
+      // if (isListening) {
+      //   this.listeningTotal++;
+      //   if (this.selectedAnswers[question.id] === question.correctAnswer) {
+      //     this.listeningCorrect++;
+      //   }
+      // } else {
+      //   this.readingTotal++;
+      //   if (this.selectedAnswers[question.id] === question.correctAnswer) {
+      //     this.readingCorrect++;
+      //   }
+      // }
     });
 
     // Convert correct answers to TOEIC scores
