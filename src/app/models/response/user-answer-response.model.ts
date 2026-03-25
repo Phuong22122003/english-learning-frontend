@@ -1,7 +1,7 @@
-export interface UserAnswerRequest {
+export interface UserAnswerResponse {
   question: string;
   selectedAnswer: string;
-  correctAnswer: string;
   options: { [key: string]: string };
   explanation?: string;
+  correctAnswer: string;
 }

@@ -105,7 +105,8 @@ export class ListeningTestComponent {
         this.topicName = testData.name;
         this.isLoading = false;
       },
-      error: (err) => {this.isLoading = false;
+      error: (err) => {
+this.isLoading = false;
       },
     });
   }
@@ -177,24 +178,25 @@ export class ListeningTestComponent {
       details,
     };
 
-    this.historyService
-      .addHistory({
-        testType: ItemTypeEnum.LISTENING,
-        testId: this.testId,
-        score: score,
-        answers: details.map((d) => ({
-          questionId: d.questionId,
-          selectedAnswer: d.selectedAnswer,
-          correct: d.correct,
-        })),
-        takenAt: this.startDate,
-        submittedAt: CommonUtils.getNow(),
-      })
-      .subscribe({
-        next: (data: ExamHistoryResponse) => {
-        },
-        error: (err: any) => {},
-      });
+//     this.historyService
+//       .addHistory({
+//         testType: ItemTypeEnum.LISTENING,
+//         testId: this.testId,
+//         score: score,
+//         answers: details.map((d) => ({
+//           questionId: d.questionId,
+//           selectedAnswer: d.selectedAnswer,
+//           correct: d.correct,
+//         })),
+//         takenAt: this.startDate,
+//         submittedAt: CommonUtils.getNow(),
+//       })
+//       .subscribe({
+//         next: (data: ExamHistoryResponse) => {
+//         },
+//         error: (err: any) => {
+// },
+//       });
     this.isTestCompleted = true;
   }
 

@@ -5,7 +5,7 @@ export interface ToeicTestQuestionGroupResponse {
   id: string;
   part: ToeicPart;
   audioUrl?: string;
-  imageUrl?: string;
+  imageUrls?: string[];
   createdAt: string;
   questions: ToeicTestQuestionResponse[];
   passageText?: string;

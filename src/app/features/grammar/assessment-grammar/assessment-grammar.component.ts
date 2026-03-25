@@ -82,7 +82,8 @@ export class AssessmentGrammarComponent implements OnDestroy {
         this.startTimer();
         this.startDate = CommonUtils.getNow();
       },
-      error: (err) => {},
+      error: (err) => {
+},
     });
   }
 
@@ -117,28 +118,29 @@ export class AssessmentGrammarComponent implements OnDestroy {
   handleFinish() {
     this.showResults = true;
     this.clearTimer();
-    this.historyService
-      .addHistory({
-        testType: ItemTypeEnum.GRAMMAR,
-        testId: this.testId,
-        score: this.calculateScore().percentage,
-        answers: this.questions.map((q, index) => {
-          const answer = this.selectedAnswers[index] ?? '';
+//     this.historyService
+//       .addHistory({
+//         testType: ItemTypeEnum.GRAMMAR,
+//         testId: this.testId,
+//         score: this.calculateScore().percentage,
+//         answers: this.questions.map((q, index) => {
+//           const answer = this.selectedAnswers[index] ?? '';
 
-          return {
-            questionId: q.id,
-            selectedAnswer: answer,
-            correct: answer !== '' && q.correctAnswer === answer,
-          };
-        }),
-        takenAt: this.startDate,
-        submittedAt: CommonUtils.getNow(),
-      })
-      .subscribe({
-        next: (data: ExamHistoryResponse) => {
-        },
-        error: (err: any) => {},
-      });
+//           return {
+//             questionId: q.id,
+//             selectedAnswer: answer,
+//             correct: answer !== '' && q.correctAnswer === answer,
+//           };
+//         }),
+//         takenAt: this.startDate,
+//         submittedAt: CommonUtils.getNow(),
+//       })
+//       .subscribe({
+//         next: (data: ExamHistoryResponse) => {
+//         },
+//         error: (err: any) => {
+// },
+//       });
   }
 
   calculateScore() {

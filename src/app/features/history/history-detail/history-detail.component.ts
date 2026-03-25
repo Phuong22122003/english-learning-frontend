@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HistoryService } from '../../../services/HistoryService';
 import { ExamHistoryResponse } from '../../../models/response/exam-history-response.model';
-import { QuestionResponse } from '../../../models/response/question-response.model';
 import { ItemTypeEnum } from '../../../models/item-type-enum';
 import { CommonUtils } from '../../../shared/utils/common';
+import { UserAnswerResponse } from '../../../models/response/user-answer-response.model';
 
 @Component({
   selector: 'app-history-detail',
@@ -18,6 +18,7 @@ export class HistoryDetailComponent implements OnInit {
   itemType = ItemTypeEnum;
   examHistoryId: string = '';
   historyDetail: ExamHistoryResponse | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private historyService: HistoryService
@@ -34,84 +35,59 @@ export class HistoryDetailComponent implements OnInit {
     });
   }
 
-  getTestTypeLabel(testType: string): string {
-    switch (testType) {
-      case 'GRAMMAR':
-        return 'Ngữ pháp';
-      case 'LISTENING':
-        return 'Nghe hiểu';
-      case 'VOCABULARY':
-        return 'Từ vựng';
-      case 'FULL_TEST':
-        return 'Bài thi đầy đủ';
-      default:
-        return testType;
+  // Getter tính tổng số câu hỏi từ các group
+  get totalQuestions(): number {
+    if (!this.historyDetail) return 0;
+    return this.historyDetail.answerGroups.reduce((acc, g) => acc + g.answers.length, 0);
+  }
+
+  // Hàm quan trọng: Tính số thứ tự câu hỏi (Ví dụ: Group 1 có 3 câu, thì câu đầu Group 2 là số 4)
+  getGlobalIndex(groupIndex: number, questionIndex: number): number {
+    let count = 0;
+    for (let i = 0; i < groupIndex; i++) {
+      count += this.historyDetail?.answerGroups[i].answers.length || 0;
     }
+    return count + questionIndex + 1;
+  }
+
+  getCorrectAnswersCount(): number {
+    if (!this.historyDetail) return 0;
+    return this.historyDetail.answerGroups
+      .flatMap(g => g.answers)
+      .filter(q => q.selectedAnswer === q.correctAnswer).length;
+  }
+
+  isAnswerCorrect(question: UserAnswerResponse): boolean {
+    return question.selectedAnswer === question.correctAnswer;
+  }
+
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj).sort() : [];
+  }
+
+  getTestTypeLabel(testType: string): string {
+    const labels: { [key: string]: string } = {
+      'GRAMMAR': 'Ngữ pháp',
+      'LISTENING': 'Nghe hiểu',
+      'VOCABULARY': 'Từ vựng',
+      'FULL_TEST': 'Bài thi đầy đủ'
+    };
+    return labels[testType] || testType;
   }
 
   getScoreColor(score: number): string {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
+    if (score >= 80 || score > 450) return 'text-green-600';
+    if (score >= 50 || score > 200) return 'text-yellow-600';
     return 'text-red-600';
   }
 
   getScoreBackgroundColor(score: number): string {
-    if (score >= 80) return 'bg-green-100';
-    if (score >= 60) return 'bg-yellow-100';
+    if (score >= 80 || score > 450) return 'bg-green-100';
+    if (score >= 50 || score > 200) return 'bg-yellow-100';
     return 'bg-red-100';
   }
 
-  formatDuration(duration: number): string {
-    const minutes = Math.floor(duration / 60);
-    const seconds = duration % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  }
   getTime(takenTime: string, submitTime: string) {
     return CommonUtils.diffDateTimeToString(submitTime, takenTime);
-  }
-
-  isAnswerCorrect(question: QuestionResponse): boolean {
-    return question.userAnswer === question.correctAnswer;
-  }
-
-  getAnswerStatusClass(question: QuestionResponse): string {
-    return this.isAnswerCorrect(question)
-      ? 'border-green-500 bg-green-50'
-      : 'border-red-500 bg-red-50';
-  }
-
-  getOptionLetter(index: number): string {
-    const letters = ['a', 'b', 'c', 'd'];
-    return letters[index] || 'a';
-  }
-
-  getOptionKey(index: number): string {
-    return this.getOptionLetter(index);
-  }
-
-  getCorrectAnswerDisplay(question: QuestionResponse): string {
-    return question.options[question.correctAnswer] || '';
-  }
-
-  getUserAnswerDisplay(question: QuestionResponse): string {
-    return question.options[question.userAnswer] || '';
-  }
-
-  getCorrectAnswerLabel(question: QuestionResponse): string {
-    return `Đáp án đúng: ${question.correctAnswer.toUpperCase()}`;
-  }
-
-  getUserAnswerLabel(question: QuestionResponse): string {
-    return `Đáp án của bạn: ${question.userAnswer.toUpperCase()}`;
-  }
-
-  getCorrectAnswersCount(): number {
-    if (!this.historyDetail?.questions) return 0;
-    return this.historyDetail.questions.filter((q) => this.isAnswerCorrect(q))
-      .length;
-  }
-
-  getObjectKeys(obj: any): string[] {
-    return Object.keys(obj);
   }
 }
