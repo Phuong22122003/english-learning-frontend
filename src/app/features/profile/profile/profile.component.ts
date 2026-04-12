@@ -37,11 +37,11 @@ export class ProfileComponent implements OnInit {
   faLock = faLock;
   isChangingPassword: boolean = false;
   showConfirmChangePassword: boolean = false;
-  confirmTitle: string = 'Xác nhận';
+  confirmTitle: string = 'Confirm';
   confirmMessage: string =
-    'Bạn có chắc chắn muốn đổi mật khẩu?, OTP sẽ được gửi đến email của bạn';
-  confirmText: string = 'Đổi mật khẩu';
-  cancelText: string = 'Hủy';
+    'Are you sure you want to change your password? OTP will be sent to your email';
+  confirmText: string = 'Change password';
+  cancelText: string = 'Cancel';
   onConfirmChangePassword(): void {
     this.showConfirmChangePassword = false;
     this.isChangingPassword = true;
@@ -59,16 +59,16 @@ export class ProfileComponent implements OnInit {
 
   // Options for selects
   studyLevelOptions = [
-    { value: StudyTime.MORNING, label: 'Buổi sáng' },
-    { value: StudyTime.AFTERNOON, label: 'Buổi chiều' },
-    { value: StudyTime.EVENING, label: 'Buổi tối' },
-    { value: StudyTime.NIGHT, label: 'Đêm' },
+    { value: StudyTime.MORNING, label: 'Morning' },
+    { value: StudyTime.AFTERNOON, label: 'Afternoon' },
+    { value: StudyTime.EVENING, label: 'Evening' },
+    { value: StudyTime.NIGHT, label: 'Night' },
   ];
 
   levelOptions = [
-    { value: Level.BEGINNER, label: 'Bắt đầu' },
-    { value: Level.INTERMEDIATE, label: 'Trung bình' },
-    { value: Level.ADVANCED, label: 'Nâng cao' },
+    { value: Level.BEGINNER, label: 'Beginner' },
+    { value: Level.INTERMEDIATE, label: 'Intermediate' },
+    { value: Level.ADVANCED, label: 'Advanced' },
   ];
 
   constructor(private userService: UserService) {}
@@ -125,16 +125,16 @@ export class ProfileComponent implements OnInit {
       this.userService.uploadAvatar(file).subscribe({
         next: (url) => {
           if (this.profile) {
-            this.profile.avartarUrl = url;
+            this.profile.avatarUrl = url;
             this.userService.setUser(this.profile);
           }
           this.isLoading = false;
-          this.success = 'Avatar đã được cập nhật thành công!';
+          this.success = 'Avatar updated successfully!';
           setTimeout(() => (this.success = null), 3000);
         },
         error: (err) => {
 this.isLoading = false;
-          this.error = 'Không thể tải avatar. Vui lòng thử lại.';
+          this.error = 'Unable to upload avatar. Please try again.';
           setTimeout(() => (this.error = null), 3000);
         },
       });
@@ -179,12 +179,12 @@ this.isLoading = false;
 
     // Validation
     if (!this.editForm.fullname?.trim()) {
-      this.error = 'Vui lòng nhập họ tên';
+      this.error = 'Please enter full name';
       return;
     }
 
     if (!this.editForm.target || parseInt(this.editForm.target) <= 0) {
-      this.error = 'Vui lòng nhập mục tiêu hợp lệ (số phút > 0)';
+      this.error = 'Please enter a valid target (minutes > 0)';
       return;
     }
 
@@ -205,13 +205,13 @@ this.isLoading = false;
         this.userService.setUser(updatedUser);
         this.isEditing = false;
         this.isLoading = false;
-        this.success = 'Hồ sơ đã được cập nhật thành công!';
+        this.success = 'Profile updated successfully!';
         setTimeout(() => (this.success = null), 3000);
       },
       error: (err) => {
         this.isLoading = false;
         this.error =
-          err.error?.message || 'Không thể cập nhật hồ sơ. Vui lòng thử lại.';
+          err.error?.message || 'Unable to update profile. Please try again.';
         setTimeout(() => (this.error = null), 5000);
       },
     });

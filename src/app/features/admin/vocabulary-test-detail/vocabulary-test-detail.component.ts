@@ -63,14 +63,14 @@ export class VocabularyTestDetailComponent implements OnInit, OnDestroy {
             duration: data.duration,
             topicName: data.topicName,
             topicId: data.topicId,
-            testName: data.testName,
-            testId: data.testId,
+            testName: data.name,
+            testId: data.id,
           };
           this.questions = data.questions || [];
 
           // Create a test object for compatibility
           this.test = {
-            id: data.testId,
+            id: data.id,
             topicId: data.topicId,
             topicName: data.topicName,
             duration: data.duration,
@@ -80,7 +80,8 @@ export class VocabularyTestDetailComponent implements OnInit, OnDestroy {
 
           this.isLoading = false;
         },
-        error: (error) => {this.error = 'Không thể tải chi tiết bài test';
+        error: (error) => {
+this.error = 'Không thể tải chi tiết bài test';
           this.isLoading = false;
         },
       });
@@ -109,7 +110,8 @@ export class VocabularyTestDetailComponent implements OnInit, OnDestroy {
           next: () => {
             this.goBack();
           },
-          error: (error) => {alert('Không thể xóa bài test');
+          error: (error) => {
+alert('Không thể xóa bài test');
           },
         });
     }

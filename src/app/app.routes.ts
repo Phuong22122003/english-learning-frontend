@@ -135,11 +135,18 @@ export const routes: Routes = [
               ).then((m) => m.GrammarListComponent),
           },
           {
-            path: 'topics/:topicId/:grammarId',
+            path: 'topics/:topicId/:grammarId/tests',
             loadComponent: () =>
               import(
                 './features/grammar/grammar-tests/grammar-tests.component'
               ).then((m) => m.GrammarTestsComponent),
+          },
+          {
+            path: 'topics/:topicId/:grammarId',
+            loadComponent: () =>
+              import(
+                './features/grammar/grammar-detail/grammar-detail.component'
+              ).then((m) => m.GrammarDetailComponent),
           },
         ],
       },
@@ -247,6 +254,15 @@ export const routes: Routes = [
       import(
         './features/full-test/full-test-list/full-test-detail/full-test-detail.component'
       ).then((m) => m.FullTestDetailComponent),
+    canActivate: [ScopeGuard],
+    data: { scope: 'ROLE_USER' },
+  },
+  {
+    path: 'full-test/groups/:groupId/overview/tests/:testId',
+    loadComponent: () =>
+      import(
+        './features/full-test/full-test-list/full-test-overview/full-test-overview.component'
+      ).then((m) => m.FullTestOverviewComponent),
     canActivate: [ScopeGuard],
     data: { scope: 'ROLE_USER' },
   },

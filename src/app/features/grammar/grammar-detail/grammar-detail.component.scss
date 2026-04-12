@@ -1,0 +1,58 @@
+:host ::ng-deep {
+  .ql-editor {
+    padding: 0 !important;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #2d3748 !important;
+    line-height: 2 !important; // Tăng lên 2 cho cực kỳ thoáng
+
+    // Canh giữa tiêu đề chính bên trong nội dung nếu có
+    .ql-align-center {
+      margin: 2rem 0 !important;
+      color: #1a202c !important;
+      letter-spacing: -0.02em;
+    }
+
+    // Làm đậm các mục chính
+    strong, b {
+      color: #111827 !important;
+      font-weight: 800 !important;
+    }
+
+    // Danh sách 1, 2, A, B
+    ol, ul {
+      margin: 2rem 0 !important;
+      li {
+        margin-bottom: 1rem !important;
+        padding-left: 0.5rem;
+        &::marker {
+          color: #111827 !important; // Chuyển dấu chấm sang màu đen cho tối giản
+          font-weight: bold;
+        }
+      }
+    }
+
+    // Các đoạn văn (p)
+    p {
+      margin-bottom: 2rem !important;
+    }
+
+    // Cải thiện hiển thị ví dụ
+    em, i {
+      color: #4a5568 !important;
+      font-style: italic;
+      background: #f8fafc;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    // Thụt đầu dòng (Indent)
+    @for $i from 1 through 9 {
+      .ql-indent-#{$i} {
+        padding-left: #{$i * 3}rem !important;
+      }
+    }
+    
+    // Xử lý các dấu $ render lỗi (nếu chưa fix ở backend)
+    // Nếu bạn muốn ẩn các ký tự $ này, có thể dùng logic thay thế ở .ts
+  }
+}

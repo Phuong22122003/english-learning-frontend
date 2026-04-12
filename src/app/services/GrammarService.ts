@@ -20,7 +20,7 @@ export class GrammarService {
 
   constructor(private http: HttpClient) {}
 
-  // Lấy danh sách grammar topics
+  // Get list of grammar topics
   getAllTopics(
     page: number = 0,
     size: number = 10
@@ -30,7 +30,7 @@ export class GrammarService {
     );
   }
 
-  // Lấy danh sách grammars theo topicId
+  // Get list of grammars by topicId
   getGrammarsByTopicId(grammarId: string): Observable<{
     topicId: string;
     name: string;
@@ -43,7 +43,11 @@ export class GrammarService {
     }>(`${this.apiUrl}/topics/${grammarId}/grammars`);
   }
 
-  // Lấy danh sách test theo grammarId
+  getGrammarById(grammarId: string): Observable<Grammar> {
+    return this.http.get<Grammar>(`${this.apiUrl}/topics/grammars/${grammarId}`);
+  }
+
+  // Get list of tests by grammarId
   getTestsByGrammarId(
     grammarId: string,
     page: number = 0,
@@ -60,7 +64,7 @@ export class GrammarService {
     }>(`${this.apiUrl}/grammars/${grammarId}/tests?page=${page}&size=${size}`);
   }
 
-  // Lấy danh sách test theo topicId (tương tự listening)
+  // Get list of tests by topicId (similar to listening)
   getTestsByTopicId(topicId: string): Observable<{
     tests: Page<GrammarTest>;
     topicName: string;
@@ -73,7 +77,7 @@ export class GrammarService {
     }>(`${this.apiUrl}/topics/${topicId}/tests`);
   }
 
-  // Tạo test mới cho grammar
+  // Create new test for grammar
   addTest(
     grammarId: string,
     testData: GrammarTestRequest
@@ -84,7 +88,7 @@ export class GrammarService {
     );
   }
 
-  // Lấy danh sách câu hỏi theo testId
+  // Get list of questions by testId
   getTestQuestionsByTestId(testId: string): Observable<{
     duration: number;
     testId: string;
@@ -103,7 +107,7 @@ export class GrammarService {
     }>(`${this.apiUrl}/tests/${testId}/questions`);
   }
 
-  // Tạo topic grammar mới
+  // Create new grammar topic
   createTopic(topic: GrammarTopic, imageFile: File): Observable<GrammarTopic> {
     const formData = new FormData();
     formData.append(

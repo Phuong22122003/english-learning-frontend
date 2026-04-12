@@ -62,10 +62,10 @@ export class FormPlanningComponent implements OnInit {
 
   // Available topic types
   topicTypes = [
-    { value: ItemTypeEnum.NOTHING, label: 'Chọn loại chủ đề topic' },
-    { value: ItemTypeEnum.VOCABULARY, label: 'Từ vựng' },
-    { value: ItemTypeEnum.GRAMMAR, label: 'Ngữ pháp' },
-    { value: ItemTypeEnum.LISTENING, label: 'Nghe hiểu' },
+    { value: ItemTypeEnum.NOTHING, label: 'Choose topic type' },
+    { value: ItemTypeEnum.VOCABULARY, label: 'Vocabulary' },
+    { value: ItemTypeEnum.GRAMMAR, label: 'Grammar' },
+    { value: ItemTypeEnum.LISTENING, label: 'Listening' },
   ];
 
   // Topic management
@@ -144,19 +144,19 @@ export class FormPlanningComponent implements OnInit {
     this.formErrors = {};
 
     if (!this.planRequest.title.trim()) {
-      this.formErrors['title'] = 'Tên kế hoạch là bắt buộc';
+      this.formErrors['title'] = 'Plan name is required';
     }
 
     if (!this.planRequest.description.trim()) {
-      this.formErrors['description'] = 'Mô tả là bắt buộc';
+      this.formErrors['description'] = 'Description is required';
     }
 
     if (!this.planRequest.startDate) {
-      this.formErrors['startDate'] = 'Ngày bắt đầu là bắt buộc';
+      this.formErrors['startDate'] = 'Start date is required';
     }
 
     if (!this.planRequest.endDate) {
-      this.formErrors['endDate'] = 'Ngày kết thúc là bắt buộc';
+      this.formErrors['endDate'] = 'End date is required';
     }
 
     if (this.planRequest.startDate && this.planRequest.endDate) {
@@ -164,12 +164,12 @@ export class FormPlanningComponent implements OnInit {
       const endDate = new Date(this.planRequest.endDate);
 
       if (startDate >= endDate) {
-        this.formErrors['endDate'] = 'Ngày kết thúc phải sau ngày bắt đầu';
+        this.formErrors['endDate'] = 'End date must be after start date';
       }
     }
 
     if (this.planRequest.target < 10 || this.planRequest.target > 990) {
-      this.formErrors['target'] = 'Mục tiêu phải từ 10 đến 990 điểm';
+      this.formErrors['target'] = 'Target must be between 10 and 990 points';
     }
 
     return Object.keys(this.formErrors).length === 0;
@@ -204,14 +204,14 @@ export class FormPlanningComponent implements OnInit {
       };
     } else {
       // optional: show error message
-      console.warn('Ngày bắt đầu / kết thúc không hợp lệ');
+      console.warn('Invalid start/end date');
     }
   }
 
   removePlanGroup(index: number) {
     if (
       confirm(
-        'Bạn có chắc chắn muốn xóa nhóm kế hoạch này? Tất cả các chi tiết trong nhóm cũng sẽ bị xóa.'
+        'Are you sure you want to delete this plan group? All details in the group will also be deleted.'
       )
     ) {
       this.planRequest.planGroups.splice(index, 1);
@@ -263,7 +263,7 @@ export class FormPlanningComponent implements OnInit {
       this.getTopicDisplayName(detail.topicType, detail.topicId);
     if (
       confirm(
-        `Bạn có chắc chắn muốn xóa chi tiết "${topicName}" khỏi nhóm này?`
+        `Are you sure you want to delete the detail "${topicName}" from this group?`
       )
     ) {
       this.planRequest.planGroups[groupIndex].planDetails.splice(
@@ -297,15 +297,18 @@ export class FormPlanningComponent implements OnInit {
 
     switch (topicType) {
       case ItemTypeEnum.VOCABULARY:
-        this.vocabularyService.getTopics(0, 100).subscribe({
+        this.vocabularyService.getTopics(0, 100);
+        this.vocabularyService.topics$.subscribe({
           next: (response) => {
+            if(response == null) return;
             this.availableTopics = response.content || [];
             this.isLoadingTopics = false;
           },
           error: (error) => {
             this.topicsError =
-              'Không thể tải danh sách từ vựng. Vui lòng thử lại.';
-            this.isLoadingTopics = false;},
+              'Unable to load vocabulary list. Please try again.';
+            this.isLoadingTopics = false;
+},
         });
         break;
 
@@ -317,8 +320,9 @@ export class FormPlanningComponent implements OnInit {
           },
           error: (error) => {
             this.topicsError =
-              'Không thể tải danh sách ngữ pháp. Vui lòng thử lại.';
-            this.isLoadingTopics = false;},
+              'Unable to load grammar list. Please try again.';
+            this.isLoadingTopics = false;
+},
         });
         break;
 
@@ -330,8 +334,9 @@ export class FormPlanningComponent implements OnInit {
           },
           error: (error) => {
             this.topicsError =
-              'Không thể tải danh sách nghe hiểu. Vui lòng thử lại.';
-            this.isLoadingTopics = false;},
+              'Unable to load listening list. Please try again.';
+            this.isLoadingTopics = false;
+},
         });
         break;
 
@@ -442,8 +447,9 @@ export class FormPlanningComponent implements OnInit {
       error: (error) => {
         this.isSubmitting = false;
         this.error = this.isEditMode
-          ? 'Không thể cập nhật kế hoạch. Vui lòng thử lại.'
-          : 'Không thể tạo kế hoạch. Vui lòng thử lại.';},
+          ? 'Unable to update plan. Please try again.'
+          : 'Unable to create plan. Please try again.';
+},
     });
   }
 

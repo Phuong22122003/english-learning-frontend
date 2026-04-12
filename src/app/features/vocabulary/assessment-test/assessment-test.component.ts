@@ -52,6 +52,11 @@ export class AssessmentTestComponent implements OnDestroy {
   testId = '';
   topicName = 'Assessment Test';
   markedQuestions: number[] = [];
+  test!:{
+    id: string;
+    name:string;
+    duration: number;
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -70,10 +75,10 @@ export class AssessmentTestComponent implements OnDestroy {
   loadQuestions(testId: string) {
     this.vocabService.getTestQuestionsByTestId(testId).subscribe({
       next: (data) => {
+        this.test = data;
         this.questions = data.questions;
         this.topicName = data.topicName;
         this.timeRemaining = data.duration * 60;
-
         this.currentQuestion = 0;
         this.selectedAnswers = new Array(this.questions.length).fill(undefined);
         this.showResults = false;
@@ -82,13 +87,6 @@ export class AssessmentTestComponent implements OnDestroy {
       error: (err) => {
 },
     });
-    // this.questions = this.sampleQuestions;
-    // this.topicName = 'Sample Topic';
-    // this.timeRemaining = 5 * 60; // 5 minutes for sample
-    // this.currentQuestion = 0;
-    // this.selectedAnswers = new Array(this.questions.length).fill(undefined);
-    // this.showResults = false;
-    // this.startTimer();
   }
 
   startTimer() {
@@ -124,29 +122,33 @@ export class AssessmentTestComponent implements OnDestroy {
     this.showResults = true;
     this.clearTimer();
 
-//     this.historyService
-//       .addHistory({
-//         testType: ItemTypeEnum.VOCABULARY,
-//         testId: this.testId,
-//         score: this.calculateScore().percentage,
-//         answers: this.questions.map((q, index) => {
-//           const answer = this.selectedAnswers[index] ?? '';
-
-//           return {
-//             questionId: q.id,
-//             selectedAnswer: answer,
-//             correct: answer !== '' && q.correctAnswer === answer,
-//           };
-//         }),
-//         takenAt: this.startDate,
-//         submittedAt: CommonUtils.getNow(),
-//       })
-//       .subscribe({
-//         next: (data: ExamHistoryResponse) => {
-//         },
-//         error: (err: any) => {
-// },
-//       });
+    this.historyService
+      .addHistory({
+        testType: ItemTypeEnum.VOCABULARY,
+        duration: this.test.duration,
+        testId: this.test.id,
+        score: this.calculateScore().percentage,
+        name: this.test.name,
+        answerGroups : this.questions.map((q, index) => {
+          const answer = this.selectedAnswers[index] ?? '';
+          return {
+            answers:[{
+              question: q.question,
+              options: q.options,
+              correctAnswer: q.correctAnswer,
+              selectedAnswer: answer
+            }]
+          };
+        }),
+        takenAt: this.startDate,
+        submittedAt: CommonUtils.getNow(),
+      })
+      .subscribe({
+        next: (data: ExamHistoryResponse) => {
+        },
+        error: (err: any) => {
+},
+      });
   }
 
   calculateScore() {

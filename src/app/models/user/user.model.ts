@@ -7,7 +7,7 @@ export interface User {
   email: string;
   role: string; // UserRole (enum -> string)
   fullname: string;
-  avartarUrl: string;
+  avatarUrl: string;
   target: number; // phút mỗi ngày
   studyTime: StudyTime;
   level: Level;

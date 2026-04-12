@@ -1,7 +1,7 @@
 <div class="space-y-6 py-8 px-4">
   <div class="w-full">
     <div *ngIf="currentState === State.View">
-      <div class="mb-2 text-3xl font-bold">Danh sách từ vựng</div>
+      <div class="mb-2 text-3xl font-bold">Vocabulary List</div>
       <div class="mb-8 text-xl font-medium">Topic: {{ name }}</div>
       <div class="flex justify-end mb-4 gap-3">
         <button
@@ -9,13 +9,13 @@
           class="w-fit inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 border border-primary text-primary text-primary-foreground bg-primary hover:opacity-90"
         >
           <fa-icon [icon]="faUpload"></fa-icon>
-          Tải lên từ vựng
+          Upload Vocabulary
         </button>
         <button
           (click)="changeToCreate()"
           class="w-fit inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 border border-primary text-primary text-primary-foreground bg-navy-header hover:opacity-90"
         >
-          Thêm từ vựng mới
+          Add New Vocabulary
         </button>
       </div>
       <div *ngFor="let vocab of vocabList">
@@ -30,7 +30,7 @@
     </div>
 
     <div *ngIf="currentState === State.Edit && vocabToEdit">
-      <div class="mb-8 text-3xl font-bold">Chỉnh sửa từ vựng</div>
+      <div class="mb-8 text-3xl font-bold">Edit Vocabulary</div>
       <app-vocab-edit
         [vocab]="vocabToEdit"
         (save)="handleEdit($event)"
@@ -39,7 +39,7 @@
     </div>
 
     <div *ngIf="currentState === State.Create">
-      <div class="mb-8 text-3xl font-bold">Thêm từ vựng mới</div>
+      <div class="mb-8 text-3xl font-bold">Add New Vocabulary</div>
       <app-vocab-edit
         (save)="handleCreate($event)"
         (cancel)="handleCancel()"
@@ -48,8 +48,8 @@
 
     <div *ngIf="currentState === State.Upload">
       <app-upload-by-file
-        [title]="'Tải lên từ vựng'"
-        [description]="'Tải lên từ vựng để cập nhật dữ liệu'"
+        [title]="'Upload Vocabulary'"
+        [description]="'Upload vocabulary to update data'"
         [isContainsImage]="true"
         [isContainsAudio]="true"
         [excelTemplate]="excelTemplate"
@@ -60,10 +60,10 @@
 </div>
 <app-confirm-dialog
   [isVisible]="isShowConfirmDialog"
-  title="Xóa từ vựng"
-  message="Bạn có chắc chắn muốn xóa từ vựng này? Hành động này không thể hoàn tác."
-  confirmText="Xóa"
-  cancelText="Hủy"
+  title="Delete Vocabulary"
+  message="Are you sure you want to delete this vocabulary? This action cannot be undone."
+  confirmText="Delete"
+  cancelText="Cancel"
   confirmButtonClass="form-button-danger"
   cancelButtonClass="form-button-secondary"
   (confirm)="handleConfirmDelete()"

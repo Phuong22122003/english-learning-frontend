@@ -26,6 +26,7 @@
       <app-ai-button
         *ngIf="selectedTopic && currentState === State.View"
         (click)="isShowGenerateTests = true"
+        class="hidden"
         >Generate Test</app-ai-button
       >
       <button

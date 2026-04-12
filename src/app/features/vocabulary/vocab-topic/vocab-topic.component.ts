@@ -49,25 +49,34 @@ export class VocabTopicComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this.vocabService
-      .getTopics(this.currentPage - 1, this.TOPICS_PER_PAGE)
-      .subscribe({
-        next: (data) => {
+    this.vocabService.getTopics(this.currentPage - 1, this.TOPICS_PER_PAGE);
+    this.vocabService.topics$.subscribe({
+      next: (data) => {
+          if(data == null) return;
           this.vocabTopics = data.content;
           this.currentPage = data.number + 1;
           this.totalPages = data.totalPages;
           this.isLoading = false;
-        },
-        error: (error) => {
-          this.error =
-            'Lỗi tải danh sách chủ đề: Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
-          this.isLoading = false;
-        },
-      });
+      }
+    });
+      // .subscribe({
+      //   next: (data) => {
+      //     this.vocabTopics = data.content;
+      //     this.currentPage = data.number + 1;
+      //     this.totalPages = data.totalPages;
+      //     this.isLoading = false;
+      //   },
+      //   error: (error) => {
+      //     this.error =
+      //       'Lỗi tải danh sách chủ đề: Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
+      //     this.isLoading = false;
+      //   },
+      // });
   }
 
   loadFavorites() {
-    this.favoriteService.getFavoriteIdsByType(ItemTypeEnum.VOCABULARY).subscribe({
+    this.favoriteService.getFavoriteIdsByType(ItemTypeEnum.VOCABULARY);
+    this.favoriteService.favoritesIds$.subscribe({
       next: (favorites) => {
         this.favoriteTopicIds = new Map(
           favorites.map((f) => [f.vocabTopic?.id, f.id])

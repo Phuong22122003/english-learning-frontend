@@ -1,20 +1,44 @@
-<div class="space-y-6 pt-6 px-4">
-  <!-- Header -->
-  <div class="border-b pb-3">
-    <h1 class="text-2xl font-bold text-white">
-      {{ grammar.title }}
-    </h1>
-    <button
-      class="mb-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
-      (click)="onBack()"
-    >
-      <fa-icon [icon]="faArrowLeft" class="w-4 h-4"></fa-icon>
-      Back to Grammar Topics
-    </button>
-  </div>
+<div class="fixed inset-0 z-[999] bg-white overflow-y-auto selection:bg-blue-100">
+  
+  <!-- Top Navigation Bar -->
+  <nav class="sticky top-0 bg-white/90 backdrop-blur-sm border-b border-gray-100 z-10">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <button
+        class="flex items-center gap-2 text-gray-500 hover:text-black transition-all font-medium text-sm"
+        (click)="onBack()"
+      >
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+        <span>Back</span>
+      </button>
+      
+      <!-- Hiện tiêu đề nhỏ ở thanh điều hướng khi cuộn trang (Tùy chọn) -->
+      <span class="text-gray-400 text-xs font-semibold uppercase tracking-widest hidden md:block">
+        English Grammar Course
+      </span>
+    </div>
+  </nav>
 
-  <!-- Content (render HTML) -->
-  <div class="w-full max-w-screen-xl text-white">
-    <div class="prose max-w-none" [innerHTML]="grammar.content"></div>
-  </div>
+  <!-- Main Content Area -->
+  <main class="max-w-4xl mx-auto px-8 py-16">
+    
+      <!-- Show small title in navigation bar when scrolling (Optional) -->
+    <header class="mb-16 text-center">
+      <h1 class="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+        {{ grammar.title }}
+      </h1>
+      <!-- Thay vạch xanh bằng một khoảng trống tinh tế hoặc dấu chấm nhỏ -->
+      <div class="flex justify-center mt-6">
+        <span class="w-1 h-1 bg-gray-300 rounded-full mx-1"></span>
+        <span class="w-1 h-1 bg-gray-300 rounded-full mx-1"></span>
+        <span class="w-1 h-1 bg-gray-300 rounded-full mx-1"></span>
+      </div>
+    </header>
+
+    <!-- Nội dung render từ Editor -->
+    <article class="prose prose-lg md:prose-xl max-w-none ql-editor text-gray-800" 
+             [innerHTML]="grammar.content">
+    </article>
+
+    <div class="h-32"></div> <!-- Khoảng trống cuối trang -->
+  </main>
 </div>

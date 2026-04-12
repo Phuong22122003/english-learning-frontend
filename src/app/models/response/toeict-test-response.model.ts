@@ -4,6 +4,7 @@ import { ToeicTestQuestionResponse } from './toeic-test-question-response.model'
 export interface ToeicTestResponse {
   id: string;
   name: string;
+  partAudios: string[];
   questionGroups: ToeicTestQuestionGroupResponse[];
   totalCompletion: number;
   createdAt: string;

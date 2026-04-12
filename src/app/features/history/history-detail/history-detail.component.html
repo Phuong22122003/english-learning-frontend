@@ -9,7 +9,7 @@
             {{ getTestTypeLabel(historyDetail.testType) }}
           </span>
         </div>
-        <button routerLink="/history" class="text-gray-500 hover:text-gray-700 font-medium">← Quay lại</button>
+        <button routerLink="/history" class="text-gray-500 hover:text-gray-700 font-medium">← Back</button>
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -17,19 +17,19 @@
           <div class="text-3xl font-bold" [class]="getScoreColor(historyDetail.score)">
             {{ historyDetail.testType !== itemType.FULL_TEST ? historyDetail.score + "%" : historyDetail.score }}
           </div>
-          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Tổng điểm</div>
+          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Total Score</div>
         </div>
         <div class="p-4 bg-blue-50 rounded-xl text-center">
           <div class="text-2xl font-bold text-blue-600">{{ totalQuestions }}</div>
-          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Câu hỏi</div>
+          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Questions</div>
         </div>
         <div class="p-4 bg-green-50 rounded-xl text-center">
           <div class="text-2xl font-bold text-green-600">{{ getCorrectAnswersCount() }}</div>
-          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Câu đúng</div>
+          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Correct Answers</div>
         </div>
         <div class="p-4 bg-purple-50 rounded-xl text-center">
           <div class="text-2xl font-bold text-purple-600">{{ getTime(historyDetail.takenAt, historyDetail.submittedAt) }}</div>
-          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Thời gian</div>
+          <div class="text-xs uppercase tracking-wider text-gray-500 mt-1">Time</div>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
          class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
       
       <div class="bg-gray-50 px-6 py-3 border-b border-gray-100 flex justify-between items-center">
-        <span class="font-bold text-gray-700 text-sm uppercase">Part {{ group.part }} - Nhóm {{ gIdx + 1 }}</span>
+        <span class="font-bold text-gray-700 text-sm uppercase">Part {{ group.part }} - Group {{ gIdx + 1 }}</span>
       </div>
 
       <div class="grid grid-cols-12 gap-0">
@@ -72,11 +72,11 @@
             
             <div class="flex justify-between items-start mb-4">
               <h3 class="text-lg font-bold text-gray-800">
-                Câu {{ getGlobalIndex(gIdx, qIdx) }}:
+                Question {{ getGlobalIndex(gIdx, qIdx) }}:
               </h3>
               <span [class]="isAnswerCorrect(question) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
                     class="px-3 py-1 rounded-full text-xs font-bold uppercase">
-                {{ isAnswerCorrect(question) ? 'Đúng' : 'Sai' }}
+                {{ isAnswerCorrect(question) ? 'Correct' : 'Incorrect' }}
               </span>
             </div>
 
@@ -106,7 +106,11 @@
             </div>
 
             <div *ngIf="question.explanation" class="mt-4 p-4 bg-blue-50/50 border-l-4 border-blue-400 rounded-r-lg">
-              <p class="text-sm text-blue-800 italic"><strong class="not-italic">Giải thích:</strong> {{ question.explanation }}</p>
+              <div class="text-sm text-blue-800">
+                <strong class="text-blue-900 block mb-1">Explanation:</strong>
+                
+              <div [innerHTML]="question.explanation" class="explanation-html"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -116,12 +120,12 @@
 
     <div *ngIf="!historyDetail?.answerGroups?.length" class="text-center py-20 bg-white rounded-xl shadow-sm">
       <div class="text-6xl mb-4">Empty</div>
-      <p class="text-gray-500">Không tìm thấy dữ liệu bài thi này.</p>
+      <p class="text-gray-500">No test data found for this test.</p>
     </div>
 
     <div class="flex justify-center pt-6">
       <button routerLink="/history" class="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl">
-        Quay lại lịch sử
+        Back to History
       </button>
     </div>
   </div>

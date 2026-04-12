@@ -1,7 +1,7 @@
 <div class="min-h-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6 planning-container">
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Kế hoạch học tập của tôi</h1>
+    <h1 class="text-2xl font-bold text-slate-800 dark:text-white">My Learning Plan</h1>
     <div class="flex gap-3">
       <app-ai-button (click)="showAIPlanningModal = true" class="hidden">
         AI Planning
@@ -10,13 +10,13 @@
         class="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-80 transition-colors"
         routerLink="/planning/create"
       >
-        Tạo kế hoạch mới
+        Create New Plan
       </button>
       <button
         (click)="loadPlans(currentPage - 1)"
         class="bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-300 px-4 py-2 rounded-lg transition-colors"
       >
-        Làm mới
+        Refresh
       </button>
     </div>
   </div>
@@ -26,28 +26,28 @@
     <div
       class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary loading-spinner"
     ></div>
-    <p class="text-slate-600 dark:text-slate-300 mt-2">Đang tải danh sách kế hoạch...</p>
+    <p class="text-slate-600 dark:text-slate-300 mt-2">Loading plan list...</p>
   </div>
 
   <!-- Error State -->
   <div *ngIf="error && !isLoading" class="text-center py-12">
     <div class="text-red-400 text-6xl mb-4">⚠️</div>
-    <h3 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">Có lỗi xảy ra</h3>
+    <h3 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">An error occurred</h3>
     <p class="text-red-500 dark:text-red-400 mb-4">{{ error }}</p>
     <button
       (click)="loadPlans(currentPage - 1)"
       class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-80"
     >
-      Thử lại
+      Try again
     </button>
   </div>
 
   <!-- Plans Table -->
   <div *ngIf="!isLoading && !error" class="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700">
     <div class="p-6 border-b border-slate-200 dark:border-slate-700">
-      <h2 class="text-lg font-semibold text-slate-800 dark:text-white">Danh sách kế hoạch</h2>
+      <h2 class="text-lg font-semibold text-slate-800 dark:text-white">Plan List</h2>
       <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">
-        Tổng cộng: {{ plans.length }} kế hoạch
+        Total: {{ plans.length }} plans
       </p>
     </div>
 
@@ -58,25 +58,25 @@
           <thead>
             <tr class="border-b border-slate-200 dark:border-slate-700">
               <th class="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                Tên kế hoạch
+                Plan Name
               </th>
               <th class="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                Mô tả
+                Description
               </th>
               <th class="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                Thời gian
+                Time
               </th>
               <th class="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                Mục tiêu
+                Target
               </th>
               <th class="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                Tiến độ
+                Progress
               </th>
               <th class="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                Trạng thái
+                Status
               </th>
               <th class="text-center py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                Thao tác
+                Actions
               </th>
             </tr>
           </thead>
@@ -99,8 +99,8 @@
               </td>
               <td class="py-4 px-4 text-slate-600 dark:text-slate-300">
                 <div class="text-sm">
-                  <div>Từ: {{ formatDate(plan.startDate) }}</div>
-                  <div>Đến: {{ formatDate(plan.endDate) }}</div>
+                  <div>From: {{ formatDate(plan.startDate) }}</div>
+                  <div>To: {{ formatDate(plan.endDate) }}</div>
                 </div>
               </td>
               <td class="py-4 px-4 text-slate-600 dark:text-slate-300">
@@ -108,7 +108,7 @@
                   <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">{{
                     plan.target
                   }}</span>
-                  <div class="text-xs text-slate-500 dark:text-slate-400">điểm</div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400">points</div>
                 </div>
               </td>
               <td class="py-4 px-4">
@@ -139,29 +139,29 @@
                   <button
                     (click)="onViewPlan(plan)"
                     class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded text-sm transition-colors"
-                    title="Xem chi tiết"
-                    aria-label="Xem chi tiết"
+                    title="View details"
+                    aria-label="View details"
                   >
                     <i class="fas fa-eye"></i>
-                    Xem chi tiết
+                    View details
                   </button>
                   <button
                     (click)="onEditPlan(plan)"
                     class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded text-sm transition-colors"
-                    title="Chỉnh sửa"
-                    aria-label="Chỉnh sửa"
+                    title="Edit"
+                    aria-label="Edit"
                   >
                     <i class="fas fa-edit"></i>
-                    Chỉnh sửa
+                    Edit
                   </button>
                   <button
                     (click)="onDeletePlan(plan)"
                     class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded text-sm transition-colors"
-                    title="Xóa"
-                    aria-label="Xóa"
+                    title="Delete"
+                    aria-label="Delete"
                   >
                     <i class="fas fa-trash"></i>
-                    Xóa
+                    Delete
                   </button>
                 </div>
               </td>
@@ -174,17 +174,16 @@
       <div *ngIf="plans.length === 0" class="text-center py-12">
         <div class="text-slate-400 dark:text-slate-500 text-6xl mb-4">📋</div>
         <h3 class="text-xl font-semibold text-slate-600 dark:text-slate-300 mb-2">
-          Chưa có kế hoạch nào
+          No plans yet
         </h3>
         <p class="text-slate-500 dark:text-slate-400 mb-4">
-          Hãy tạo kế hoạch học tập đầu tiên để bắt đầu hành trình học tiếng Anh
-          của bạn.
+          Create your first learning plan to start your English learning journey.
         </p>
         <button
           class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-80"
           routerLink="/planning/create"
         >
-          Tạo kế hoạch mới
+          Create New Plan
         </button>
       </div>
 

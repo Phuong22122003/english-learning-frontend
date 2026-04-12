@@ -1,104 +1,57 @@
 <aside
-  class="bg-navy-header border-r border-slate-700/50 h-full transition-all duration-300 relative shadow-xl flex flex-col"
+  class="bg-[#0f172a] border-r border-slate-700/50 h-full transition-all duration-300 relative shadow-xl flex flex-col"
   [class.w-20]="isCollapsed"
-  [class.w-72]="!isCollapsed"
+  [class.w-64]="!isCollapsed"
 >
-  <!-- Collapse Button -->
-  <button
-    (click)="toggleCollapse()"
-    class="absolute -right-4 top-8 bg-navy-header border-2 border-slate-600 rounded-full p-2.5 hover:bg-slate-700 hover:border-slate-500 transition-all duration-200 z-10 shadow-lg hover:shadow-xl hover:scale-110"
-    [title]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-    [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-    type="button"
-  >
-    <span class="sr-only">{{
-      isCollapsed ? "Expand sidebar" : "Collapse sidebar"
-    }}</span>
-    <fa-icon
-      [icon]="isCollapsed ? faChevronRight : faChevronLeft"
-      class="h-3.5 w-3.5 text-slate-300"
-      aria-hidden="true"
-    ></fa-icon>
-  </button>
+  <div class="p-5 flex items-center" [class.justify-center]="isCollapsed">
+    <button
+      (click)="toggleCollapse()"
+      class="p-2 text-slate-300 hover:bg-slate-700/50 rounded-full transition-all duration-200 focus:outline-none hover:scale-110"
+      title="Menu"
+      type="button"
+    >
+      <fa-icon [icon]="faBars" class="text-xl"></fa-icon>
+    </button>
+    <span *ngIf="!isCollapsed" class="ml-4 font-black text-white tracking-widest uppercase text-[10px] opacity-70">
+      Dashboard
+    </span>
+  </div>
 
-  <!-- Navigation -->
-  <nav class="py-6 px-3 space-y-1 overflow-y-auto flex-1 min-h-0">
-    <ng-container *ngFor="let item of sidebarItems">
-      <ng-container
-        *ngTemplateOutlet="renderItem; context: { $implicit: item, level: 0 }"
-      ></ng-container>
-    </ng-container>
+  <nav class="flex-1 overflow-y-auto overflow-x-hidden px-3 custom-scrollbar">
+    <div *ngFor="let group of sidebarItems; let last = last" class="py-2">
+      <div *ngIf="group.visible">
+        <div *ngIf="!isCollapsed && group.label && !group.href" class="px-4 py-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+          {{ group.label }}
+        </div>
+  
+        <div class="space-y-1">
+          <a *ngIf="group.href"
+             [routerLink]="group.href"
+             routerLinkActive="text-sky-400 bg-gray-800 text-white font-bold"
+             class="flex items-center py-3 px-4 text-sm rounded-xl transition-all duration-200 group text-slate-300 hover:bg-slate-800"
+             [ngClass]="{'justify-center px-0': isCollapsed}">
+            <fa-icon [icon]="group.icon" class="text-lg" [class.mr-4]="!isCollapsed"></fa-icon>
+            <span *ngIf="!isCollapsed" class="whitespace-nowrap">{{ group.label }}</span>
+          </a>
+  
+          <ng-container *ngIf="group.children">
+            <a *ngFor="let child of group.children"
+               [routerLink]="child.href"
+               routerLinkActive="text-sky-400 bg-gray-800 text-white font-bold"
+               class="flex items-center py-3 px-4 text-sm rounded-xl transition-all duration-200 group text-slate-300 hover:bg-slate-800"
+               [ngClass]="{'justify-center px-0': isCollapsed}">
+              <fa-icon [icon]="child.icon" class="text-lg" [class.mr-4]="!isCollapsed"></fa-icon>
+              <span *ngIf="!isCollapsed" class="whitespace-nowrap">{{ child.label }}</span>
+            </a>
+          </ng-container>
+        </div>
+  
+        <div *ngIf="!last" class="mx-4 my-4 border-t border-slate-700/50"></div>
+      </div>
+    </div>
   </nav>
 
-  <!-- Template đệ quy -->
-  <ng-template #renderItem let-item let-level="level">
-    <!-- Nếu có href thì là link -->
-    <a
-      *ngIf="item.href; else groupItem"
-      [routerLink]="item.href"
-      routerLinkActive="text-white font-semibold bg-slate-700/60 border-l-4 border-blue-400 shadow-md"
-      [routerLinkActiveOptions]="{ exact: false }"
-      class="flex items-center justify-between py-3 px-4 text-sm cursor-pointer transition-all duration-200 rounded-lg group text-slate-200 hover:bg-slate-700/40 hover:translate-x-1"
-      [ngClass]="{
-        'justify-center px-0': isCollapsed,
-        'text-slate-400': level > 0
-      }"
-      [attr.aria-label]="item.label"
-    >
-      <div class="flex items-center gap-3">
-        <fa-icon
-          *ngIf="item.icon"
-          [icon]="item.icon"
-          class="h-5 w-5 transition-transform group-hover:scale-110 text-slate-300"
-        ></fa-icon>
-        <span *ngIf="!isCollapsed" class="transition-colors">{{
-          item.label
-        }}</span>
-      </div>
-    </a>
-
-    <!-- Nếu không có href thì là group -->
-    <ng-template #groupItem>
-      <div
-        class="flex items-center justify-between py-3 px-4 text-sm cursor-pointer transition-all duration-200 rounded-lg group hover:bg-slate-700/40 hover:translate-x-1"
-        [ngClass]="{
-          'justify-center px-0': isCollapsed,
-          'text-slate-200': level === 0,
-          'text-slate-400': level > 0,
-          'bg-slate-700/30': isExpanded(item.label)
-        }"
-        (click)="toggleExpanded(item.label)"
-        [title]="isCollapsed ? item.label : null"
-      >
-        <div class="flex items-center gap-3">
-          <fa-icon
-            *ngIf="item.icon"
-            [icon]="item.icon"
-            class="h-5 w-5 transition-transform group-hover:scale-110 text-slate-300"
-          ></fa-icon>
-          <span *ngIf="!isCollapsed" class="font-medium">{{ item.label }}</span>
-        </div>
-        <fa-icon
-          *ngIf="item.children && !isCollapsed"
-          [icon]="isExpanded(item.label) ? faChevronDown : faChevronRight"
-          class="h-3 w-3 text-slate-400 transition-transform duration-200"
-        ></fa-icon>
-      </div>
-    </ng-template>
-
-    <!-- Render children -->
-    <div
-      *ngIf="item.children && isExpanded(item.label) && !isCollapsed"
-      class="ml-4 mt-1 space-y-1 border-l-2 border-slate-700/50 pl-4"
-    >
-      <ng-container *ngFor="let child of item.children">
-        <ng-container
-          *ngTemplateOutlet="
-            renderItem;
-            context: { $implicit: child, level: level + 1 }
-          "
-        ></ng-container>
-      </ng-container>
-    </div>
-  </ng-template>
+  <div *ngIf="!isCollapsed" class="p-6 text-[9px] text-slate-600 font-medium">
+    © 2026 User Panel
+  </div>
 </aside>

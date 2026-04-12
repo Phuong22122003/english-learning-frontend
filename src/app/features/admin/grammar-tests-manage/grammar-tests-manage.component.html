@@ -28,6 +28,7 @@
       <app-ai-button
         *ngIf="selectedGrammar && currentState === State.View"
         (click)="isShowGenerateTests = true"
+        class="hidden"
         >Generate Test</app-ai-button
       >
       <button

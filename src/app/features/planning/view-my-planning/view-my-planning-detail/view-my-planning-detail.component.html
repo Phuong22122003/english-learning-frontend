@@ -2,9 +2,9 @@
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
     <div>
-      <h1 class="text-2xl font-bold text-gray-800">Chi tiết kế hoạch</h1>
+      <h1 class="text-2xl font-bold text-gray-800">Plan Details</h1>
       <p class="text-gray-600 mt-1">
-        Xem thông tin chi tiết về kế hoạch học tập
+        View detailed information about the learning plan
       </p>
     </div>
     <div class="flex gap-3">
@@ -20,21 +20,21 @@
         class="flex gap-2 bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg transition-colors"
       >
         <fa-icon [icon]="faEdit"></fa-icon>
-        Chỉnh sửa
+        Edit
       </button>
       <button
         (click)="onDeletePlan()"
         class="flex gap-2 bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg transition-colors"
       >
         <fa-icon [icon]="faTrash"></fa-icon>
-        Xóa
+        Delete
       </button>
       <button
         routerLink="/planning"
         class="flex gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors"
       >
         <fa-icon [icon]="faArrowLeft"></fa-icon>
-        Quay lại
+        Back
       </button>
     </div>
   </div>
@@ -44,19 +44,19 @@
     <div
       class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 loading-spinner"
     ></div>
-    <p class="text-gray-600 mt-2">Đang tải chi tiết kế hoạch...</p>
+    <p class="text-gray-600 mt-2">Loading plan details...</p>
   </div>
 
   <!-- Error State -->
   <div *ngIf="error && !isLoading" class="text-center py-12">
     <div class="text-red-400 text-6xl mb-4">⚠️</div>
-    <h3 class="text-xl font-semibold text-red-600 mb-2">Có lỗi xảy ra</h3>
+    <h3 class="text-xl font-semibold text-red-600 mb-2">An error occurred</h3>
     <p class="text-red-500 mb-4">{{ error }}</p>
     <button
       (click)="loadPlanDetail()"
       class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:opacity-80"
     >
-      Thử lại
+      Try again
     </button>
   </div>
 
@@ -87,14 +87,14 @@
         </div>
         <div class="text-right">
           <div class="text-2xl font-bold text-blue-600">{{ plan.target }}</div>
-          <div class="text-sm text-gray-500">điểm mục tiêu</div>
+          <div class="text-sm text-gray-500">target points</div>
         </div>
       </div>
 
       <!-- Progress Bar -->
       <div class="mt-4">
         <div class="flex justify-between items-center mb-2">
-          <span class="text-sm font-medium text-gray-700">Tiến độ</span>
+          <span class="text-sm font-medium text-gray-700">Progress</span>
           <span class="text-sm text-gray-600"
             >{{ getProgressPercentage() | number : "1.0-0" }}%</span
           >
@@ -111,7 +111,7 @@
     <!-- Plan Timeline -->
     <div class="bg-white rounded-lg shadow-md p-6">
       <h3 class="text-lg font-semibold text-gray-800 mb-4">
-        Thời gian thực hiện
+        Execution Time
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="flex items-center p-4 bg-blue-50 rounded-lg">
@@ -119,7 +119,7 @@
             <i class="fas fa-play-circle text-xl"></i>
           </div>
           <div>
-            <div class="text-sm text-gray-600">Ngày bắt đầu</div>
+            <div class="text-sm text-gray-600">Start Date</div>
             <div class="font-semibold text-gray-800">
               {{ formatDateTime(plan.startDate) }}
             </div>
@@ -130,7 +130,7 @@
             <i class="fas fa-flag-checkered text-xl"></i>
           </div>
           <div>
-            <div class="text-sm text-gray-600">Ngày kết thúc</div>
+            <div class="text-sm text-gray-600">End Date</div>
             <div class="font-semibold text-gray-800">
               {{ formatDateTime(plan.endDate) }}
             </div>
@@ -144,7 +144,7 @@
       *ngIf="plan.planGroups && plan.planGroups.length > 0"
       class="space-y-4"
     >
-      <h3 class="text-lg font-semibold text-gray-800">Nhóm kế hoạch</h3>
+      <h3 class="text-lg font-semibold text-gray-800">Plan Groups</h3>
 
       <div
         *ngFor="let group of plan.planGroups; let groupIndex = index"
@@ -168,7 +168,7 @@
         </div>
         <div class="text-right">
           <div class="text-sm text-gray-500">
-            {{ group.planDetails.length || 0 }} chi tiết
+            {{ group.planDetails.length || 0 }} details
           </div>
         </div>
         <!-- Plan Details -->
@@ -176,13 +176,13 @@
           *ngIf="group.planDetails && group.planDetails.length > 0"
           class="space-y-3"
         >
-          <h5 class="text-md font-medium text-gray-700">Chi tiết kế hoạch</h5>
+          <h5 class="text-md font-medium text-gray-700">Plan Details</h5>
 
           <div
             *ngFor="let detail of group.planDetails; let detailIndex = index"
             class="border border-gray-200 rounded-lg p-4 clickable-detail-item"
             (click)="navigateToTopic(detail.topicType, detail.topicId)"
-            title="Nhấp để xem chi tiết chủ đề"
+            title="Click to view topic details"
           >
             <div class="flex justify-between items-start">
               <div class="flex-1">
@@ -197,13 +197,13 @@
                   >
                   <span class="text-xs text-blue-600 flex items-center">
                     <i class="fas fa-external-link-alt mr-1"></i>
-                    Xem chi tiết
+                    View Details
                   </span>
                 </div>
               </div>
               <div class="text-right">
                 <div class="text-xs text-gray-500">
-                  Chi tiết #{{ detailIndex + 1 }}
+                  Detail #{{ detailIndex + 1 }}
                 </div>
                 <div class="text-xs text-blue-600 mt-1">
                   <i class="fas fa-arrow-right"></i>
@@ -219,7 +219,7 @@
           class="text-center py-6 text-gray-500"
         >
           <i class="fas fa-info-circle text-2xl mb-2"></i>
-          <p>Chưa có chi tiết kế hoạch nào</p>
+          <p>No plan details yet</p>
         </div>
       </div>
     </div>
@@ -231,40 +231,40 @@
     >
       <div class="text-gray-400 text-6xl mb-4">📋</div>
       <h3 class="text-xl font-semibold text-gray-600 mb-2">
-        Chưa có nhóm kế hoạch
+        No plan groups
       </h3>
-      <p class="text-gray-500 mb-4">Kế hoạch này chưa có nhóm hoạt động nào.</p>
+      <p class="text-gray-500 mb-4">This plan has no activity groups yet.</p>
       <button
         (click)="onEditPlan()"
         class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:opacity-80"
       >
-        Thêm nhóm kế hoạch
+        Add Plan Group
       </button>
     </div>
 
     <!-- Plan Statistics -->
     <div class="bg-white rounded-lg shadow-md p-6">
       <h3 class="text-lg font-semibold text-gray-800 mb-4">
-        Thống kê kế hoạch
+        Plan Statistics
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="text-center p-4 bg-blue-50 rounded-lg">
           <div class="text-2xl font-bold text-blue-600">
             {{ plan.planGroups.length || 0 }}
           </div>
-          <div class="text-sm text-gray-600">Nhóm kế hoạch</div>
+          <div class="text-sm text-gray-600">Plan Groups</div>
         </div>
         <div class="text-center p-4 bg-green-50 rounded-lg">
           <div class="text-2xl font-bold text-green-600">
             {{ getTotalPlanDetails() }}
           </div>
-          <div class="text-sm text-gray-600">Chi tiết kế hoạch</div>
+          <div class="text-sm text-gray-600">Plan Details</div>
         </div>
         <div class="text-center p-4 bg-yellow-50 rounded-lg">
           <div class="text-2xl font-bold text-yellow-600">
             {{ plan.target }}
           </div>
-          <div class="text-sm text-gray-600">Điểm mục tiêu</div>
+          <div class="text-sm text-gray-600">Target Points</div>
         </div>
       </div>
     </div>

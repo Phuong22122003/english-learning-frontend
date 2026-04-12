@@ -55,7 +55,7 @@ export class StatisticComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label: 'Lượt xem',
+        label: 'Views',
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         tension: 0.4,
@@ -74,7 +74,7 @@ export class StatisticComponent implements OnInit {
       },
       title: {
         display: true,
-        text: 'Lượt xem theo thời gian',
+        text: 'Views Over Time',
       },
     },
     scales: {
@@ -93,7 +93,7 @@ export class StatisticComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label: 'Tổng lượt xem',
+        label: 'Total Views',
         backgroundColor: [
           'rgba(59, 130, 246, 0.8)',
           'rgba(34, 197, 94, 0.8)',
@@ -132,7 +132,7 @@ export class StatisticComponent implements OnInit {
       },
       title: {
         display: true,
-        text: 'Top chủ đề được xem nhiều nhất',
+        text: 'Top Viewed Topics',
       },
     },
     scales: {
@@ -149,11 +149,11 @@ export class StatisticComponent implements OnInit {
   totalViews: number = 0;
   selectedTimeRange: TimeRange = TimeRange.TODAY;
   timeRanges = [
-    { value: TimeRange.TODAY, label: 'Hôm nay' },
-    { value: TimeRange.ONE_WEEK, label: '1 tuần' },
-    { value: TimeRange.ONE_MONTH, label: '1 tháng' },
-    { value: TimeRange.TWELVE_MONTHS, label: '12 tháng' },
-    { value: TimeRange.ALL, label: 'Tất cả' },
+    { value: TimeRange.TODAY, label: 'Today' },
+    { value: TimeRange.ONE_WEEK, label: '1 Week' },
+    { value: TimeRange.ONE_MONTH, label: '1 Month' },
+    { value: TimeRange.TWELVE_MONTHS, label: '12 Months' },
+    { value: TimeRange.ALL, label: 'All' },
   ];
 
   topCount: number = 10;
@@ -255,11 +255,11 @@ export class StatisticComponent implements OnInit {
 
   selectedTimeRangeTotalUser: TimeRange = TimeRange.ALL;
   timeRangesTotalUser = [
-    { value: TimeRange.TODAY, label: 'Hôm nay' },
-    { value: TimeRange.ONE_WEEK, label: '1 tuần' },
-    { value: TimeRange.ONE_MONTH, label: '1 tháng' },
-    { value: TimeRange.TWELVE_MONTHS, label: '12 tháng' },
-    { value: TimeRange.ALL, label: 'Tất cả' },
+    { value: TimeRange.TODAY, label: 'Today' },
+    { value: TimeRange.ONE_WEEK, label: '1 Week' },
+    { value: TimeRange.ONE_MONTH, label: '1 Month' },
+    { value: TimeRange.TWELVE_MONTHS, label: '12 Months' },
+    { value: TimeRange.ALL, label: 'All' },
   ];
 
   // Line chart data for new elements by period
@@ -268,7 +268,7 @@ export class StatisticComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label: 'Số lượng mới',
+        label: 'New Items',
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         tension: 0.4,
@@ -291,7 +291,7 @@ export class StatisticComponent implements OnInit {
       },
       title: {
         display: true,
-        text: 'Users đã được tạo',
+        text: 'Total Users Created',
         font: {
           size: 16,
           weight: 'bold',
@@ -310,13 +310,13 @@ export class StatisticComponent implements OnInit {
         },
         title: {
           display: true,
-          text: 'Số lượng',
+          text: 'Count',
         },
       },
       x: {
         title: {
           display: true,
-          text: 'Thời gian',
+          text: 'Time',
         },
       },
     },
@@ -324,11 +324,11 @@ export class StatisticComponent implements OnInit {
 
   // Bar chart data for total statistics
   barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Tổng số'],
+    labels: ['Total'],
     datasets: [
       {
         data: [0],
-        label: 'Tổng số đã học',
+        label: 'Total Lessons Completed',
         backgroundColor: 'rgba(34, 197, 94, 0.8)',
         borderColor: 'rgb(34, 197, 94)',
         borderWidth: 1,
@@ -346,7 +346,7 @@ export class StatisticComponent implements OnInit {
       },
       title: {
         display: true,
-        text: 'Tổng số đã học',
+        text: 'Total Lessons Completed',
         font: {
           size: 16,
           weight: 'bold',
@@ -420,7 +420,7 @@ export class StatisticComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label: 'Điểm trung bình',
+        label: 'Average Score',
         borderColor: 'rgb(16, 185, 129)',
         backgroundColor: 'rgba(16, 185, 129, 0.15)',
         tension: 0.4,
@@ -436,13 +436,13 @@ export class StatisticComponent implements OnInit {
       legend: { display: false },
       title: {
         display: true,
-        text: 'Điểm trung bình theo thời gian',
+        text: 'Average Score Over Time',
       },
     },
     scales: {
       y: {
         beginAtZero: true,
-        suggestedMax: 10, // điểm thường từ 0–10
+        suggestedMax: 10, // score usually from 0–10
       },
     },
   };
@@ -491,7 +491,7 @@ export class StatisticComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label: 'Số lượt làm',
+        label: 'Test Attempts',
         borderColor: 'rgb(99, 102, 241)',
         backgroundColor: 'rgba(99, 102, 241, 0.15)',
         tension: 0.4,
@@ -505,7 +505,7 @@ export class StatisticComponent implements OnInit {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      title: { display: true, text: 'Lượt làm bài theo thời gian' },
+      title: { display: true, text: 'Test Attempts Over Time' },
     },
     scales: {
       y: { beginAtZero: true },
@@ -513,7 +513,7 @@ export class StatisticComponent implements OnInit {
   };
 
   private updateTestTakenChart(map: Record<string, number>): void {
-    const labels = Object.keys(map).sort(); // OK nếu key là yyyy-MM-dd
+    const labels = Object.keys(map).sort(); // OK if key is yyyy-MM-dd
     const values = labels.map((k) => map[k]);
 
     this.testTakenChartData = {

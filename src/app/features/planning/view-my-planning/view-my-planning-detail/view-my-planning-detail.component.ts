@@ -56,16 +56,17 @@ export class ViewMyPlanningDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.error = 'Không thể tải chi tiết kế hoạch. Vui lòng thử lại.';
-        this.isLoading = false;},
+        this.error = 'Unable to load plan details. Please try again.';
+        this.isLoading = false;
+},
     });
   }
 
   getTestTypeLabel(topicType: ItemTypeEnum): string {
     const typeLabels: { [key in ItemTypeEnum]?: string } = {
-      [ItemTypeEnum.VOCABULARY]: 'Từ vựng',
-      [ItemTypeEnum.GRAMMAR]: 'Ngữ pháp',
-      [ItemTypeEnum.LISTENING]: 'Nghe hiểu',
+      [ItemTypeEnum.VOCABULARY]: 'Vocabulary',
+      [ItemTypeEnum.GRAMMAR]: 'Grammar',
+      [ItemTypeEnum.LISTENING]: 'Listening',
     };
     return typeLabels[topicType] || topicType;
   }
@@ -79,15 +80,15 @@ export class ViewMyPlanningDetailComponent implements OnInit {
   }
 
   getStatusLabel(isCompleted: boolean): string {
-    return isCompleted ? 'Hoàn thành' : 'Đang thực hiện';
+    return isCompleted ? 'Completed' : 'In Progress';
   }
 
   formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('vi-VN');
+    return new Date(dateString).toLocaleDateString('en-US');
   }
 
   formatDateTime(dateString: string): string {
-    return new Date(dateString).toLocaleString('vi-VN');
+    return new Date(dateString).toLocaleString('en-US');
   }
 
   getProgressPercentage(): number {
@@ -113,12 +114,13 @@ export class ViewMyPlanningDetailComponent implements OnInit {
 
   onDeletePlan() {
     // Show confirmation dialog and delete
-    if (confirm(`Bạn có chắc chắn muốn xóa kế hoạch "${this.plan.title}"?`)) {
+    if (confirm(`Are you sure you want to delete the plan "${this.plan.title}"?`)) {
       this.planService.deletePlan(this.planId).subscribe({
         next: () => {
           this.router.navigate(['/planning']);
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
     }
   }

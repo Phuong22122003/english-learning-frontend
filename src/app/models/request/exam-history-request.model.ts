@@ -4,7 +4,7 @@ import { UserAnswerRequest } from './user-answer-request.model';
 
 export interface ExamHistoryRequest {
   name: string;
-  duration?: number;
+  duration: number;
   testType: ItemTypeEnum;
   testId: string;
   score: number;

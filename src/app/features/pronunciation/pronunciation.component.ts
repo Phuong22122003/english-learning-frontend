@@ -41,7 +41,7 @@ export class PronunciationComponent implements OnInit {
 
   getReferencePronunciation() {
     if (!this.textToPronounce.trim()) {
-      alert('Vui lòng nhập text để lấy phát âm chuẩn');
+      alert('Please enter text to get standard pronunciation');
       return;
     }
 
@@ -58,8 +58,9 @@ export class PronunciationComponent implements OnInit {
         this.createReferenceAudioFromBase64(response.audio_base64);
         this.isGettingPronunciation = false;
       },
-      error: (error) => {this.isGettingPronunciation = false;
-        alert('Lỗi khi lấy phát âm chuẩn. Vui lòng thử lại.');
+      error: (error) => {
+this.isGettingPronunciation = false;
+        alert('Error getting standard pronunciation. Please try again.');
       },
     });
   }
@@ -95,15 +96,18 @@ export class PronunciationComponent implements OnInit {
         this.isPlayingReference = false;
       };
       this.referenceAudioElement.onerror = () => {
-        this.isPlayingReference = false;};
-    } catch (error) {this.isGettingPronunciation = false;
+        this.isPlayingReference = false;
+};
+    } catch (error) {
+this.isGettingPronunciation = false;
     }
   }
 
   playReferenceAudio() {
     if (this.referenceAudioElement && !this.isPlayingReference) {
       this.isPlayingReference = true;
-      this.referenceAudioElement.play().catch((error) => {this.isPlayingReference = false;
+      this.referenceAudioElement.play().catch((error) => {
+this.isPlayingReference = false;
       });
     }
   }
@@ -143,17 +147,17 @@ export class PronunciationComponent implements OnInit {
           const recordedDuration = audio.duration;
 
           if (recordedDuration < this.minDurationAudio) {
-            // Xoá data
+            // Clear data
             this.audioBlob = null!;
             this.audioChunks = [];
             URL.revokeObjectURL(this.audioUrl!);
             this.audioUrl = null;
 
-            // Thông báo cho user
+            // Notify user
             alert(
-              'Âm thanh quá ngắn (< ' +
+              'Audio too short (< ' +
                 this.minDurationAudio +
-                ' giây). Vui lòng ghi âm lại.'
+                ' seconds). Please record again.'
             );
 
             this.isRecording = false;
@@ -168,9 +172,9 @@ export class PronunciationComponent implements OnInit {
             URL.revokeObjectURL(this.audioUrl!);
             this.audioUrl = null;
             alert(
-              'Âm thanh quá dài (> ' +
+              'Audio too long (> ' +
                 this.maxDurationAudio +
-                ' giây). Vui lòng ghi âm lại.'
+                ' seconds). Please record again.'
             );
             this.isRecording = false;
             this.isProcessing = false;
@@ -180,7 +184,7 @@ export class PronunciationComponent implements OnInit {
           this.isValidAudio = true;
         };
 
-        // Dừng stream
+        // Stop stream
         stream.getTracks().forEach((track) => track.stop());
       };
 
@@ -193,7 +197,8 @@ export class PronunciationComponent implements OnInit {
         this.audioUrl = null;
       }
 
-    } catch (error) {alert('Error accessing microphone. Please check your permissions.');
+    } catch (error) {
+alert('Error accessing microphone. Please check your permissions.');
     }
   }
 
@@ -234,7 +239,8 @@ export class PronunciationComponent implements OnInit {
         this.pronunciationResult = response;
         this.isProcessing = false;
       },
-      error: (error) => {this.isProcessing = false;
+      error: (error) => {
+this.isProcessing = false;
         alert('Error evaluating pronunciation. Please try again.');
       },
     });

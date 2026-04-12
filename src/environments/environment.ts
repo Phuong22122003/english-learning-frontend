@@ -1,10 +1,10 @@
 // src/environments/environment.ts
 export const environment = {
   production: false,
-  apiUserServiceUrl: 'http://localhost:8080/api/user-service',
-  apiContentServiceUrl: 'http://localhost:8080/api/content-service',
-  apiLearningServiceUrl: 'http://localhost:8080/api/learning-service',
-  apiAgentServiceUrl: 'http://localhost:8080/api/agent-service',
+  apiUserServiceUrl: 'https://backend.pqenglish.io.vn/api/user-service',
+  apiContentServiceUrl: 'https://backend.pqenglish.io.vn/api/content-service',
+  apiLearningServiceUrl: 'https://backend.pqenglish.io.vn/api/learning-service',
+  apiAgentServiceUrl: 'https://backend.pqenglish.io.vn/api/agent-service',
   excelVocabularyTestsTemplate: 'vocabulary_test.xlsx',
   excelVocabularyTemplate: 'vocabulary_upload.xlsx',
   excelListeningTemplate: 'listening_import_template.xlsx',

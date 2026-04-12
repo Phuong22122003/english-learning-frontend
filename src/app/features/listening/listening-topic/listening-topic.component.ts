@@ -66,13 +66,15 @@ export class ListeningTopicsComponent implements OnInit {
   }
 
   loadFavorites() {
-    this.favoriteService.getFavoritesByType(ItemTypeEnum.LISTENING).subscribe({
+    this.favoriteService.getFavoriteIdsByType(ItemTypeEnum.LISTENING);
+    this.favoriteService.favoritesIds$.subscribe({
       next: (favorites) => {
         this.favoriteTopicIds = new Map(
           favorites.map((f) => [f.listeningTopic?.id, f.id])
         );
       },
-      error: (error) => {},
+      error: (error) => {
+},
     });
   }
 
@@ -98,7 +100,8 @@ export class ListeningTopicsComponent implements OnInit {
           this.favoriteTopicIds.set(topic.id, response.id);
           topic.favoriteId = response.id;
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
   }
 
@@ -110,7 +113,8 @@ export class ListeningTopicsComponent implements OnInit {
           this.favoriteTopicIds.delete(topic.id);
           topic.favoriteId = undefined;
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
     }
   }

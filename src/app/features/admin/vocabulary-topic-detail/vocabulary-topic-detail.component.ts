@@ -131,6 +131,8 @@ export class VocabularyTopicDetailComponent implements OnInit {
       if (vocabToCreate.imageFile) {
         images.push(vocabToCreate.imageFile);
       }
+      vocabToCreate.imageName = vocabToCreate.imageFile ? vocabToCreate.imageFile.name : '';
+      vocabToCreate.audioName = vocabToCreate.audioFile ? vocabToCreate.audioFile.name : '';
       vocabs.push(vocabToCreate);
       this.vocabService
         .addVocabularies(this.topicId, vocabs, images, audios)

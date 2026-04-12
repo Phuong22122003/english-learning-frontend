@@ -42,12 +42,12 @@ export class HistoryDetailComponent implements OnInit {
   }
 
   // Hàm quan trọng: Tính số thứ tự câu hỏi (Ví dụ: Group 1 có 3 câu, thì câu đầu Group 2 là số 4)
-  getGlobalIndex(groupIndex: number, questionIndex: number): number {
+  getGlobalIndex(groupIndex: number, answerIndex: number): number {
     let count = 0;
     for (let i = 0; i < groupIndex; i++) {
       count += this.historyDetail?.answerGroups[i].answers.length || 0;
     }
-    return count + questionIndex + 1;
+    return count + answerIndex + 1;
   }
 
   getCorrectAnswersCount(): number {
@@ -57,8 +57,8 @@ export class HistoryDetailComponent implements OnInit {
       .filter(q => q.selectedAnswer === q.correctAnswer).length;
   }
 
-  isAnswerCorrect(question: UserAnswerResponse): boolean {
-    return question.selectedAnswer === question.correctAnswer;
+  isAnswerCorrect(answer: UserAnswerResponse): boolean {
+    return answer.selectedAnswer === answer.correctAnswer;
   }
 
   getObjectKeys(obj: any): string[] {
@@ -69,8 +69,8 @@ export class HistoryDetailComponent implements OnInit {
     const labels: { [key: string]: string } = {
       'GRAMMAR': 'Ngữ pháp',
       'LISTENING': 'Nghe hiểu',
-      'VOCABULARY': 'Từ vựng',
-      'FULL_TEST': 'Bài thi đầy đủ'
+      'VOCABULARY': 'Vocabulary',
+      'FULL_TEST': 'Toeic'
     };
     return labels[testType] || testType;
   }

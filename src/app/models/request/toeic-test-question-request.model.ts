@@ -8,4 +8,5 @@ export interface ToeicTestQuestionRequest {
   correctAnswer: string;
   explanation?: string;
   action?: RequestType;
+  questionOrder: number;
 }

@@ -29,11 +29,11 @@ export class HistoryComponent implements OnInit {
   common = CommonUtils;
   // Filter options
   filterOptions = [
-    { value: FilterType.ALL, label: 'Tất cả' },
-    { value: FilterType.GRAMMAR, label: 'Ngữ pháp' },
-    { value: FilterType.LISTENING, label: 'Nghe' },
-    { value: FilterType.VOCABULARY, label: 'Từ vựng' },
-    { value: FilterType.FULL_TEST, label: 'TOEIC Test' },
+    { value: FilterType.ALL, label: 'All' },
+    { value: FilterType.GRAMMAR, label: 'Grammar' },
+    { value: FilterType.LISTENING, label: 'Listening' },
+    { value: FilterType.VOCABULARY, label: 'Vocabulary' },
+    { value: FilterType.FULL_TEST, label: 'TOEIC' },
   ];
 
   ngOnInit(): void {
@@ -69,13 +69,13 @@ export class HistoryComponent implements OnInit {
   getTestTypeLabel(testType: string): string {
     switch (testType) {
       case 'GRAMMAR':
-        return 'Ngữ pháp';
+        return 'Grammar';
       case 'LISTENING':
-        return 'Nghe';
+        return 'Listening';
       case 'VOCABULARY':
-        return 'Từ vựng';
+        return 'Vocabulary';
       case 'FULL_TEST':
-        return 'Bài thi đầy đủ';
+        return 'TOEIC';
       default:
         return testType;
     }
@@ -85,7 +85,7 @@ export class HistoryComponent implements OnInit {
     const option = this.filterOptions.find(
       (f) => f.value === this.selectedFilter
     );
-    return option ? option.label : 'Tất cả';
+    return option ? option.label : 'All';
   }
 
   getScoreColor(score: number): string {

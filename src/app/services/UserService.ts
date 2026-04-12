@@ -15,7 +15,7 @@ export class UserService {
 
   user$ = this.userSource.asObservable();
 
-  private apiUrl = environment.apiUserServiceUrl; // ví dụ: http://localhost:8080/api
+  private apiUrl = environment.apiUserServiceUrl; // example: http://localhost:8080/api
   constructor(private http: HttpClient) {}
 
   // ---------- AUTHENTICATION ----------

@@ -6,6 +6,7 @@ import { FilterType } from '../models/request/filter-type';
 import { Page } from '../models/page.model';
 import { ExamHistoryResponse } from '../models/response/exam-history-response.model';
 import { ExamHistoryRequest } from '../models/request/exam-history-request.model';
+import { RankingResponse } from '../models/response/ranking-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class HistoryService {
     return this.http.get<Page<ExamHistoryResponse>>(
       `${this.apiUrl}?page=${page}&limit=${limit}&filterType=${filterType}`
     );
+  }
+
+  getToeicRankings(toeicId: string): Observable<RankingResponse[]>{
+    return this.http.get<RankingResponse[]>(`${this.apiUrl}/toeic/${toeicId}/rankings`);
   }
 
   addHistory(history: ExamHistoryRequest): Observable<ExamHistoryResponse> {

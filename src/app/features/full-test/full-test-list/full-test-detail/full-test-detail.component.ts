@@ -10,7 +10,10 @@ import {
   faChevronLeft,
   faChevronRight,
   faThLarge,
-  faFileAlt
+  faFileAlt,
+  faQuoteLeft,
+  faHeadphones,
+  faMicrophoneSlash
 } from '@fortawesome/free-solid-svg-icons';
 import { ToeicTestResponse } from '../../../../models/response/toeict-test-response.model';
 import { ToeicTestService } from '../../../../services/ToeicTestService';
@@ -43,7 +46,9 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
 
   isTestStarted = false;
   isTestCompleted = false;
+  isTestPause = false;
   isLoading = false;
+  isListeningMode = true;
   startDate: string = '';
 
   faArrowLeft = faArrowLeft;
@@ -54,6 +59,9 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
   faChevronRight = faChevronRight;
   faThLarge = faThLarge;
   faFileAlt = faFileAlt;
+  faQuoteLeft = faQuoteLeft;
+  faHeadphones = faHeadphones;
+  faMicrophoneSlash = faMicrophoneSlash;
 
   constructor(
     private route: ActivatedRoute,
@@ -79,8 +87,6 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
     this.toeicTestService.getTestById(this.testId).subscribe({
       next: (test) => {
         this.test = test;
-        console.log(test);
-        
         this.isLoading = false;
       },
       error: () => this.isLoading = false
@@ -201,7 +207,7 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
 
   // Nhảy tới Group chứa câu hỏi khi click số ở Sidebar
   jumpToQuestion(questionId: string) {
-    if (!this.test) return;
+    if (!this.test || this.isListeningMode) return;
     const groupIndex = this.test.questionGroups.findIndex(g =>
       g.questions.some(q => q.id === questionId)
     );
@@ -215,7 +221,27 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
       }, 100);
     }
   }
-
+  handleAudioFinished(): void {
+    if (this.isListeningMode) {
+      setTimeout(()=>{
+        // Nếu chưa phải group cuối cùng thì nhảy sang group tiếp theo
+        if (this.currentGroupIndex < (this.test?.questionGroups?.length || 0) - 1) {
+          let prevGroup = this.getCurrentGroup();
+          this.currentGroupIndex++;
+          let currentGroup = this.getCurrentGroup();
+          if(currentGroup.part>4){
+            this.isTestPause = false;
+            this.isListeningMode = false;
+          }else if(prevGroup.part != currentGroup.part){
+            this.isTestPause = true;
+          }
+          // Scroll lên đầu trang để người dùng thấy nội dung mới
+          const mainContent = document.querySelector('main .overflow-y-auto');
+          mainContent?.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      },3000);
+    }
+  }
   isQuestionAnswered(questionId: string): boolean {
     return !!this.selectedAnswers[questionId];
   }
@@ -224,13 +250,19 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
 
   startTest(): void {
     this.isTestStarted = true;
+    this.isTestPause = true;
     this.startDate = CommonUtils.getNow();
     this.startTimer();
+  }
+
+  continueTest():void{
+    this.isTestPause = false;
   }
 
   startTimer(): void {
     this.timerInterval = setInterval(() => {
       if (this.timeRemaining > 0) {
+        if(this.isTestPause) return;
         this.timeRemaining--;
       } else {
         this.submitTest(true);
@@ -254,12 +286,14 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
   }
 
   nextGroup(): void {
+    if(this.isListeningMode) return;
     if (this.currentGroupIndex < (this.test?.questionGroups?.length || 0) - 1) {
       this.currentGroupIndex++;
     }
   }
 
   prevGroup(): void {
+    if(this.isListeningMode) return;
     if (this.currentGroupIndex > 0) {
       this.currentGroupIndex--;
     }
@@ -352,7 +386,6 @@ export class FullTestDetailComponent implements OnInit, OnDestroy {
       takenAt: this.startDate,
       submittedAt: CommonUtils.getNow(),
     };
-    console.log(historyRequest);
     
     this.historyService.addHistory(historyRequest).subscribe({
       next: () => this.router.navigate(['/history']),

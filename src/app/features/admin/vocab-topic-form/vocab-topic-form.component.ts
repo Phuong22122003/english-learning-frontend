@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faTimes, faImage, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { VocabTopic } from '../../../models/vocabulary/vocab-topic.model';
 import { Level } from '../../../models/level.enum';
 import { TopicBase } from '../../../models/topic-base';
@@ -35,6 +35,8 @@ export class VocabTopicFormComponent implements OnInit {
 
   faSave = faSave;
   faTimes = faTimes;
+  faChevronDown = faChevronDown;
+  faImage = faImage;
   Level = Level; // Expose Level enum to template
 
   constructor(private fb: FormBuilder) {}

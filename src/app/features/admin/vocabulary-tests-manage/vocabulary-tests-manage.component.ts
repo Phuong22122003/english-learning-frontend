@@ -91,10 +91,10 @@ export class VocabularyTestsManageComponent implements OnInit {
     this.loadTopics();
   }
   loadTopics() {
-    this.vocabService
-      .getTopics(this.currentPage - 1, this.PAGE_SIZE) // Load all topics for selection
-      .subscribe({
+    this.vocabService.getTopics(this.currentPage - 1, this.PAGE_SIZE) // Load all topics for selection
+    this.vocabService.topics$.subscribe({
         next: (data) => {
+          if(data == null) return;
           this.topics = data.content;
           this.topicsBase = data.content.map((topic) => ({
             id: topic.id,
@@ -105,7 +105,8 @@ export class VocabularyTestsManageComponent implements OnInit {
           this.currentPage = data.pageable.pageNumber + 1;
           this.totalPages = data.totalPages;
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
   }
   onTopicSelect(topic: TopicBase) {
@@ -121,17 +122,18 @@ export class VocabularyTestsManageComponent implements OnInit {
       .getTestsByTopicId(topicId, this.currentPage - 1, this.PAGE_SIZE)
       .subscribe({
         next: (data) => {
-          this.tests = data.vocabularyTests.content;
-          this.currentPage = data.vocabularyTests.pageable.pageNumber + 1;
-          this.totalPages = data.vocabularyTests.totalPages;
-          this.testsBase = data.vocabularyTests.content.map((test) => ({
+          this.tests = data.tests.content;
+          this.currentPage = data.tests.pageable.pageNumber + 1;
+          this.totalPages = data.tests.totalPages;
+          this.testsBase = data.tests.content.map((test) => ({
             id: test.id,
             name: test.name || test.topicName || '',
             duration: test.duration,
             createdAt: test.createdAt,
           }));
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
   }
   onPageChange(page: number) {
@@ -149,7 +151,8 @@ export class VocabularyTestsManageComponent implements OnInit {
   }
 
   onSaveTest(testData: TestFormData) {
-    if (!this.selectedTopic) {return;
+    if (!this.selectedTopic) {
+return;
     }
     const formData = new FormData();
 
@@ -227,7 +230,8 @@ export class VocabularyTestsManageComponent implements OnInit {
             // Reload tests for the current topic
             this.loadTestsForTopic(this.selectedTopic!.id);
           },
-          error: (error) => {alert('Không thể cập nhật bài test');
+          error: (error) => {
+alert('Không thể cập nhật bài test');
           },
         });
     } else {
@@ -240,7 +244,8 @@ export class VocabularyTestsManageComponent implements OnInit {
             // Reload tests for the current topic
             this.loadTestsForTopic(this.selectedTopic!.id);
           },
-          error: (error) => {alert('Không thể tạo bài test');
+          error: (error) => {
+alert('Không thể tạo bài test');
           },
         });
     }
@@ -273,7 +278,8 @@ export class VocabularyTestsManageComponent implements OnInit {
             this.showDeleteConfirm = false;
             this.testToDelete = null;
           },
-          error: (error) => {alert('Không thể xóa bài test');
+          error: (error) => {
+alert('Không thể xóa bài test');
             this.showDeleteConfirm = false;
             this.testToDelete = null;
           },
@@ -296,7 +302,8 @@ export class VocabularyTestsManageComponent implements OnInit {
         this.currentState = State.Edit;
         this.vocabularyTestConfig.topicName = this.selectedTopic?.name || '';
       },
-      error: (error) => {alert('Không thể tải thông tin bài test');
+      error: (error) => {
+alert('Không thể tải thông tin bài test');
       },
     });
   }
@@ -330,7 +337,8 @@ export class VocabularyTestsManageComponent implements OnInit {
           this.currentState = State.View;
           this.loadTestsForTopic(this.selectedTopic!.id);
         },
-        error: (error) => {alert('Không thể tải lên bài test');
+        error: (error) => {
+alert('Không thể tải lên bài test');
         },
       });
   }

@@ -9,4 +9,5 @@ export interface ToeicTestQuestionGroupRequest {
   imageName?: string;
   audioName?: string;
   questions: ToeicTestQuestionRequest[];
+  groupOrder: number;
 }

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSave, faTimes, faFile } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faTimes, faFile, faImage, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { ListeningTopic } from '../../../models/listening/listening-topic.model';
 import { Level } from '../../../models/level.enum';
 import { TopicBase } from '../../../models/topic-base';
@@ -22,7 +22,8 @@ export class ListeningTopicFormComponent implements OnInit {
   faSave = faSave;
   faTimes = faTimes;
   faFile = faFile;
-
+  faImage = faImage;
+  faChevronDown = faChevronDown;
   topic: Partial<ListeningTopic> = {
     name: '',
     description: '',

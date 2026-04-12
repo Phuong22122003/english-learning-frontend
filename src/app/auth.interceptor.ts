@@ -18,8 +18,8 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
-  // Bật loading khi request bắt đầu
-  loadingService.show();
+  // Enable loading when request starts
+  // loadingService.show();
 
   return next(authReq).pipe(
     catchError((err) => {
@@ -30,8 +30,8 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
       return throwError(() => err);
     }),
     finalize(() => {
-      // Tắt loading khi request kết thúc (dù success hay error)
-      loadingService.hide();
+      // Disable loading when request ends (whether success or error)
+      // loadingService.hide();
     })
   );
 };

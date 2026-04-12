@@ -88,8 +88,10 @@ export class TopicDetailComponent implements OnInit {
     this.isLoading = true;
     // Assuming we need to get topic from list first or there's a getById method
     // For now, using getTopics and filtering
-    this.vocabularyService.getTopics(0, this.PAGE_SIZE).subscribe({
+    this.vocabularyService.getTopics(0, this.PAGE_SIZE)
+    this.vocabularyService.topics$.subscribe({
       next: (page) => {
+        if(page == null) return;
         const foundTopic = page.content.find((t: any) => t.id === id);
         if (foundTopic) {
           this.topic = this.mapToTopicBase(foundTopic);
@@ -99,7 +101,8 @@ export class TopicDetailComponent implements OnInit {
         }
         this.isLoading = false;
       },
-      error: (err) => {this.error = 'Failed to load topic';
+      error: (err) => {
+this.error = 'Failed to load topic';
         this.isLoading = false;
       },
     });
@@ -111,7 +114,7 @@ export class TopicDetailComponent implements OnInit {
       .getTestsByTopicId(topicId, 0, this.PAGE_SIZE)
       .subscribe({
         next: (response) => {
-          this.tests = (response.vocabularyTests?.content || []).map(
+          this.tests = (response.tests?.content || []).map(
             (test: any) => ({
               id: test.id || test.testId || '',
               name: test.name || '',
@@ -119,10 +122,11 @@ export class TopicDetailComponent implements OnInit {
               createdAt: test.createdAt,
             })
           );
-          this.totalTests = response.vocabularyTests?.totalElements || 0;
+          this.totalTests = response.tests?.totalElements || 0;
           this.isLoadingTests = false;
         },
-        error: (err) => {this.isLoadingTests = false;
+        error: (err) => {
+this.isLoadingTests = false;
           // Don't set error, just log it
         },
       });
@@ -141,7 +145,8 @@ export class TopicDetailComponent implements OnInit {
         }
         this.isLoading = false;
       },
-      error: (err) => {this.error = 'Failed to load topic';
+      error: (err) => {
+this.error = 'Failed to load topic';
         this.isLoading = false;
       },
     });
@@ -160,7 +165,8 @@ export class TopicDetailComponent implements OnInit {
         this.totalTests = response.tests?.totalElements || 0;
         this.isLoadingTests = false;
       },
-      error: (err) => {this.isLoadingTests = false;
+      error: (err) => {
+this.isLoadingTests = false;
       },
     });
   }
@@ -178,7 +184,8 @@ export class TopicDetailComponent implements OnInit {
         }
         this.isLoading = false;
       },
-      error: (err) => {this.error = 'Failed to load topic';
+      error: (err) => {
+this.error = 'Failed to load topic';
         this.isLoading = false;
       },
     });
@@ -199,7 +206,8 @@ export class TopicDetailComponent implements OnInit {
           this.totalTests = response.tests?.totalElements || 0;
           this.isLoadingTests = false;
         },
-        error: (err) => {this.isLoadingTests = false;
+        error: (err) => {
+this.isLoadingTests = false;
         },
       });
   }

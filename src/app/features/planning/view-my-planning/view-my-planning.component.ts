@@ -63,8 +63,9 @@ export class ViewMyPlanningComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.error = 'Không thể tải danh sách kế hoạch. Vui lòng thử lại.';
-        this.isLoading = false;},
+        this.error = 'Unable to load plan list. Please try again.';
+        this.isLoading = false;
+},
     });
   }
 
@@ -77,11 +78,11 @@ export class ViewMyPlanningComponent implements OnInit {
   }
 
   getStatusLabel(isCompleted: boolean): string {
-    return isCompleted ? 'Hoàn thành' : 'Đang thực hiện';
+    return isCompleted ? 'Completed' : 'In Progress';
   }
 
   formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('vi-VN');
+    return new Date(dateString).toLocaleDateString('en-US');
   }
 
   getProgressPercentage(plan: PlanResponse): number {
@@ -113,13 +114,14 @@ export class ViewMyPlanningComponent implements OnInit {
 
   onDeletePlan(plan: PlanResponse) {
     // Show confirmation dialog and delete
-    if (confirm(`Bạn có chắc chắn muốn xóa kế hoạch "${plan.title}"?`)) {
+    if (confirm(`Are you sure you want to delete the plan "${plan.title}"?`)) {
       this.planService.deletePlan(plan.id).subscribe({
         next: () => {
           this.loadPlans(this.currentPage - 1);
           this.router.navigate(['/planning']);
         },
-        error: (error) => {},
+        error: (error) => {
+},
       });
     }
   }
@@ -169,7 +171,8 @@ export class ViewMyPlanningComponent implements OnInit {
             });
           },
           error: (error) => {
-            this.isLoading = false;},
+            this.isLoading = false;
+},
         });
     }
   }

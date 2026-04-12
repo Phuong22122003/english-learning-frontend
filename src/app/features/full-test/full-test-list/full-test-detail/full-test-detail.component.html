@@ -13,12 +13,81 @@
         <span class="font-bold">{{ getFormattedTime() }}</span>
       </div>
       <button (click)="submitTest()" class="bg-orange-500 hover:bg-orange-600 px-6 py-2 rounded-lg font-bold transition-all shadow-md active:scale-95 text-xs uppercase text-white">
-        Nộp bài
+        Submit
       </button>
     </div>
   </header>
+  <div *ngIf="isTestStarted && !isTestCompleted && !isLoading && isTestPause" class="flex-1 overflow-y-auto p-6 flex items-center justify-center">
+  <div class="max-w-2xl w-full bg-white rounded-[2.5rem] shadow-2xl p-10 border border-slate-100 animate-fade-in">
+    
+    <div class="text-center space-y-4 mb-8">
+      <div class="inline-block px-6 py-2 bg-orange-100 text-orange-600 rounded-full font-black text-xs uppercase tracking-widest">
+        SECTION INSTRUCTIONS
+      </div>
+      <h2 class="text-4xl font-black text-blue-900 uppercase tracking-tight">
+        PART {{ getCurrentGroup().part }}
+      </h2>
+      <div class="h-1.5 w-16 bg-blue-900 mx-auto rounded-full"></div>
+    </div>
 
-   <div *ngIf="!isTestStarted && !isTestCompleted && !isLoading" class="flex-1 overflow-y-auto p-6 flex items-center justify-center">
+    <div *ngIf="getCurrentGroup().part >= 1 && getCurrentGroup().part <= 4" class="space-y-6 mb-10">
+      <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 relative overflow-hidden">
+        <fa-icon [icon]="faQuoteLeft" class="absolute top-4 left-4 text-slate-200 text-4xl"></fa-icon>
+        
+        <div [ngSwitch]="getCurrentGroup().part" class="relative z-10 text-slate-600 leading-relaxed text-base">
+          <div *ngSwitchCase="1">
+            <p class="font-bold text-slate-800 mb-2">Photographs</p>
+            <p>For each question in this part, you will hear four statements about a picture. When you hear the statements, you must select the one statement that best describes what you see in the picture.</p>
+          </div>
+          
+          <div *ngSwitchCase="2">
+            <p class="font-bold text-slate-800 mb-2">Question-Response</p>
+            <p>You will hear a question or statement and three responses spoken in English. Select the best response to the question or statement and mark the letter (A), (B), or (C).</p>
+          </div>
+
+          <div *ngSwitchCase="3">
+            <p class="font-bold text-slate-800 mb-2">Short Conversations</p>
+            <p>You will hear some conversations between two or more people. You will be asked to answer three questions about what the speakers say in each conversation.</p>
+          </div>
+
+          <div *ngSwitchCase="4">
+            <p class="font-bold text-slate-800 mb-2">Short Talks</p>
+            <p>You will hear some short talks given by a single speaker. You will be asked to answer three questions about what the speaker says in each short talk.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center gap-8">
+        <div class="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase">
+          <fa-icon [icon]="faHeadphones" class="text-blue-500"></fa-icon>
+          <span>Audio Required</span>
+        </div>
+        <div class="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase">
+          <fa-icon [icon]="faMicrophoneSlash" class="text-orange-500"></fa-icon>
+          <span>No Speaking</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="getCurrentGroup().part > 4" class="mb-10 text-center text-slate-500 italic">
+       Standard Reading Section procedures apply. Focus on your time management.
+    </div>
+
+    <div class="hidden">
+      <app-audio-player [src]="test.partAudios[getCurrentGroup().part - 1]" [autoPlay]="isTestPause" (onEnded)="continueTest()"></app-audio-player>
+    </div>
+
+    <button (click)="continueTest()" 
+            class="group relative w-full bg-blue-900 text-white py-6 rounded-2xl font-black text-xl hover:bg-blue-800 transition-all shadow-xl shadow-blue-200 uppercase tracking-[0.3em]">
+      <span class="relative z-10">Start Part {{ getCurrentGroup().part }}</span>
+    </button>
+    
+    <p class="text-center mt-6 text-slate-400 text-[10px] uppercase font-bold tracking-widest">
+      Timer will continue once you click start
+    </p>
+  </div>
+</div>
+  <div *ngIf="!isTestStarted && !isTestCompleted && !isLoading" class="flex-1 overflow-y-auto p-6 flex items-center justify-center">
     <div class="max-w-3xl w-full bg-white rounded-[2.5rem] shadow-2xl p-10 border border-slate-100 text-center space-y-8 animate-fade-in">
       <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto text-3xl">
         <fa-icon [icon]="faFileAlt"></fa-icon>
@@ -26,33 +95,33 @@
       <div>
         <h2 class="text-4xl font-black text-slate-800 mb-3">{{ test?.name }}</h2>
         <div class="flex justify-center gap-4 text-slate-500 font-bold">
-          <span class="bg-slate-100 px-4 py-1 rounded-full">200 Câu hỏi</span>
-          <span class="bg-slate-100 px-4 py-1 rounded-full">120 Phút</span>
+          <span class="bg-slate-100 px-4 py-1 rounded-full">200 Questions</span>
+          <span class="bg-slate-100 px-4 py-1 rounded-full">120 Minutes</span>
         </div>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
           <h4 class="font-bold text-emerald-800 mb-1">Listening Section</h4>
-          <p class="text-sm text-emerald-700/80">Part 1 - Part 4: Cần tai nghe ổn định.</p>
+          <p class="text-sm text-emerald-700/80">Part 1 - Part 4: Stable headphones required.</p>
         </div>
         <div class="p-4 bg-blue-50 rounded-2xl border border-blue-100">
           <h4 class="font-bold text-blue-800 mb-1">Reading Section</h4>
-          <p class="text-sm text-blue-700/80">Part 5 - Part 7: Quản lý thời gian tốt.</p>
+          <p class="text-sm text-blue-700/80">Part 5 - Part 7: Good time management required.</p>
         </div>
       </div>
 
       <button (click)="startTest()" 
               class="w-full bg-blue-900 text-white py-5 rounded-2xl font-black text-xl hover:bg-blue-800 transition-all shadow-xl shadow-blue-200 uppercase tracking-widest">
-        Bắt đầu làm bài
+        Start Test
       </button>
     </div>
   </div>
 
-  <div *ngIf="isTestStarted && !isTestCompleted" class="flex-1 flex overflow-hidden">
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 hidden lg:flex">
+  <div *ngIf="isTestStarted && !isTestCompleted && !isTestPause" class="flex-1 flex overflow-hidden">
+    <aside *ngIf="!isListeningMode" class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 hidden lg:flex">
       <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-        <span class="font-bold text-slate-700 text-xs uppercase">Câu hỏi</span>
+        <span class="font-bold text-slate-700 text-xs uppercase">Questions</span>
         <span class="text-blue-600 text-xs font-black">{{ getAnsweredCount() }}/{{ getTotalQuestions() }}</span>
       </div>
 
@@ -85,8 +154,8 @@
             <div *ngIf="group.imageUrls?.length" class="flex flex-col items-center gap-2">
               <img *ngFor="let url of group.imageUrls" [src]="url" class="rounded-lg shadow-sm max-w-full h-auto border border-slate-100" />
             </div>
-            <div *ngIf="group.audioUrl" class="sticky top-0 bg-white z-10 pb-2 border-b">
-              <app-audio-player [src]="group.audioUrl"></app-audio-player>
+            <div *ngIf="group.audioUrl && isListeningMode" class="hidden sticky top-0 bg-white z-10 pb-2 border-b">
+              <app-audio-player [src]="group.audioUrl" [autoPlay]="isTestStarted" (onEnded)="handleAudioFinished()"></app-audio-player>
             </div>
             <div *ngIf="group.passageText" class="p-4 bg-slate-50 rounded-xl text-slate-700 leading-relaxed text-base italic whitespace-pre-line border border-slate-100">
               {{ group.passageText }}
@@ -100,7 +169,7 @@
               <div class="flex justify-between items-start mb-4">
                 <div class="flex gap-3">
                   <span class="bg-slate-800 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0">Q</span>
-                  <h3 class="text-base font-bold text-slate-800 leading-snug">{{ q.question || "Chọn đáp án đúng" }}</h3>
+                  <h3 class="text-base font-bold text-slate-800 leading-snug">{{ q.question || "Select the correct answer" }}</h3>
                 </div>
                 <button (click)="toggleMark(q.id)" [ngClass]="markedQuestions.has(q.id) ? 'text-orange-500' : 'text-slate-300'" class="p-1 hover:scale-110 transition-transform">
                   <fa-icon [icon]="faFlag"></fa-icon>
@@ -108,24 +177,34 @@
               </div>
 
               <div class="grid grid-cols-1 gap-2">
-                <button *ngFor="let opt of ['a', 'b', 'c', 'd']" (click)="selectAnswer(q.id, opt)" 
+                <ng-container *ngFor="let opt of ['a', 'b', 'c', 'd']">
+                <button *ngIf="q.options[opt] !== null"
+                  (click)="selectAnswer(q.id, opt)" 
                   [ngClass]="selectedAnswers[q.id] === opt ? 'bg-blue-50 border-blue-500' : 'bg-white border-slate-100 hover:border-slate-300'" 
-                  class="flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all group">
+                  class="flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all group"
+                >
                   <span class="w-7 h-7 rounded-md flex items-center justify-center font-bold text-xs transition-colors" 
-                    [ngClass]="selectedAnswers[q.id] === opt ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'">{{ opt | uppercase }}</span>
+                    [ngClass]="selectedAnswers[q.id] === opt ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'">
+                    {{ opt | uppercase }}
+                  </span>
                   <span class="text-sm font-medium text-slate-700">{{ q.options[opt] }}</span>
                 </button>
-              </div>
+
+              </ng-container>
+            </div>
             </div>
           </div>
 
-          <footer class="pt-4 flex justify-between items-center gap-3 shrink-0">
-            <button (click)="prevGroup()" [disabled]="currentGroupIndex === 0" class="flex-1 py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-600 text-xs disabled:opacity-30">
-              TRƯỚC
+          <footer 
+            *ngIf="!isListeningMode"  
+          class="pt-4 flex justify-between items-center gap-3 shrink-0"
+            >
+            <button (click)="prevGroup()" [disabled]="currentGroupIndex === 0 && isListeningMode" class="flex-1 py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-600 text-xs disabled:opacity-30">
+              PREVIOUS
             </button>
             
-            <button (click)="nextGroup()" [disabled]="currentGroupIndex === (test?.questionGroups?.length || 0) - 1" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-bold text-xs shadow-md">
-              TIẾP THEO
+            <button (click)="nextGroup()" [disabled]="currentGroupIndex === (test?.questionGroups?.length || 0) - 1 && isListeningMode" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-bold text-xs shadow-md">
+              NEXT
             </button>
           </footer>
         </div>

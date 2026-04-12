@@ -1,59 +1,59 @@
-# Docker Build và Deploy cho English Learning App
+# Docker Build and Deploy for English Learning App
 
-## Cách build và chạy với Docker
+## How to Build and Run with Docker
 
-### 1. Build Docker image
+### 1. Build Docker Image
 
 ```bash
 docker build -t english-learning:latest .
 ```
 
-### 2. Chạy container
+### 2. Run Container
 
 ```bash
 docker run -d -p 80:80 --name english-learning-web english-learning:latest
 ```
 
-### 3. Sử dụng Docker Compose
+### 3. Use Docker Compose
 
 ```bash
 docker compose up -d
 ```
 
-Container sẽ chạy trên port 80. Truy cập ứng dụng tại: `http://localhost`
+Container will run on port 80. Access the application at: `http://localhost`
 
-## Cấu trúc Dockerfile
+## Dockerfile Structure
 
-- **Stage 1 (Build)**: Sử dụng Node.js 20 Alpine để build ứng dụng Angular
-- **Stage 2 (Production)**: Sử dụng Nginx Alpine để serve ứng dụng đã build
+- **Stage 1 (Build)**: Use Node.js 20 Alpine to build the Angular application
+- **Stage 2 (Production)**: Use Nginx Alpine to serve the built application
 
-## Các lệnh hữu ích
+## Useful Commands
 
-### Xem logs
+### View Logs
 
 ```bash
 docker logs english-learning-web
 ```
 
-### Dừng container
+### Stop Container
 
 ```bash
 docker stop english-learning-web
 ```
 
-### Xóa container
+### Remove Container
 
 ```bash
 docker rm english-learning-web
 ```
 
-### Xóa image
+### Remove Image
 
 ```bash
 docker rmi english-learning:latest
 ```
 
-### Rebuild và restart
+### Rebuild and Restart
 
 ```bash
 docker compose down

@@ -9,8 +9,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class QuestionGridComponent {
   @Input() totalQuestion: number = 0;
-  @Input() selectedAnswers: (string | undefined)[] = []; // ví dụ ['A', undefined, 'B','C']
-  @Input() markedQuestions: number[] = []; // ví dụ [1, 5]
+  @Input() selectedAnswers: (string | undefined)[] = []; // example ['A', undefined, 'B','C']
+  @Input() markedQuestions: number[] = []; // example [1, 5]
 
   @Output() questionClick = new EventEmitter<number>();
 

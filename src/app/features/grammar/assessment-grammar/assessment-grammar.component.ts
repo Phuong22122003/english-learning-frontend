@@ -54,7 +54,7 @@ export class AssessmentGrammarComponent implements OnDestroy {
   grammarName = 'Grammar Test';
   testName = 'Test';
   markedQuestions: number[] = [];
-
+  duration!: number;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -76,6 +76,7 @@ export class AssessmentGrammarComponent implements OnDestroy {
         this.grammarName = data.grammarName;
         this.timeRemaining = data.duration * 60;
         this.testName = data.testName;
+        this.duration = data.duration;
         this.currentQuestion = 0;
         this.selectedAnswers = new Array(this.questions.length).fill(undefined);
         this.showResults = false;
@@ -118,29 +119,33 @@ export class AssessmentGrammarComponent implements OnDestroy {
   handleFinish() {
     this.showResults = true;
     this.clearTimer();
-//     this.historyService
-//       .addHistory({
-//         testType: ItemTypeEnum.GRAMMAR,
-//         testId: this.testId,
-//         score: this.calculateScore().percentage,
-//         answers: this.questions.map((q, index) => {
-//           const answer = this.selectedAnswers[index] ?? '';
-
-//           return {
-//             questionId: q.id,
-//             selectedAnswer: answer,
-//             correct: answer !== '' && q.correctAnswer === answer,
-//           };
-//         }),
-//         takenAt: this.startDate,
-//         submittedAt: CommonUtils.getNow(),
-//       })
-//       .subscribe({
-//         next: (data: ExamHistoryResponse) => {
-//         },
-//         error: (err: any) => {
-// },
-//       });
+    this.historyService
+      .addHistory({
+        testType: ItemTypeEnum.GRAMMAR,
+        testId: this.testId,
+        score: this.calculateScore().percentage,
+        name: this.testName,
+        duration: this.duration,
+        answerGroups: this.questions.map((q, index) => {
+          const answer = this.selectedAnswers[index] ?? '';
+          return {
+            answers: [{
+              question: q.question,
+              correctAnswer: q.correctAnswer,
+              options: q.options,
+              selectedAnswer: answer
+            }]
+          };
+        }),
+        takenAt: this.startDate,
+        submittedAt: CommonUtils.getNow(),
+      })
+      .subscribe({
+        next: (data: ExamHistoryResponse) => {
+        },
+        error: (err: any) => {
+},
+      });
   }
 
   calculateScore() {

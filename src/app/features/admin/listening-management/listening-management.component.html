@@ -13,7 +13,7 @@
       >
         Tạo topic mới
       </button>
-      <app-ai-button (click)="isShowTopicGenerate = true"
+      <app-ai-button class="hidden" (click)="isShowTopicGenerate = true"
         >Topic Generate</app-ai-button
       >
     </div>
@@ -60,7 +60,7 @@
 <app-confirm-dialog
   [isVisible]="isShowConfirmDialog"
   title="Xóa topic"
-  message="Bạn có chắc chắn muốn xóa topic này? Hành động này không thể hoàn tác."
+  message="Are you sure you want to delete this topic? This action cannot be undone."
   confirmText="Xóa"
   cancelText="Hủy"
   confirmButtonClass="form-button-danger"

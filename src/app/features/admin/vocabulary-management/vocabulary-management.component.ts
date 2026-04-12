@@ -65,8 +65,10 @@ export class VocabularyManagementComponent implements OnInit {
 
   loadData() {
     this.vocabService
-      .getTopics(this.currentPage - 1, this.PAGE_SIZE)
+      .getTopics(this.currentPage - 1, this.PAGE_SIZE);
+    this.vocabService.topics$
       .subscribe((data) => {
+        if(data == null) return;
         this.topics = [];
         const result = data.content;
         result.forEach((item) => {

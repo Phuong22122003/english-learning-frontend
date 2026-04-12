@@ -131,9 +131,9 @@ export class TestFormComponent implements OnInit {
 
   getFormTitle(): string {
     if (this.testToEdit || this.isEditMode) {
-      return 'Chỉnh sửa bài test';
+      return 'Edit Test';
     }
-    return 'Tạo bài test mới';
+    return 'Create New Test';
   }
 
   onAudioSelected(event: any) {
@@ -408,7 +408,7 @@ export class TestFormComponent implements OnInit {
   }
 
   getSaveButtonText(): string {
-    return this.isEditMode ? 'Cập nhật' : 'Lưu';
+    return this.isEditMode ? 'Update' : 'Save';
   }
 
   // Helper methods for request type management

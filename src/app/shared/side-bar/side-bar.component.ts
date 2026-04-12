@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input, SimpleChanges, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,18 +14,21 @@ import {
   faUser,
   faHeart,
   faDatabase,
+  faBars,
   faPerson,
   faHistory,
   faCalendarAlt,
   faChartLine,
   faListCheck,
 } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from '../../services/UserService';
 
 interface SidebarItem {
   label: string;
   href?: string;
   children?: SidebarItem[];
   icon?: any;
+  visible?: boolean;
 }
 
 @Component({
@@ -33,19 +36,31 @@ interface SidebarItem {
   standalone: true,
   imports: [CommonModule, RouterModule, FontAwesomeModule],
   templateUrl: './side-bar.component.html',
+  styleUrl: './side-bar.component.scss',
 })
-export class SideBarComponent {
+export class SideBarComponent implements OnInit{
   isCollapsed = false;
   expandedItems: string[] = [];
   @Output() collapseChange = new EventEmitter<boolean>();
-
   faChevronDown = faChevronDown;
   faChevronRight = faChevronRight;
   faChevronLeft = faChevronLeft;
-
+  faBars = faBars;
+  @HostListener('window:resize')
+  onResize() {
+    if (window.innerWidth < 1024) {
+      this.isCollapsed = true;
+    }
+  }
   sidebarItems: SidebarItem[] = [
-    { label: 'Home', href: '/home', icon: faHome },
+    { 
+      visible: true,
+      label: 'Home', 
+      href: '/home', 
+      icon: faHome 
+    },
     {
+      visible: true,
       label: 'Learning',
       icon: faBookOpen,
       children: [
@@ -76,30 +91,39 @@ export class SideBarComponent {
         },
       ],
     },
+    { label: 'Planning',visible:true, icon: faCalendarAlt, href: '/planning'},
+
     {
       label: 'You',
+      visible: false,
       icon: faUser,
       children: [
         { label: 'Profile', href: '/profile', icon: faPerson },
         { label: 'My Favorites', href: '/favorite', icon: faHeart },
-      ],
-    },
-    {
-      label: 'History',
-      icon: faHistory,
-      href: '/history',
-    },
-    {
-      label: 'Planning',
-      icon: faCalendarAlt,
-      href: '/planning',
-    },
-    {
-      label: 'Statistics',
-      icon: faChartLine,
-      href: '/statistic',
+        { label: 'History', icon: faHistory, href: '/history'},
+        { label: 'Statistics', icon: faChartLine, href: '/statistic'},
+      ]
     },
   ];
+
+    constructor(private userService: UserService){}
+
+  ngOnInit(): void {
+    if (window.innerWidth < 1024) {
+      this.isCollapsed = true;
+    }
+    this.userService.user$.subscribe((user) => {
+      if (user) {
+       this.setVisible(true);
+      }
+    });
+  }
+  setVisible(visible: boolean) {
+    const youMenu = this.sidebarItems.find(item => item.label === 'You');
+    if (youMenu) {
+      youMenu.visible = visible;
+    }
+  }
 
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;

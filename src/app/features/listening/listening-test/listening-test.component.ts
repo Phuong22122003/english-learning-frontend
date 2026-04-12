@@ -178,25 +178,32 @@ this.isLoading = false;
       details,
     };
 
-//     this.historyService
-//       .addHistory({
-//         testType: ItemTypeEnum.LISTENING,
-//         testId: this.testId,
-//         score: score,
-//         answers: details.map((d) => ({
-//           questionId: d.questionId,
-//           selectedAnswer: d.selectedAnswer,
-//           correct: d.correct,
-//         })),
-//         takenAt: this.startDate,
-//         submittedAt: CommonUtils.getNow(),
-//       })
-//       .subscribe({
-//         next: (data: ExamHistoryResponse) => {
-//         },
-//         error: (err: any) => {
-// },
-//       });
+    this.historyService
+      .addHistory({
+        testType: ItemTypeEnum.LISTENING,
+        testId: this.testId,
+        name: this.title,
+        score: score,
+        duration: this.duration,
+        answerGroups: this.questions.map((q, index) => {
+          const answer = this.selectedAnswers[index] ?? '';
+          return {
+            answers: [{
+              question: q.question,
+              correctAnswer: q.correctAnswer,
+              options: q.options,
+              selectedAnswer: answer
+            }]
+          };
+        }),
+        takenAt: this.startDate,
+        submittedAt: CommonUtils.getNow(),
+      })
+      .subscribe({
+        next: (data: ExamHistoryResponse) => {
+        },
+        error: (err: any) => {},
+      });
     this.isTestCompleted = true;
   }
 

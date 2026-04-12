@@ -86,9 +86,14 @@ export class LearnNewWordComponent implements OnInit {
     this.isFlipped = !this.isFlipped;
   }
 
-  handlePronunciation(word: string) {
+  handlePronunciation(vocab: Vocabulary) {
+    if(vocab.audioUrl){
+      const audio = new Audio(vocab.audioUrl);
+      audio.play();
+      return;
+    }
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(word);
+      const utterance = new SpeechSynthesisUtterance(vocab.word);
       utterance.lang = 'en-US';
       utterance.rate = 0.8;
       speechSynthesis.speak(utterance);

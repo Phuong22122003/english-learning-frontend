@@ -1,0 +1,195 @@
+<div class="min-h-screen bg-slate-50 font-sans pb-12">
+  <header class="bg-blue-900 text-white px-6 py-4 flex items-center justify-between shadow-lg mb-8">
+    <div class="flex items-center gap-3">
+      <button (click)="goBack()" class="p-2 hover:bg-blue-800 rounded-full transition-all text-white">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+      </button>
+      <h1 class="text-lg font-bold tracking-tight uppercase text-blue-100">
+        Test Information
+      </h1>
+    </div>
+    <div class="hidden md:block text-blue-300 text-sm font-medium">
+      Overview & Ranking
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 md:px-6">
+    <!-- Test Info Section -->
+    <div *ngIf="!isLoading" class="bg-white rounded-[2.5rem] shadow-xl p-8 border border-slate-100 mb-8 animate-fade-in">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div class="space-y-3 min-w-0">
+          <div class="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full font-bold text-xs uppercase tracking-widest">
+            Full Test
+          </div>
+          <h2 class="text-3xl md:text-4xl font-black text-slate-800 leading-tight break-words">
+            {{ test?.name }}
+          </h2>
+          <div class="flex flex-wrap gap-4 text-slate-500 font-semibold text-sm">
+            <span class="flex items-center gap-2">
+              <fa-icon [icon]="faCalendar" class="text-blue-500"></fa-icon>
+              {{ test?.createdAt | date: "dd/MM/yyyy" }}
+            </span>
+            <span class="flex items-center gap-2">
+              <fa-icon [icon]="faClock" class="text-orange-500"></fa-icon> 120 Minutes
+            </span>
+            <span class="flex items-center gap-2">
+              <fa-icon [icon]="faCheckCircle" class="text-emerald-500"></fa-icon>
+              {{ test?.totalCompletion || 0 }} completions
+            </span>
+          </div>
+        </div>
+
+        <button (click)="startTest()"
+          class="w-full md:w-auto bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black text-lg transition-all shadow-lg shadow-orange-200 active:scale-95 uppercase tracking-widest shrink-0">
+          Start Test Now
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Sidebar: Rankings -->
+      <div class="lg:col-span-1 space-y-6">
+        <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 overflow-hidden">
+          <div class="bg-slate-800 p-5 flex items-center justify-between">
+            <h3 class="text-white font-bold uppercase tracking-wider flex items-center gap-2">
+              <fa-icon [icon]="faTrophy" class="text-yellow-400"></fa-icon> Leaderboard
+            </h3>
+          </div>
+
+          <div class="p-4">
+            <div *ngIf="isLoadingRankings" class="py-10 text-center">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-900 mx-auto"></div>
+            </div>
+
+            <div *ngIf="!isLoadingRankings" class="space-y-3">
+              <div *ngFor="let rank of rankings; let i = index"
+                class="flex items-center justify-between p-3 rounded-2xl border border-slate-50 hover:bg-blue-50/50 transition-colors">
+                <div class="flex items-center gap-3 min-w-0">
+                  <span [ngClass]="{
+                      'bg-yellow-400 text-white': i === 0,
+                      'bg-slate-200 text-slate-600': i === 1,
+                      'bg-orange-300 text-white': i === 2,
+                      'bg-slate-50 text-slate-400': i > 2
+                    }" class="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shrink-0">
+                    {{ i + 1 }}
+                  </span>
+                  <img [src]="rank.user?.avatarUrl || 'assets/default-avatar.png'"
+                    class="w-10 h-10 rounded-xl object-cover border-2 border-white shadow-sm shrink-0" />
+                  <div class="min-w-0">
+                    <p class="font-bold text-slate-800 text-sm truncate">
+                      {{ rank.user?.username }}
+                    </p>
+                    <p class="text-[10px] text-slate-400 uppercase font-bold">
+                      {{ rank.attempts }} attempts
+                    </p>
+                  </div>
+                </div>
+                <div class="text-right shrink-0 ml-2">
+                  <span class="block font-black text-blue-900 text-lg">{{ rank.maxScore }}</span>
+                  <span class="text-[9px] text-blue-500 font-bold uppercase">Highest Score</span>
+                </div>
+              </div>
+
+              <div *ngIf="rankings?.length === 0" class="text-center py-8 text-slate-400 italic text-sm">
+                No ranking data yet
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main: Discussions -->
+      <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-6 md:p-8">
+          <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2">
+            <fa-icon [icon]="faComments" class="text-blue-600"></fa-icon> General Discussion
+          </h3>
+
+          <!-- Post Comment Input -->
+          <div class="flex gap-4 mb-10">
+            <img [src]="'https://ui-avatars.com/api/?name=User'" class="w-10 h-10 rounded-xl shadow-sm shrink-0" />
+            <div class="flex-1 min-w-0">
+              <textarea [(ngModel)]="newCommentText" placeholder="Do you have any questions about this test?"
+                maxlength="100"
+                class="w-full bg-slate-50 border-none rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-100 outline-none resize-none"
+                rows="3"></textarea>
+              <div class="flex justify-end mt-2">
+                <button (click)="postComment()"
+                  class="bg-blue-900 text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-blue-800 transition-all shadow-md">
+                  Post Comment
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments List -->
+          <div class="space-y-8">
+            <div *ngFor="let comment of comments" class="flex flex-col border-b border-slate-50 pb-6">
+              <div class="flex gap-4">
+                <img [src]="comment.avatarUrl || 'https://ui-avatars.com/api/?name=' + comment.username"
+                  class="w-10 h-10 rounded-xl shrink-0" />
+                <div class="flex-1 min-w-0">
+                  <div class="bg-slate-50 p-4 rounded-2xl rounded-tl-none border border-slate-100">
+                    <div class="flex justify-between items-center mb-1 gap-4">
+                      <span class="font-bold text-blue-900 text-sm truncate">{{ comment.username }}</span>
+                      <span class="text-[10px] text-slate-400 font-medium shrink-0">{{ comment.commentedAt | date: "HH:mm dd/MM/yyyy" }}</span>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed break-words whitespace-pre-wrap">
+                      {{ comment.content }}
+                    </p>
+                  </div>
+
+                  <div class="flex gap-4 mt-2 ml-2">
+                    <button class="text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors uppercase">
+                      Like
+                    </button>
+                    <button (click)="setReply(comment.id)"
+                      class="text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors uppercase">
+                      Reply
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reply Comments -->
+              <div *ngIf="comment.replyComments && comment.replyComments.length > 0"
+                class="ml-12 mt-4 space-y-4 border-l-2 border-slate-100 pl-6">
+                <div *ngFor="let reply of comment.replyComments" class="flex gap-3">
+                  <img [src]="reply.avatarUrl || 'https://ui-avatars.com/api/?name=' + reply.username"
+                    class="w-8 h-8 rounded-lg shrink-0" />
+                  <div class="flex-1 min-w-0">
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
+                      <div class="flex justify-between items-center mb-1 gap-4">
+                        <span class="font-bold text-blue-800 text-xs truncate">{{ reply.username }}</span>
+                        <span class="text-[9px] text-slate-400 shrink-0">{{ reply.commentedAt | date: "HH:mm" }}</span>
+                      </div>
+                      <p class="text-slate-600 text-sm break-words whitespace-pre-wrap">{{ reply.content }}</p>
+                    </div>
+                    <div class="flex gap-3 mt-1 ml-1">
+                      <button class="text-[10px] font-bold text-slate-400 hover:text-blue-600 uppercase"> Like </button>
+                      <button (click)="setReply(comment.id)" class="text-[10px] font-bold text-slate-400 hover:text-blue-600 uppercase"> Reply </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reply Input Box -->
+              <div *ngIf="replyingToId === comment.id" class="ml-12 mt-4 flex gap-2 animate-fade-in">
+                <input [(ngModel)]="replyText" (keyup.enter)="postReply(comment)"
+                  class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100"
+                  placeholder="Write a reply..." />
+                <button (click)="postReply(comment)"
+                  class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 shrink-0">
+                  Send
+                </button>
+                <button (click)="replyingToId = null" class="text-slate-400 text-xs font-bold shrink-0">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

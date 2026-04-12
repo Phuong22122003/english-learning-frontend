@@ -41,9 +41,9 @@ export class HomeComponent implements OnInit {
 
   // User data
   user: any = null;
-  userName: string = 'Người dùng';
+  userName: string = '';
 
-  // Stats (mock data - có thể lấy từ service)
+  // Stats (mock data - can be fetched from service)
   stats = {
     wordsLearned: 0,
     testsCompleted: 0,
@@ -54,21 +54,21 @@ export class HomeComponent implements OnInit {
   // Quick actions
   quickActions = [
     {
-      label: 'Học từ vựng',
+      label: 'Learn Vocabulary',
       icon: faBookOpen,
       route: '/vocabulary/topics',
       color: 'bg-blue-500',
       hoverColor: 'hover:bg-blue-600',
     },
     {
-      label: 'Luyện nghe',
+      label: 'Practice Listening',
       icon: faVolumeUp,
       route: '/listening/topics',
       color: 'bg-green-500',
       hoverColor: 'hover:bg-green-600',
     },
     {
-      label: 'Ngữ pháp',
+      label: 'Grammar',
       icon: faFileAlt,
       route: '/grammar/topics',
       color: 'bg-purple-500',
@@ -85,14 +85,14 @@ export class HomeComponent implements OnInit {
 
   quickManageActions = [
     {
-      label: 'Lịch sử',
+      label: 'History',
       icon: faHistory,
       route: '/history',
       color: 'bg-blue-500',
       hoverColor: 'hover:bg-blue-600',
     },
     {
-      label: 'Thống kê',
+      label: 'Statistics',
       icon: faChartLine,
       route: '/statistic',
       color: 'bg-red-500',
@@ -104,22 +104,22 @@ export class HomeComponent implements OnInit {
   recentActivities = [
     {
       type: 'vocabulary',
-      title: 'Đã hoàn thành bài test từ vựng',
-      time: '2 giờ trước',
+      title: 'Completed vocabulary test',
+      time: '2 hours ago',
       icon: faCheckCircle,
       color: 'text-blue-500',
     },
     {
       type: 'listening',
-      title: 'Đã luyện nghe chủ đề "Daily Conversation"',
-      time: '5 giờ trước',
+      title: 'Practiced listening topic "Daily Conversation"',
+      time: '5 hours ago',
       icon: faCheckCircle,
       color: 'text-green-500',
     },
     {
       type: 'grammar',
-      title: 'Đã học ngữ pháp "Present Tense"',
-      time: '1 ngày trước',
+      title: 'Studied grammar topic "Present Tense"',
+      time: '1 day ago',
       icon: faCheckCircle,
       color: 'text-purple-500',
     },
@@ -141,17 +141,17 @@ export class HomeComponent implements OnInit {
     this.userService.user$.subscribe((user) => {
       if (user) {
         this.user = user;
-        this.userName = user.fullname || user.username || 'Người dùng';
+        this.userName = user.fullname || user.username || '';
       }
     });
   }
 
   loadStatistics(): void {
     this.isLoading = true;
-    // Có thể gọi API để lấy thống kê thực tế
+    // Can call API to get actual statistics
     // this.statisticService.getUserStatistics().subscribe(...)
 
-    // Mock data cho demo
+    // Mock data for demo
     setTimeout(() => {
       this.stats = {
         wordsLearned: 245,
@@ -165,8 +165,8 @@ export class HomeComponent implements OnInit {
 
   getGreeting(): string {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Chào buổi sáng';
-    if (hour < 18) return 'Chào buổi chiều';
-    return 'Chào buổi tối';
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
   }
 }

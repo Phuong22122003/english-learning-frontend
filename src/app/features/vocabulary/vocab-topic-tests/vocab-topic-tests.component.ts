@@ -56,14 +56,14 @@ export class VocabTopicTestsComponent implements OnInit {
       .getTestsByTopicId(this.topicId, page, this.TESTS_PER_PAGE)
       .subscribe({
         next: (res: {
-          topicName: string;
-          topicId: string;
-          vocabularyTests: Page<VocabularyTest>;
+          name: string;
+          id: string;
+          tests: Page<VocabularyTest>;
         }) => {
-          this.topicTitle = res.topicName;
-          this.tests = res.vocabularyTests.content;
-          this.totalPages = res.vocabularyTests.totalPages;
-          this.currentPage = res.vocabularyTests.number + 1;
+          this.topicTitle = res.name;
+          this.tests = res.tests.content;
+          this.totalPages = res.tests.totalPages;
+          this.currentPage = res.tests.number + 1;
         },
         error: (err) => {},
       });

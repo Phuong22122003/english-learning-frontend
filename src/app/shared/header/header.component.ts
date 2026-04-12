@@ -38,12 +38,12 @@ export class HeaderComponent implements OnInit {
   faUserGraduate = faUserGraduate;
   avatarUrl: string = '';
   isDropdownOpen = false;
-
+  isLoggedIn = false;
   // Search properties
   searchQuery: string = '';
   selectedTopicType: string = TopicType.VOCABULARY.toString();
   topicTypes = [
-    { value: TopicType.VOCABULARY.toString(), label: 'Từ vựng' },
+    { value: TopicType.VOCABULARY.toString(), label: 'Vocabulary' },
     { value: TopicType.GRAMMAR.toString(), label: 'Ngữ pháp' },
     { value: TopicType.LISTENING.toString(), label: 'Nghe' },
   ];
@@ -72,7 +72,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.userService.user$.subscribe((user) => {
       if (user) {
-        this.avatarUrl = user.avartarUrl || '';
+        this.avatarUrl = user.avatarUrl || '';
+        this.isLoggedIn = true;
       }
     });
   }

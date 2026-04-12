@@ -24,7 +24,7 @@ export class ListeningService {
 
   constructor(private http: HttpClient) {}
 
-  // 1. Lấy danh sách topic
+  // 1. Get list of topics
   getTopics(
     page: number = 0,
     size: number = 10
@@ -34,7 +34,7 @@ export class ListeningService {
     );
   }
 
-  // 2. Tạo topic mới
+  // 2. Create new topic
   addTopic(
     topic: { name: string; description: string; level?: Level },
     imageFile?: File
@@ -66,7 +66,7 @@ export class ListeningService {
 
     return this.http.put<any>(`${this.apiUrl}/topics/${topicId}`, formData);
   }
-  // 3. Lấy danh sách listenings theo topicId
+  // 3. Get list of listenings by topicId
   getListeningsByTopic(topicId: string): Observable<{
     id: string;
     name: string;
@@ -85,7 +85,7 @@ export class ListeningService {
     }>(`${this.apiUrl}/topics/${topicId}/listenings`);
   }
 
-  // 4. Thêm danh sách listening cho topic
+  // 4. Add list of listenings for topic
   addListeningList(
     topicId: string,
     requests: ListeningRequest[],

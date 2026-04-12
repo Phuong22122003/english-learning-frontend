@@ -1,39 +1,59 @@
-<!-- <div class="min-h-screen bg-[#f8fafc] pb-20 font-sans text-slate-900">
-  
-  <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200/60 px-8 py-4 flex justify-between items-center shadow-sm">
+<div class="min-h-screen bg-[#f8fafc] pb-20 font-sans text-slate-900">
+  <header
+    class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200/60 px-8 py-4 flex justify-between items-center shadow-sm"
+  >
     <div class="flex items-center gap-4">
-      <button (click)="goBack()" class="p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition-all">
+      <button
+        (click)="goBack()"
+        class="p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition-all"
+      >
         <fa-icon [icon]="faArrowLeft"></fa-icon>
       </button>
       <div>
-        <h2 class="text-xl font-extrabold tracking-tight text-slate-800 flex items-center gap-2">
+        <h2
+          class="text-xl font-extrabold tracking-tight text-slate-800 flex items-center gap-2"
+        >
           <div class="w-2 h-6 bg-sky-500 rounded-full"></div>
           Chi tiết bộ đề
         </h2>
       </div>
     </div>
-    
-    <div class="px-5 py-2 bg-emerald-50 text-emerald-600 rounded-full font-black text-[10px] uppercase tracking-widest border border-emerald-100/50">
+
+    <div
+      class="px-5 py-2 bg-emerald-50 text-emerald-600 rounded-full font-black text-[10px] uppercase tracking-widest border border-emerald-100/50"
+    >
       ● Đã hoàn thiện
     </div>
   </header>
 
   <main class="max-w-5xl mx-auto p-8 space-y-12">
-    
-    <section class="relative p-10 bg-white rounded-[2.5rem] border border-slate-200/60 shadow-sm overflow-hidden">
-       <div class="absolute -top-10 -right-10 w-40 h-40 bg-sky-50 rounded-full blur-3xl opacity-60"></div>
-      
+    <section
+      class="relative p-10 bg-white rounded-[2.5rem] border border-slate-200/60 shadow-sm overflow-hidden"
+    >
+      <div
+        class="absolute -top-10 -right-10 w-40 h-40 bg-sky-50 rounded-full blur-3xl opacity-60"
+      ></div>
+
       <div class="relative">
-        <span class="text-[10px] font-black text-sky-500 uppercase tracking-[0.2em] mb-3 block">Thông tin tổng quan</span>
-        <h1 class="text-4xl font-black text-slate-800 tracking-tight mb-6 leading-tight">{{ test?.name || 'Đang tải...' }}</h1>
-        
-        <div class="flex flex-wrap gap-6 text-xs font-bold text-slate-400 uppercase tracking-wider">
+        <span
+          class="text-[10px] font-black text-sky-500 uppercase tracking-[0.2em] mb-3 block"
+          >Thông tin tổng quan</span
+        >
+        <h1
+          class="text-4xl font-black text-slate-800 tracking-tight mb-6 leading-tight"
+        >
+          {{ test?.name || "Đang tải..." }}
+        </h1>
+
+        <div
+          class="flex flex-wrap gap-6 text-xs font-bold text-slate-400 uppercase tracking-wider"
+        >
           <div class="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl">
-            <fa-icon [icon]="faClock" class="text-sky-500"></fa-icon> 
-            {{ test?.createdAt | date:'dd/MM/yyyy' }}
+            <fa-icon [icon]="faClock" class="text-sky-500"></fa-icon>
+            {{ test?.createdAt | date: "dd/MM/yyyy" }}
           </div>
           <div class="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl">
-            <fa-icon [icon]="faLayerGroup" class="text-sky-500"></fa-icon> 
+            <fa-icon [icon]="faLayerGroup" class="text-sky-500"></fa-icon>
             {{ test?.questionGroups?.length || 0 }} Nhóm nội dung
           </div>
         </div>
@@ -41,100 +61,175 @@
     </section>
 
     <div *ngIf="isLoading" class="flex flex-col items-center py-20 gap-4">
-      <div class="animate-spin w-10 h-10 border-4 border-sky-500 border-t-transparent rounded-full"></div>
-      <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Đang tải dữ liệu...</p>
+      <div
+        class="animate-spin w-10 h-10 border-4 border-sky-500 border-t-transparent rounded-full"
+      ></div>
+      <p class="text-xs font-black text-slate-400 uppercase tracking-widest">
+        Đang tải dữ liệu...
+      </p>
     </div>
 
     <div *ngIf="!isLoading && test" class="space-y-20">
       <div *ngFor="let section of getSectionsByPart()" class="space-y-10">
-        
         <div class="flex items-center gap-4">
-          <div class="px-6 py-3 bg-slate-900 text-white rounded-2xl shadow-lg shadow-slate-200 flex items-center gap-4">
-            <span class="text-xs font-black uppercase tracking-[0.2em]">{{ section.label }}</span>
+          <div
+            class="px-6 py-3 bg-slate-900 text-white rounded-2xl shadow-lg shadow-slate-200 flex items-center gap-4"
+          >
+            <span class="text-xs font-black uppercase tracking-[0.2em]">{{
+              section.label
+            }}</span>
             <div class="w-px h-4 bg-white/20"></div>
-            <span class="text-[10px] font-bold opacity-70">{{ section.groups.length }} Groups</span>
+            <span class="text-[10px] font-bold opacity-70"
+              >{{ section.groups.length }} Groups</span
+            >
           </div>
           <div class="flex-1 h-px bg-slate-200"></div>
         </div>
 
-        <div *ngFor="let group of section.groups; let gIdx = index" 
-             class="bg-white rounded-[3rem] border border-slate-200/60 shadow-sm overflow-hidden transition-all hover:shadow-md">
-          
-          <div class="p-8 md:p-10 bg-slate-50/50 border-b border-slate-100/60">
-            <div class="flex flex-col lg:flex-row gap-12">
-              
-              <div *ngIf="group.imageUrl" class="w-full lg:w-2/5 shrink-0 group/img relative">
-                <img [src]="group.imageUrl" class="w-full rounded-[2rem] shadow-xl border-8 border-white object-cover transition-transform group-hover/img:scale-[1.02]">
-              </div>
+        <div
+          *ngFor="let group of section.groups; let gIdx = index"
+          class="bg-white rounded-[3rem] border border-slate-200/60 shadow-sm overflow-hidden transition-all hover:shadow-md"
+        >
+          <div class="grid grid-cols-1 lg:grid-cols-12">
+            <div
+              class="lg:col-span-5 p-8 md:p-10 bg-slate-50/50 border-r border-slate-100/60 sticky top-24 self-start max-h-[calc(100vh-120px)] overflow-y-auto"
+            >
+              <div class="space-y-8">
+                <span
+                  class="text-[10px] font-black text-sky-500 uppercase tracking-[0.2em] block"
+                  >Tài liệu tham chiếu</span
+                >
 
-              <div class="flex-1 space-y-8">
-                <div *ngIf="group.audioUrl" class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-6">
-                  <div class="w-12 h-12 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-500 shrink-0">
+                <div class="space-y-4">
+                  <div *ngFor="let imgUrl of group.imageUrls">
+                    <div *ngIf="imgUrl" class="group/img relative">
+                      <img
+                        [src]="imgUrl"
+                        class="w-full rounded-[2rem] shadow-lg border-4 border-white object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="group.audioUrl"
+                  class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4"
+                >
+                  <div
+                    class="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500 shrink-0"
+                  >
                     <fa-icon [icon]="faHeadphones"></fa-icon>
                   </div>
-                  <div class="flex-1">
-                    <p class="text-[9px] font-black uppercase text-slate-400 mb-1">Audio Source</p>
-                    <audio controls class="w-full h-8 custom-audio"><source [src]="group.audioUrl" type="audio/mpeg"></audio>
+                  <div class="flex-1 min-w-0">
+                    <p
+                      class="text-[8px] font-black uppercase text-slate-400 mb-1"
+                    >
+                      Audio Source
+                    </p>
+                    <audio controls class="w-full h-8 custom-audio">
+                      <source [src]="group.audioUrl" type="audio/mpeg" />
+                    </audio>
                   </div>
                 </div>
 
                 <div *ngIf="group.passageText" class="relative">
-                  <div class="absolute -left-4 top-0 bottom-0 w-1 bg-sky-200 rounded-full"></div>
-                  <div class="prose prose-slate max-w-none italic text-slate-600 leading-relaxed pl-4 whitespace-pre-line text-lg">
+                  <div
+                    class="absolute -left-4 top-0 bottom-0 w-1 bg-sky-200 rounded-full"
+                  ></div>
+                  <div
+                    class="prose prose-slate prose-sm max-w-none italic text-slate-600 leading-relaxed pl-4 whitespace-pre-line"
+                  >
                     {{ group.passageText }}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="p-8 md:p-12 space-y-12">
-            <div *ngFor="let q of group.questions; let qIdx = index" class="relative">
-              
-              <div class="flex items-start gap-6 mb-8">
-                <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-lg shadow-slate-200">
-                  {{ getGlobalQuestionNumber(gIdx, qIdx) }}
-                </div>
-                <h4 class="text-xl font-bold text-slate-800 pt-1.5 leading-snug">{{ q.question }}</h4>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ml-0 md:ml-16">
-                <div *ngFor="let option of q.options | keyvalue" 
-                     class="group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300"
-                     [ngClass]="option.key.toUpperCase() === q.correctAnswer.toUpperCase() 
-                                ? 'bg-emerald-50 border-emerald-500 shadow-sm' 
-                                : 'bg-white border-slate-100 hover:border-sky-100 hover:bg-sky-50/20'">
-                  
-                  <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black transition-colors shrink-0"
-                       [ngClass]="option.key.toUpperCase() === q.correctAnswer.toUpperCase() 
-                                  ? 'bg-emerald-500 text-white' 
-                                  : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200'">
-                    {{ option.key | uppercase }}
+            <div class="lg:col-span-7 p-8 md:p-10 space-y-12 bg-white">
+              <div
+                *ngFor="let q of group.questions; let qIdx = index"
+                class="relative pb-10 border-b border-slate-50 last:border-0 last:pb-0"
+              >
+                <div class="flex items-start gap-4 mb-6">
+                  <div
+                    class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-md"
+                  >
+                    {{ getGlobalQuestionNumber(gIdx, qIdx) }}
                   </div>
-                  
-                  <span class="font-bold transition-colors"
-                        [ngClass]="option.key.toUpperCase() === q.correctAnswer.toUpperCase() ? 'text-emerald-900' : 'text-slate-600'">
-                    {{ option.value }}
-                  </span>
+                  <h4
+                    class="text-lg font-bold text-slate-800 pt-1 leading-snug"
+                  >
+                    {{ q.question }}
+                  </h4>
+                </div>
 
-                  <fa-icon *ngIf="option.key.toUpperCase() === q.correctAnswer.toUpperCase()" 
-                           [icon]="faCheckCircle" 
-                           class="ml-auto text-emerald-500 text-xl"></fa-icon>
+                <div class="grid grid-cols-1 gap-3">
+                  <div
+                    *ngFor="let option of q.options | keyvalue"
+                    class="group flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300"
+                    [ngClass]="
+                      option.key.toUpperCase() === q.correctAnswer.toUpperCase()
+                        ? 'bg-emerald-50 border-emerald-500 shadow-sm'
+                        : 'bg-white border-slate-50 hover:border-sky-100 hover:bg-sky-50/20'
+                    "
+                  >
+                    <div
+                      class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
+                      [ngClass]="
+                        option.key.toUpperCase() ===
+                        q.correctAnswer.toUpperCase()
+                          ? 'bg-emerald-500 text-white'
+                          : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200'
+                      "
+                    >
+                      {{ option.key | uppercase }}
+                    </div>
+
+                    <span
+                      class="text-sm font-semibold flex-1"
+                      [ngClass]="
+                        option.key.toUpperCase() ===
+                        q.correctAnswer.toUpperCase()
+                          ? 'text-emerald-900'
+                          : 'text-slate-600'
+                      "
+                    >
+                      {{ option.value }}
+                    </span>
+
+                    <fa-icon
+                      *ngIf="
+                        option.key.toUpperCase() ===
+                        q.correctAnswer.toUpperCase()
+                      "
+                      [icon]="faCheckCircle"
+                      class="text-emerald-500 text-lg"
+                    ></fa-icon>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="q.explanation"
+                  class="mt-4 bg-amber-50/40 p-4 rounded-2xl border border-dashed border-amber-200/60 flex gap-3 items-start"
+                >
+                  <span class="text-lg">💡</span>
+                  <div>
+                    <p
+                      class="text-[9px] font-black text-amber-600 uppercase tracking-widest mb-1"
+                    >
+                      Giải thích
+                    </p>
+                    <div
+                      [innerHTML]="q.explanation"
+                      class="text-xs text-slate-600 leading-relaxed"
+                    ></div>
+                  </div>
                 </div>
               </div>
-
-              <div *ngIf="q.explanation" class="mt-6 ml-0 md:ml-16 bg-amber-50/40 p-5 rounded-[1.5rem] border border-dashed border-amber-200/60 flex gap-4 items-start animate-fadeIn">
-                <span class="text-xl">💡</span>
-                <div>
-                  <p class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1">Giải thích đáp án</p>
-                  <p class="text-sm text-slate-600 leading-relaxed font-medium">{{ q.explanation }}</p>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
       </div>
     </div>
   </main>
-</div> -->
+</div>

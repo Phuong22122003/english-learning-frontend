@@ -43,7 +43,7 @@ export class FullTestAddComponent implements OnInit {
 
   // Icons
   icons = { faSave, faTimes, faFileAlt, faPlus, faTrash, faImage, faHeadphones };
-
+  public readonly ToeicPart = ToeicPart;
   currentPart = ToeicPart.PART_1;
   toeicParts = [
     { value: ToeicPart.PART_1, label: 'Part 1' },
@@ -61,6 +61,9 @@ export class FullTestAddComponent implements OnInit {
   // Lưu trữ File thực tế để upload
   imageFiles: { url: string; file: File }[] = [];
   audioFiles: { url: string; file: File }[] = [];
+
+  isShowImageInput = true;
+  isShowAudioInput = true;  
 
   constructor(
     private fb: FormBuilder,
@@ -86,7 +89,43 @@ export class FullTestAddComponent implements OnInit {
     return this.form.get('questionGroups') as FormArray;
   }
 
+  get questionGroupsInCurrentPart() {
+    const groups = this.form.get('questionGroups') as FormArray;
+    return groups.controls.filter(control => control.get('part')?.value === this.currentPart);
+  }
+
+
+  getQuestions(group: any): FormArray {
+    return group.get('questions') as FormArray;
+  }
+
   onAddQuestionGroup() {
+    const currentGroupsInPart = this.questionGroupsInCurrentPart;
+    switch (this.currentPart) {
+      case ToeicPart.PART_1: 
+        if (currentGroupsInPart.length >= 6) return; 
+        break;
+      case ToeicPart.PART_2:
+        if (currentGroupsInPart.length >= 25) return;
+        break;
+      case ToeicPart.PART_3:
+        if (currentGroupsInPart.length >= 13) return; // 13 đoạn hội thoại
+        break;
+      case ToeicPart.PART_4:
+        if (currentGroupsInPart.length >= 10) return; // 10 bài nói ngắn
+        break;
+      case ToeicPart.PART_5:
+        if (currentGroupsInPart.length >= 30) return;
+        break;
+      case ToeicPart.PART_6:
+        if (currentGroupsInPart.length >= 4) return; // 4 đoạn văn
+        break;
+      case ToeicPart.PART_7:
+        if (currentGroupsInPart.length >= 15) return; // Khoảng 15-18 cụm đoạn văn
+        break;
+      default:
+        break;
+    }
     const group = this.fb.group({
       part: [this.currentPart],
       action: [RequestType.ADD],
@@ -94,8 +133,8 @@ export class FullTestAddComponent implements OnInit {
       audioName: [''],
       previewUrl: [''],
       audioPreviewUrl: [''],
-      description: [''], // temp
-      questions: this.fb.array([this.createQuestion()]) // Mặc định tạo 1 câu khi add group
+      passageText: [''],
+      questions: this.fb.array([this.createQuestion()])
     });
     this.questionGroups.push(group);
   }
@@ -115,6 +154,36 @@ export class FullTestAddComponent implements OnInit {
 
   onAddQuestion(groupIndex: number) {
     const questions = this.questionGroups.at(groupIndex).get('questions') as FormArray;
+    const allQuestionsInPart = this.questionGroupsInCurrentPart.reduce((acc: any[], group) => {
+      const questionsArray = group.get('questions') as FormArray;
+      return [...acc, ...questionsArray.controls];
+    }, []);
+
+    switch (this.currentPart) {
+      case ToeicPart.PART_1: 
+        if (questions.length >= 1) return; 
+        break;
+      case ToeicPart.PART_2:
+        if (questions.length >= 1) return;
+        break;
+      case ToeicPart.PART_3:
+        if (questions.length >= 3) return; // 13 đoạn hội thoại
+        break;
+      case ToeicPart.PART_4:
+        if (questions.length >= 3) return; // 10 bài nói ngắn
+        break;
+      case ToeicPart.PART_5:
+        if (questions.length >= 1) return;
+        break;
+      case ToeicPart.PART_6:
+        if (questions.length >= 4) return; // 4 đoạn văn
+        break;
+      case ToeicPart.PART_7:
+        if(allQuestionsInPart.length >=54) return;
+        break;
+      default:
+        break;
+    }
     questions.push(this.createQuestion());
   }
 
@@ -155,9 +224,22 @@ export class FullTestAddComponent implements OnInit {
     }
   }
 
+  get totalQuestions(): number {
+    const groups = this.form.get('questionGroups') as FormArray;
+    return groups.controls.reduce((total, group) => {
+      const questions = group.get('questions') as FormArray;
+      return total + questions.length;
+    }, 0);
+  }
+
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      return;
+    }
+
+    if(this.totalQuestions!=200) {
+      alert("Vui lòng nhập đủ 200 câu hỏi");
       return;
     }
 
@@ -166,14 +248,16 @@ export class FullTestAddComponent implements OnInit {
     // Map dữ liệu từ Form sang Request Model
     const toeicTest: ToeicTestRequest = {
       name: rawValue.name,
-      questionGroups: rawValue.questionGroups.map((g: any) => ({
+      questionGroups: rawValue.questionGroups.map((g: any, gIndex: number) => ({
         ...g,
-        questions: g.questions.map((q: any) => ({
+        groupOrder: gIndex+1,
+        questions: g.questions.map((q: any, qIndex: number) => ({
           question: q.question,
           correctAnswer: q.correctAnswer,
           explanation: q.explanation,
           action: q.action,
-          options: { a: q.optionA, b: q.optionB, c: q.optionC, d: q.optionD }
+          options: { a: q.optionA, b: q.optionB, c: q.optionC, d: q.optionD },
+          questionOrder: qIndex + 1
         }))
       }))
     };
@@ -206,5 +290,29 @@ export class FullTestAddComponent implements OnInit {
   // Hàm xóa câu hỏi con
   onRemoveQuestion(groupIndex: number, questionIndex: number) {
     this.getQuestionsArray(groupIndex).removeAt(questionIndex);
+  }
+
+  // Hàm kiểm tra xem Part đó có dùng ảnh không
+  shouldShowImage(part: ToeicPart): boolean {
+    // Part 1, 3, 4, 7 cần ảnh (hoặc đoạn văn hình ảnh)
+    const partsWithImage = [
+      ToeicPart.PART_1, 
+      ToeicPart.PART_3, 
+      ToeicPart.PART_4, 
+      ToeicPart.PART_7
+    ];
+    return partsWithImage.includes(part);
+  }
+
+  // Hàm kiểm tra xem Part đó có dùng audio không
+  shouldShowAudio(part: ToeicPart): boolean {
+    // Chỉ Part 1, 2, 3, 4 là phần Listening
+    const partsWithAudio = [
+      ToeicPart.PART_1, 
+      ToeicPart.PART_2, 
+      ToeicPart.PART_3, 
+      ToeicPart.PART_4
+    ];
+    return partsWithAudio.includes(part);
   }
 }

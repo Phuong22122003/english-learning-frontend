@@ -20,8 +20,8 @@
         : 'bg-slate-700/80 hover:bg-slate-700'
     "
     (click)="toggleFavorite($event)"
-    [title]="isFavorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'"
-    [attr.aria-label]="isFavorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'"
+    [title]="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
+    [attr.aria-label]="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
   >
     <fa-icon
       [icon]="isFavorite ? faHeartSolid : faHeartRegular"
@@ -100,56 +100,56 @@
         *ngIf="edit.observers.length > 0"
         class="w-full flex items-center justify-center gap-2 rounded-md px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90"
         (click)="onEdit($event)"
-        title="Chỉnh sửa"
-        aria-label="Chỉnh sửa"
+        title="Edit"
+        aria-label="Edit"
       >
         <fa-icon [icon]="faBookOpen" class="h-full"></fa-icon>
-        Chỉnh sửa
+        Edit
       </button>
       <button
         *ngIf="learn.observers.length > 0"
         class="w-full flex items-center justify-center gap-2 rounded-md px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90"
         (click)="onLearn($event)"
-        title="Học chủ đề này"
-        aria-label="Học chủ đề này"
+        title="Learn this topic"
+        aria-label="Learn this topic"
       >
         <fa-icon [icon]="faBookOpen" class="h-full"></fa-icon>
-        Học chủ đề này
+        Learn this topic
       </button>
 
       <button
         *ngIf="test.observers.length > 0"
         class="w-full inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
         (click)="onTest($event)"
-        title="Làm bài test"
-        aria-label="Làm bài test"
+        title="Take the test"
+        aria-label="Take the test"
       >
         <fa-icon [icon]="faFileAlt" class="w-4 h-4"></fa-icon>
-        Làm bài test
+        Take the test
       </button>
 
-      <!-- Xem chi tiết -->
+      <!-- View details -->
       <button
         *ngIf="detail.observers.length > 0"
         class="w-full flex items-center justify-center gap-2 rounded-md px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
         (click)="onDetail($event)"
-        title="Xem chi tiết"
-        aria-label="Xem chi tiết"
+        title="View details"
+        aria-label="View details"
       >
         <fa-icon [icon]="faEye" class="h-full"></fa-icon>
-        Xem chi tiết
+        View details
       </button>
 
-      <!-- Xóa -->
+      <!-- Delete -->
       <button
         *ngIf="delete.observers.length > 0"
         class="text-white w-full flex items-center justify-center gap-2 rounded-md px-4 py-2 border border-primary bg-red-600 hover:opacity-80"
         (click)="onDelete($event)"
-        title="Xóa"
-        aria-label="Xóa"
+        title="Delete"
+        aria-label="Delete"
       >
         <fa-icon [icon]="faEye" class="h-full"></fa-icon>
-        Xóa
+        Delete
       </button>
     </div>
   </div>

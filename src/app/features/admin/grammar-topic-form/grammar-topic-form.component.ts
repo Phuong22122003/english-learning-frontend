@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faTimes, faChevronDown, faImage } from '@fortawesome/free-solid-svg-icons';
 import { GrammarTopic } from '../../../models/grammar/grammar-topic.model';
 import { Level } from '../../../models/level.enum';
 import { TopicBase } from '../../../models/topic-base';
@@ -33,6 +33,8 @@ export class GrammarTopicFormComponent implements OnInit {
   form!: FormGroup;
   imagePreview: string | null = null;
 
+  faImage = faImage;
+  faChevronDown = faChevronDown;
   faSave = faSave;
   faTimes = faTimes;
   Level = Level; // Expose Level enum to template

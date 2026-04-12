@@ -37,14 +37,15 @@ export class GrammarListComponent implements OnInit {
   }
 
   onLearn(grammar: Grammar) {
-    this.selectedGrammar = grammar;
+    // this.selectedGrammar = grammar;
+    this.router.navigate(['./', grammar.id], { relativeTo: this.route });
   }
 
   onBack() {
     this.selectedGrammar = null;
   }
   onTest(grammarId: string) {
-    this.router.navigate(['./', grammarId], { relativeTo: this.route });
+    this.router.navigate(['./', grammarId, 'tests'], { relativeTo: this.route });
   }
   goBack() {
     this.router.navigate(['../'], { relativeTo: this.route });

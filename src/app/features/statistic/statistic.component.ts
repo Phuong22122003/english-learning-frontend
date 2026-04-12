@@ -58,7 +58,7 @@ export class StatisticComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label: 'Điểm trung bình',
+        label: 'Average Score',
         borderColor: 'rgb(16, 185, 129)',
         backgroundColor: 'rgba(16, 185, 129, 0.15)',
         tension: 0.4,
@@ -74,13 +74,13 @@ export class StatisticComponent implements OnInit {
       legend: { display: false },
       title: {
         display: true,
-        text: 'Điểm trung bình theo thời gian',
+        text: 'Average Score Over Time',
       },
     },
     scales: {
       y: {
         beginAtZero: true,
-        suggestedMax: 10, // điểm thường từ 0–10
+        suggestedMax: 10, // score usually from 0–10
       },
     },
   };
@@ -92,7 +92,8 @@ export class StatisticComponent implements OnInit {
         next: (res) => {
           this.updateAvgScoreChart(res.scores);
         },
-        error: (err) => {},
+        error: (err) => {
+},
       });
   }
 
@@ -113,11 +114,11 @@ export class StatisticComponent implements OnInit {
   }
 
   timeRanges = [
-    { value: TimeRange.TODAY, label: 'Hôm nay' },
-    { value: TimeRange.ONE_WEEK, label: '1 tuần' },
-    { value: TimeRange.ONE_MONTH, label: '1 tháng' },
-    { value: TimeRange.TWELVE_MONTHS, label: '12 tháng' },
-    { value: TimeRange.ALL, label: 'Tất cả' },
+    { value: TimeRange.TODAY, label: 'Today' },
+    { value: TimeRange.ONE_WEEK, label: '1 Week' },
+    { value: TimeRange.ONE_MONTH, label: '1 Month' },
+    { value: TimeRange.TWELVE_MONTHS, label: '12 Months' },
+    { value: TimeRange.ALL, label: 'All' },
   ];
 
   scoreFilterOptions = [

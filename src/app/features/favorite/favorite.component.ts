@@ -65,10 +65,10 @@ export class FavoriteComponent implements OnInit {
 
   // Filter options
   filterOptions = [
-    { value: 'ALL', label: 'Tất cả' },
-    { value: ItemTypeEnum.GRAMMAR, label: 'Ngữ pháp' },
-    { value: ItemTypeEnum.LISTENING, label: 'Nghe' },
-    { value: ItemTypeEnum.VOCABULARY, label: 'Từ vựng' },
+    { value: 'ALL', label: 'All' },
+    { value: ItemTypeEnum.GRAMMAR, label: 'Grammar' },
+    { value: ItemTypeEnum.LISTENING, label: 'Listening' },
+    { value: ItemTypeEnum.VOCABULARY, label: 'Vocabulary' },
   ];
 
   constructor(
@@ -92,7 +92,7 @@ export class FavoriteComponent implements OnInit {
       },
       error: (error) => {
         this.error =
-          'Lỗi tải danh sách yêu thích: Hệ thống đang gặp sự cố. Vui lòng thử lại sau.';
+          'Error loading favorites: System is experiencing issues. Please try again later.';
         this.isLoading = false;
       },
     });
@@ -133,7 +133,7 @@ export class FavoriteComponent implements OnInit {
         },
         error: (error) => {
           this.error =
-            'Lỗi xóa yêu thích: ' + (error.message || 'Không xác định');
+            'Error deleting favorite: ' + (error.message || 'Unknown error');
           this.showConfirmDialog = false;
           this.favoriteToDelete = null;
         },
@@ -222,7 +222,7 @@ export class FavoriteComponent implements OnInit {
   }
 
   formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('vi-VN');
+    return new Date(dateString).toLocaleDateString('en-US');
   }
 
   getTypeIcon(itemType: ItemTypeEnum): any {

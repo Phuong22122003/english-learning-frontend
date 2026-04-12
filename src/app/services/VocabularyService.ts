@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Page } from '../models/page.model';
 import { VocabTopic } from '../models/vocabulary/vocab-topic.model';
@@ -19,13 +19,36 @@ import { TopicType } from '../models/topic-type.enum';
 export class VocabularyService {
   private apiUrl = `${environment.apiContentServiceUrl}/vocabulary`;
   private agentUrl = `${environment.apiAgentServiceUrl}`;
+  private topicSource = new BehaviorSubject<Page<VocabTopic> | null>(null);
+  topics$ = this.topicSource.asObservable();
+  private topicsInPage = new Map<number, Page<VocabTopic>>();
+  private lastCallApiTime: Date | null = null;
   constructor(private http: HttpClient) {}
 
   // 1. Get all topics
-  getTopics(page: number = 0, size: number = 10): Observable<Page<VocabTopic>> {
-    return this.http.get<Page<VocabTopic>>(
+  getTopics(page: number = 0, size: number = 10){
+    if(this.topicsInPage.has(page)){
+      this.topicSource.next(this.topicsInPage.get(page) || null);
+    }
+    if(this.lastCallApiTime !== null && new Date().getTime() - this.lastCallApiTime.getTime() < 2 * 60 * 1000) return;
+    this.lastCallApiTime = new Date();
+    this.http.get<Page<VocabTopic>>(
       `${this.apiUrl}/topics?page=${page}&size=${size}`
-    );
+    ).subscribe((response) => {
+      // check cache and update
+      if(this.topicsInPage.has(page)){
+        const cached = this.topicsInPage.get(page);
+        if (JSON.stringify(cached) !== JSON.stringify(response)) {
+          this.topicsInPage.set(page, response);
+          this.topicSource.next(response); 
+        } 
+      }
+      else{
+        this.topicsInPage.set(page, response);
+        this.topicSource.next(response);
+      }
+      
+    });
   }
 
   // 2. Get vocabularies by topic id
@@ -33,10 +56,10 @@ export class VocabularyService {
     topicId: string,
     page: number = 0,
     size: number = 10
-  ): Observable<{ name: string; topicId: string; vocabularies: Vocabulary[] }> {
+  ): Observable<{ name: string; id: string; vocabularies: Vocabulary[] }> {
     return this.http.get<{
+      id: string;
       name: string;
-      topicId: string;
       vocabularies: Vocabulary[];
     }>(
       `${this.apiUrl}/topics/${topicId}/vocabularies?page=${page}&size=${size}`
@@ -49,32 +72,32 @@ export class VocabularyService {
     page: number = 0,
     size: number = 10
   ): Observable<{
-    topicName: string;
-    topicId: string;
-    vocabularyTests: Page<VocabularyTest>;
+    name: string;
+    id: string;
+    tests: Page<VocabularyTest>;
   }> {
     return this.http.get<{
-      topicName: string;
-      topicId: string;
-      vocabularyTests: Page<VocabularyTest>;
+      name: string;
+      id: string;
+      tests: Page<VocabularyTest>;
     }>(`${this.apiUrl}/topics/${topicId}/tests?page=${page}&size=${size}`);
   }
 
   // 4. Get test questions by test id
   getTestQuestionsByTestId(testId: string): Observable<{
+    id: string;
+    name: string;
     duration: number;
     topicName: string;
     topicId: string;
-    testName: string;
-    testId: string;
     questions: VocabularyTestQuestion[];
   }> {
     return this.http.get<{
+      id: string;
+      name: string;
       duration: number;
       topicName: string;
       topicId: string;
-      testName: string;
-      testId: string;
       questions: VocabularyTestQuestion[];
     }>(`${this.apiUrl}/tests/${testId}/questions`);
   }
@@ -118,7 +141,7 @@ export class VocabularyService {
     return this.http.delete<any>(`${this.apiUrl}/topics/${topicId}`);
   }
 
-  // 7. Add vocabularies (nhiều từ + file ảnh/audio)
+  // 7. Add vocabularies (multiple words + image/audio files)
   addVocabularies(
     topicId: string,
     vocabularies: any[],

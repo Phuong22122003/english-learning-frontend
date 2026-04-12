@@ -7,7 +7,7 @@
       >
         <h1 class="text-4xl font-bold text-slate-800 dark:text-white flex items-center gap-3">
           <fa-icon [icon]="faHeart" class="text-red-500"></fa-icon>
-          Danh sách yêu thích
+          Favorites
         </h1>
 
         <!-- Filter Section -->
@@ -16,7 +16,7 @@
             for="filter-select"
             class="text-sm font-semibold text-slate-700 dark:text-slate-300"
           >
-            Lọc theo loại:
+            Filter by type:
           </label>
           <select
             id="filter-select"
@@ -35,7 +35,7 @@
       <div *ngIf="isLoading" class="flex justify-center items-center py-20">
         <div class="flex flex-col items-center gap-4 text-slate-600 dark:text-slate-300">
           <fa-icon [icon]="faSpinner" class="text-4xl animate-spin"></fa-icon>
-          <span class="text-lg font-medium">Đang tải...</span>
+          <span class="text-lg font-medium">Loading...</span>
         </div>
       </div>
 
@@ -74,11 +74,11 @@
           ></fa-icon>
         </div>
         <h3 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
-          Chưa có mục yêu thích nào
+          No favorites yet
         </h3>
         <p class="text-slate-500 dark:text-slate-400">
           <span *ngIf="selectedFilter === 'ALL'">
-            Bạn chưa thêm mục nào vào danh sách yêu thích.
+            You haven't added any items to your favorite list.
           </span>
           <span *ngIf="selectedFilter !== 'ALL'">
             Không có mục yêu thích nào thuộc loại "{{
@@ -97,7 +97,7 @@
           <span
             class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold"
           >
-            {{ filteredFavorites.length }} mục yêu thích
+            {{ filteredFavorites.length }} favorites
           </span>
         </div>
 
@@ -132,10 +132,10 @@
                 type="button"
                 class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 hover:scale-110"
                 (click)="deleteFavorite(favorite.id)"
-                [title]="'Xóa khỏi yêu thích'"
-                [attr.aria-label]="'Xóa khỏi yêu thích'"
+                [title]="'Remove from favorites'"
+                [attr.aria-label]="'Remove from favorites'"
               >
-                <span class="sr-only">Xóa khỏi yêu thích</span>
+                <span class="sr-only">Remove from favorites</span>
                 <fa-icon
                   [icon]="faTrash"
                   class="text-sm"
@@ -180,14 +180,14 @@
             <div class="px-5 pb-5 space-y-3">
               <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                 <fa-icon [icon]="faCalendarPlus" class="text-sm"></fa-icon>
-                <span>Thêm vào: {{ formatDate(favorite.addedAt) }}</span>
+                <span>Added on: {{ formatDate(favorite.addedAt) }}</span>
               </div>
               <div class="flex gap-2">
                 <button
                   type="button"
                   class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-primary hover:bg-priamry/80 text-white rounded-lg font-medium text-sm transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
                   (click)="learnItem(favorite)"
-                  [title]="'Học chủ đề này'"
+                  [title]="'Learn this topic'"
                 >
                   <fa-icon [icon]="faBookOpen" class="text-sm"></fa-icon>
                   <span>Học</span>
@@ -196,7 +196,7 @@
                   type="button"
                   class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-navy-header hover:bg-navy-header/80 text-white rounded-lg font-medium text-sm transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
                   (click)="takeTest(favorite)"
-                  [title]="'Làm bài test'"
+                  [title]="'Take a test'"
                 >
                   <fa-icon [icon]="faFileAlt" class="text-sm"></fa-icon>
                   <span>Test</span>
@@ -210,10 +210,10 @@
       <!-- Confirm Dialog -->
       <app-confirm-dialog
         [isVisible]="showConfirmDialog"
-        title="Xóa khỏi yêu thích"
-        message="Bạn có chắc chắn muốn xóa mục này khỏi danh sách yêu thích?"
-        confirmText="Xóa"
-        cancelText="Hủy"
+        title="Remove from favorites"
+        message="Are you sure you want to remove this item from your favorites?"
+        confirmText="Remove"
+        cancelText="Cancel"
         confirmButtonClass="form-button-danger"
         cancelButtonClass="form-button-secondary"
         (confirm)="onConfirmDelete()"
